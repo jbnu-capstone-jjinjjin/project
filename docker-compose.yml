@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  postgreSQL:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_PASSWORD: 123456
+
+  springboot_container:
+    image: capstone_dev:v1
+    depends_on:
+      - postgreSQL
+    restart: always
+    ports:
+      - 8080:8080

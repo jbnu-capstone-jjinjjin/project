@@ -1,10 +1,8 @@
 FROM openjdk:21-slim AS build
 WORKDIR /workspace/app
 
-COPY gradlew .
+COPY gradlew build.gradle settings.gradle ./
 COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
 COPY src src
 
 RUN apt-get update && apt-get install -y dos2unix

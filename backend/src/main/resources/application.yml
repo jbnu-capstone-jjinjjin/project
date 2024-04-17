@@ -1,9 +1,0 @@
-spring:
-  application.name: capstone
-  profiles:
-    include: db
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-    com.jbnu.capstone: debug

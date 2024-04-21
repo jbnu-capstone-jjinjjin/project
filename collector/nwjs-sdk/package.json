@@ -1,0 +1,9 @@
+{
+    "name": "data-collecotor",
+    "version": "1.0.0",
+    "main": "https://www.naver.com/",
+    "scripts": {
+      "start": "nw ."
+    }
+  }
+  

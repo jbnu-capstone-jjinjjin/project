@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+/src/main/resources/jbnu-capstone-2024-firebase-adminsdk-rsxb4-9a03dae9d8.json
+/src/main/resources/application-firebase.yml

@@ -1,9 +1,13 @@
 spring:
   application.name: capstone
   profiles:
-    include: db
+    include: db, firebase
 
 logging:
   level:
     org.hibernate.SQL: debug
     com.jbnu.capstone: debug
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json

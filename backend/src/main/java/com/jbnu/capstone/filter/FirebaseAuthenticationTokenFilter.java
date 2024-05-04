@@ -1,11 +1,10 @@
 package com.jbnu.capstone.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import com.jbnu.capstone.dto.ErrorDTO;
+import com.jbnu.capstone.dto.response.ResponseDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,8 +49,9 @@ public class FirebaseAuthenticationTokenFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
                 response.getWriter().write(objectMapper
-                        .writeValueAsString(new ErrorDTO(HttpServletResponse.SC_UNAUTHORIZED,
+                        .writeValueAsString(new ResponseDTO(HttpServletResponse.SC_UNAUTHORIZED,
                         "Invalid token")));
+
                 return;
             }
 
@@ -59,7 +59,7 @@ public class FirebaseAuthenticationTokenFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write(objectMapper
-                    .writeValueAsString(new ErrorDTO(HttpServletResponse.SC_UNAUTHORIZED,
+                    .writeValueAsString(new ResponseDTO(HttpServletResponse.SC_UNAUTHORIZED,
                             "Authorization token is missing")));
             return;
         }

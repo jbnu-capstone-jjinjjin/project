@@ -7,11 +7,11 @@ import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-@Schema(description = "에러 DTO")
-public class ErrorDTO {
+@Schema(description = "요청 결과 DTO")
+public class ResponseDTO {
     @Schema(description = "HTTP 상태 코드", example = "403")
     private Integer status;
 
-    @Schema(description = "에러 메시지", example = "잘못된 요청입니다.")
+    @Schema(description = "메시지", example = "잘못된 요청입니다.")
     private String message;
 }

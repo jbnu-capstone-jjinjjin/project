@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider, UserCredential, AuthError } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 
-export default function LoginPage() {
+const LoginPage= ()=> {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -40,3 +40,4 @@ export default function LoginPage() {
   );
 };
 
+export default LoginPage;

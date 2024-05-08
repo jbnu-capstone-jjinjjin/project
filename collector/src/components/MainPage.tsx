@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { auth } from '../firebaseConfig';
 import { User } from 'firebase/auth';
 
-export default function MainPage() {
+const MainPage=() =>{
   const [token, setToken] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
@@ -10,21 +10,24 @@ export default function MainPage() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       if (user) {
-        user.getIdToken().then((idToken: string) => {
-          setToken(idToken);
-          setLoading(false);
-        }).catch((error: any) => {
-          console.error("Error fetching ID token:", error);
-          setError('Failed to fetch ID token');
-          setLoading(false);
-        });
+        (async () => {
+          try {
+            const idToken = await user.getIdToken();
+            setToken(idToken);
+          } catch (error) {
+            console.error("Error fetching ID token:", error);
+            setError('Failed to fetch ID token');
+          } finally {
+            setLoading(false);
+          }
+        })();
       } else {
         setLoading(false);
         setToken('');
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   if (loading) return <div>Loading...</div>;
@@ -40,4 +43,4 @@ export default function MainPage() {
   );
 }
 
-
+export default MainPage;

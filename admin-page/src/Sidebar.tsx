@@ -1,8 +1,12 @@
 import React from 'react';
 import { Tabs } from '@mantine/core';
 
-const Sidebar = ({ activeTab, onTabChange }: { activeTab: string | null; onTabChange: (tab: string | null) => void }) => {
+interface SidebarProps {
+  activeTab: string | null;
+  onTabChange: (tab: string | null) => void;
+}
 
+export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const tabStyle = {
     height: '50px',
     padding: '10px 20px',
@@ -33,14 +37,7 @@ const Sidebar = ({ activeTab, onTabChange }: { activeTab: string | null; onTabCh
           style={activeTab === 'message' ? activeTabStyle : tabStyle}>
           메시지함
         </Tabs.Tab>
-        <Tabs.Tab
-          value="notices"
-          style={activeTab === 'notices' ? activeTabStyle : tabStyle}>
-          공지사항
-        </Tabs.Tab>
       </Tabs.List>
     </Tabs>
   );
-};
-
-export default Sidebar;
+}

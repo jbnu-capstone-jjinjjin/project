@@ -23,12 +23,6 @@ public class ResponseDataDTO<T> {
     @Schema(description = "응답 데이터")
     private T data;
 
-    public ResponseDataDTO(Integer status, String message) {
-        this.status = status;
-        this.message = message;
-        this.timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
     public ResponseDataDTO(Integer status, String message, T data) {
         this.status = status;
         this.message = message;

@@ -11,8 +11,5 @@ import java.util.List;
 @Repository
 public interface MetricsRepository extends CrudRepository<Metrics, Long> {
 
-    List<Metrics> findByMachineId(Long machineId);
-
-    @Query("SELECT m FROM Metrics m WHERE m.machine.id = :machineId AND m.createdAt >= :from AND m.createdAt <= :to")
-    List<Metrics> findMetricsByMachineIdAndTimeRange(Long machineId, LocalDateTime from, LocalDateTime to);
+    List<Metrics> findByMachineIdAndCreatedAtBetween(Long machineId, LocalDateTime from, LocalDateTime to);
 }

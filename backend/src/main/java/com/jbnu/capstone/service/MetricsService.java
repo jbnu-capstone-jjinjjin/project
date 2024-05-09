@@ -1,6 +1,7 @@
 package com.jbnu.capstone.service;
 
 import com.jbnu.capstone.dto.request.RequestMetricsDTO;
+import com.jbnu.capstone.dto.request.RequestUpdateMetricsDTO;
 import com.jbnu.capstone.dto.response.ResponseMetricsDTO;
 import com.jbnu.capstone.entity.Machine;
 import com.jbnu.capstone.entity.Metrics;
@@ -22,14 +23,6 @@ public class MetricsService {
 
     private final MetricsRepository metricsRepository;
     private final MachineRepository machineRepository;
-
-    public List<ResponseMetricsDTO> findMetricsByMachineId(Long machineId) {
-        List<Metrics> metrics = metricsRepository.findByMachineId(machineId);
-
-        return metrics.stream()
-                .map(metric -> new ResponseMetricsDTO(metric.getId(), metric.getMetricType(), metric.getData()))
-                .toList();
-    }
     
     public void createMetrics(RequestMetricsDTO requestMetricsDTO) {
 
@@ -49,19 +42,19 @@ public class MetricsService {
         metricsRepository.save(metrics);
     }
 
-    public void updateMetrics(Long metricsId, RequestMetricsDTO requestMetricsDTO) {
+    public void updateMetrics(Long metricsId, RequestUpdateMetricsDTO requestUpdateMetricsDTO) {
         Metrics metrics = metricsRepository.findById(metricsId).orElse(null);
 
         if (metrics == null) {
             throw new RuntimeException("Metric not found");
         }
 
-        metrics.setData(requestMetricsDTO.getData());
+        metrics.setData(requestUpdateMetricsDTO.getData());
         metricsRepository.save(metrics);
     }
 
     public List<ResponseMetricsDTO> findMetricsByMachineIdAndTimeRange(Long machineId, LocalDateTime from, LocalDateTime to) {
-        return metricsRepository.findMetricsByMachineIdAndTimeRange(machineId, from, to)
+        return metricsRepository.findByMachineIdAndCreatedAtBetween(machineId, from, to)
                 .stream()
                 .map(metric -> new ResponseMetricsDTO(metric.getId(), metric.getMetricType(), metric.getData()))
                 .toList();

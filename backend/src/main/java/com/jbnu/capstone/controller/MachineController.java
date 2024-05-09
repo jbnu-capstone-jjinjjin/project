@@ -58,28 +58,10 @@ public class MachineController {
     })
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "메타데이터와 함께 기기를 추가합니다.")
-    public ResponseDTO addMachine(@RequestBody RequestMachineDTO machineDTO) {
-        machineService.createMachine(machineDTO);
+    public ResponseDataDTO<ResponseMachineDTO> addMachine(@RequestBody RequestMachineDTO machineDTO) {
+        ResponseMachineDTO machine = machineService.createMachine(machineDTO);
 
-        return new ResponseDTO(HttpStatus.OK.value(), "기기 추가에 성공했습니다.");
-    }
-
-
-    @GetMapping("/{id}")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공",
-                    content = @Content(schema = @Schema(implementation = ResponseDataDTO.class))),
-            @ApiResponse(responseCode = "500", description = "실패",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
-    })
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "특정 id에 해당하는 기기의 메타데이터를 가져옵니다.")
-    public ResponseDataDTO<List<ResponseMetricsDTO>> getMachineMetrics(@PathVariable("id") Long machine_id,
-                                              @RequestBody RequestMachineDTO machineDTO) {
-        List<ResponseMetricsDTO> metricsList = metricsService.findMetricsByMachineId(machine_id);
-        return new ResponseDataDTO<>(200,
-                "특정 id에 해당하는 기기의 메타데이터를 성공적으로 가져왔습니다.",
-                metricsList);
+        return new ResponseDataDTO<>(HttpStatus.OK.value(), "기기 추가에 성공했습니다.", machine);
     }
 
     @GetMapping("/{id}/metrics")
@@ -92,8 +74,8 @@ public class MachineController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "특정 id, 특정 시간에 해당하는 메타데이터를 가져옵니다.")
     public ResponseDataDTO<List<ResponseMetricsDTO>> getMachineMetricsTime(@PathVariable("id") Long machine_id,
-                                                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
-                                                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
+                                                                           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+                                                                           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to) {
 
         LocalDateTime now = LocalDateTime.now();
 

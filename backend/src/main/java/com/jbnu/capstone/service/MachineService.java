@@ -15,12 +15,14 @@ public class MachineService {
 
     private final MachineRepository machineRepository;
 
-    public void createMachine(RequestMachineDTO machineDTO) {
+    public ResponseMachineDTO createMachine(RequestMachineDTO machineDTO) {
         Machine machine = Machine.builder()
                 .machineName(machineDTO.getMachineName())
                 .build();
 
-        machineRepository.save(machine);
+        Machine savedMachine = machineRepository.save(machine);
+
+        return new ResponseMachineDTO(savedMachine.getId(), savedMachine.getMachineName());
     }
 
     public List<ResponseMachineDTO> findAllMachines() {

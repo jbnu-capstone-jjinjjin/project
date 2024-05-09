@@ -1,6 +1,7 @@
 package com.jbnu.capstone.controller;
 
 import com.jbnu.capstone.dto.request.RequestMetricsDTO;
+import com.jbnu.capstone.dto.request.RequestUpdateMetricsDTO;
 import com.jbnu.capstone.dto.response.ResponseDTO;
 import com.jbnu.capstone.service.MetricsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,9 +50,9 @@ public class MetricsController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "특정 id의 메타 데이터를 수정합니다.")
     public ResponseDTO updateMetrics(@PathVariable("id") Long metricsId,
-                                @RequestBody RequestMetricsDTO requestMetricsDTO) {
+                                @RequestBody RequestUpdateMetricsDTO requestUpdateMetricsDTO) {
 
-        metricsService.updateMetrics(metricsId, requestMetricsDTO);
+        metricsService.updateMetrics(metricsId, requestUpdateMetricsDTO);
 
         return new ResponseDTO(HttpStatus.OK.value(), "특정 id의 메타 데이터를 성공적으로 수정했습니다.");
     }

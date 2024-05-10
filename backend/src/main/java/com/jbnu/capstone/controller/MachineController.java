@@ -64,6 +64,24 @@ public class MachineController {
         return new ResponseDataDTO<>(HttpStatus.OK.value(), "기기 추가에 성공했습니다.", machine);
     }
 
+    @PatchMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+            @ApiResponse(responseCode = "500", description = "실패",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "특정 id의 머신 정보를 수정합니다.")
+    public ResponseDTO updateMetrics(@PathVariable("id") Long machineId,
+                                     @RequestBody RequestMachineDTO requestMachineDTO) {
+
+        machineService.updateMachine(machineId, requestMachineDTO);
+
+        return new ResponseDTO(HttpStatus.OK.value(), "특정 id의 머신 정보를 성공적으로 수정했습니다.");
+    }
+
+
     @GetMapping("/{id}/metrics")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",

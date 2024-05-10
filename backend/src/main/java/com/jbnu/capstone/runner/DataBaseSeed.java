@@ -24,13 +24,13 @@ import java.util.UUID;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public class DataBaseSeed {
+public class DataBaseSeed implements ApplicationRunner {
 
     private final MachineRepository machineRepository;
     private final MetricsRepository metricsRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-//    @Override
+    @Override
     public void run(ApplicationArguments args) throws Exception {
         List<String> machineNameList = new ArrayList<>(List.of(
                 "machine1", "machine2", "machine3", "machine4", "machine5",

@@ -4,6 +4,7 @@ const { machineId } = require('node-machine-id');
 
 async function collectSystemInfo() {
   try {
+    console.log("\n\n===Start Collect System Info===")
     const cpuInfo = os.cpus(); // CPU 정보 배열
     const cpuCores = cpuInfo.length; // CPU 코어 수
     const cpuModel = cpuInfo[0].model; // 첫 번째 CPU 모델
@@ -51,10 +52,11 @@ async function collectSystemInfo() {
     };
 
     console.log(systemInfo);
+    console.log("===Success Collect System Info===\n\n")
     return systemInfo;
   } catch (error) {
     console.error("Failed to fetch system information:", error);
   }
 }
 
-collectSystemInfo();
+module.exports = collectSystemInfo;

@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase-config.ts';
 import { GoogleAuthProvider, signInWithRedirect, signOut } from 'firebase/auth';
-import Sidebar from './Sidebar.tsx';
-import MemberList from './MemberList.tsx';
-import MemberDetail from './MemberDetails.tsx';
-import { Member } from './data.ts';
-import { membersData } from './membersdata.ts';
+import Sidebar from './Components/Sidebar.tsx';
+import MemberList from './Components/MemberList.tsx';
+import MemberDetail from './Components/MemberDetails.tsx';
+import { Member } from './Data/data.ts';
+import membersData from './Data/membersdata.json';
 import { Container, Button } from '@mantine/core'
-import Message from './Message.tsx';
+import Message from './Components/Message.tsx';
 
 export default function App() {
   const [user, loading] = useAuthState(auth);

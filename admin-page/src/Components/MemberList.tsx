@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Button } from '@mantine/core';
-import { Member } from './data.ts';
+import { Member } from '../Data/data.ts';
 
 interface MemberListProps {
   members: Member[];

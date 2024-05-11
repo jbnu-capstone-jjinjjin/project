@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Button, Table } from '@mantine/core';
-import { Member } from './data.ts';
+import { Member } from '../Data/data.ts';
 
 interface MemberDetailProps {
   member: Member;
@@ -40,7 +40,7 @@ export default function MemberDetail({ member, onBack }: MemberDetailProps) {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={index}>
+            <tr key={index}>  
               <td>{row[0]}</td>
               <td>{row[1]}</td>
             </tr>

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './firebase-config.js';
+import { auth } from './firebase-config.ts';
 import { GoogleAuthProvider, signInWithRedirect, signOut } from 'firebase/auth';
-import Sidebar from './Sidebar.tsx';
-import MemberList from './MemberList.tsx';
-import MemberDetail from './MemberDetails.tsx';
-import { Member } from './data.ts';
-import { membersData } from './membersdata.ts';
+import Sidebar from './Components/Sidebar.tsx';
+import MemberList from './Components/MemberList.tsx';
+import MemberDetail from './Components/MemberDetails.tsx';
+import { Member } from './Data/data.ts';
+import membersData from './Data/membersdata.json';
+import { Container, Button } from '@mantine/core'
+import Message from './Components/Message.tsx';
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
@@ -35,37 +37,36 @@ export default function App() {
   };
 
   if (loading) {
-    return <div>로딩 중</div>;
+    return <Container> 로 딩 중 . . .</Container>;
   }
 
   if (!user) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Container style={{ display: 'flex', justifyContent: 'center' }}>
         <h1>Please Log in</h1>
-        <button onClick={handleLogin} style={{ fontSize: '30px' }}>
+        <Button onClick={handleLogin} style={{ fontSize: '30px' }}>
           구글 로그인
-        </button>
-      </div>
+        </Button>
+      </Container>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 20px', background: '#f5f5f5', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+    <Container style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <Container style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 20px', background: '#f5f5f5', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+        <Container style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
           <span>Welcome, {user ? (user.displayName + " UID : " + user.uid) : 'No Name'}</span>
-          <button onClick={handleLogout} style={{ fontSize: '12px' }}>로그아웃</button>
-        </div>
-      </div>
-      <div style={{ display: 'flex', flex: 1 }}>
+          <Button onClick={handleLogout} style={{ fontSize: '12px' }}>로그아웃</Button>
+        </Container>
+      </Container>
+      <Container style={{ display: 'flex', flex: 1 }}>
         <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-        <div style={{ flex: 1, padding: '20px' }}>
+        <Container style={{ flex: 1, padding: '20px' }}>
           {activeTab === 'memberManagement' && !selectedMember && <MemberList members={membersData} onViewDetails={handleViewDetails} />}
           {activeTab === 'memberManagement' && selectedMember && <MemberDetail member={selectedMember} onBack={handleBack} />}
-          {activeTab === 'message' && <div><h1>Message Content</h1></div>}
-          {activeTab === 'notices' && <div><h1>Notices Content</h1></div>}
-        </div>
-      </div>
-    </div>
+          {activeTab === 'message' && <Container><Message /></Container>}
+        </Container>
+      </Container>
+    </Container>
   );
 }

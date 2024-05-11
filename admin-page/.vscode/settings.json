@@ -1,0 +1,14 @@
+{
+    "[typescript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features",
+      "editor.formatOnSave": true
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "eslint.codeActionsOnSave.mode": "all",
+    "editor.tabSize": 2,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+    "jest.autoRun": {},
+  }
+  

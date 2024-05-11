@@ -6,21 +6,34 @@ import com.jbnu.capstone.entity.Machine;
 import com.jbnu.capstone.repository.MachineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MachineService {
 
     private final MachineRepository machineRepository;
 
-    public void createMachine(RequestMachineDTO machineDTO) {
+    public ResponseMachineDTO createMachine(RequestMachineDTO machineDTO) {
         Machine machine = Machine.builder()
                 .machineName(machineDTO.getMachineName())
                 .build();
 
-        machineRepository.save(machine);
+        Machine savedMachine = machineRepository.save(machine);
+
+        return new ResponseMachineDTO(savedMachine.getId(), savedMachine.getMachineName());
+    }
+
+    public void updateMachine(Long id, RequestMachineDTO machineDTO) {
+        Machine machine = machineRepository
+                .findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Machine not found"));
+
+        machine.setMachineName(machineDTO.getMachineName());
     }
 
     public List<ResponseMachineDTO> findAllMachines() {

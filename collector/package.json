@@ -11,12 +11,6 @@
     "lint": "eslint . --ext .js,.jsx --report-unused-disable-directives --max-warnings 0",
     "nw": "nw ."
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -43,6 +37,7 @@
     "typescript": "^4.9.5"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
     "nw": "^0.87.0"
   }
 }

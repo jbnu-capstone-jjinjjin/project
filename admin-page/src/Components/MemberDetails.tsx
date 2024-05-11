@@ -1,10 +1,10 @@
-import React from 'react';
-import { Container, Button, Table } from '@mantine/core';
-import { Member } from '../Data/data.ts';
+import { Container, Button, Table } from '@mantine/core'
+
+import { Member } from '../Data/data'
 
 interface MemberDetailProps {
-  member: Member;
-  onBack: () => void;
+  member: Member
+  onBack: () => void
 }
 
 export default function MemberDetail({ member, onBack }: MemberDetailProps) {
@@ -26,7 +26,7 @@ export default function MemberDetail({ member, onBack }: MemberDetailProps) {
     ['RAM Usage', member.resourceUsage.ram],
     ['Network Usage', member.resourceUsage.network],
     ['Disk Usage', member.resourceUsage.disk]
-  ];
+  ]
 
   return (
     <Container>
@@ -40,7 +40,7 @@ export default function MemberDetail({ member, onBack }: MemberDetailProps) {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={index}>  
+            <tr key={index}>
               <td>{row[0]}</td>
               <td>{row[1]}</td>
             </tr>
@@ -51,5 +51,5 @@ export default function MemberDetail({ member, onBack }: MemberDetailProps) {
       <Button style={{ marginLeft: '10px' }}>로그</Button>
       <Button style={{ marginLeft: '10px' }}>메시지</Button>
     </Container>
-  );
+  )
 }

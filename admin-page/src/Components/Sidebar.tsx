@@ -1,9 +1,8 @@
-import React from 'react';
-import { Tabs } from '@mantine/core';
+import { Tabs } from '@mantine/core'
 
 interface SidebarProps {
-  activeTab: string | null;
-  onTabChange: (tab: string | null) => void;
+  activeTab: string | null
+  onTabChange: (tab: string | null) => void
 }
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
@@ -15,17 +14,27 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
     borderRadius: '8px',
     margin: '5px',
     cursor: 'pointer'
-  };
+  }
 
   const activeTabStyle = {
     ...tabStyle,
     backgroundColor: '#1C7ED6',
     color: 'white',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
-  };
+  }
 
   return (
-    <Tabs value={activeTab} onChange={onTabChange} orientation="vertical" style={{ width: '200px', height: '100vh', backgroundColor: '#f4f4f4', padding: '10px' }}>
+    <Tabs
+      value={activeTab}
+      onChange={onTabChange}
+      orientation="vertical"
+      style={{
+        width: '200px',
+        height: '100vh',
+        backgroundColor: '#f4f4f4',
+        padding: '10px',
+      }}
+    >
       <Tabs.List style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Tabs.Tab
           value="memberManagement"
@@ -39,5 +48,5 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         </Tabs.Tab>
       </Tabs.List>
     </Tabs>
-  );
+  )
 }

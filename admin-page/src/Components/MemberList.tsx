@@ -1,10 +1,10 @@
-import React from 'react';
-import { Table, Button } from '@mantine/core';
-import { Member } from '../Data/data.ts';
+import { Table, Button } from '@mantine/core'
+
+import { Member } from '../Data/data'
 
 interface MemberListProps {
-  members: Member[];
-  onViewDetails: (member: Member) => void;
+  members: Member[]
+  onViewDetails: (member: Member) => void
 }
 
 export default function MemberList({ members, onViewDetails }: MemberListProps) {
@@ -31,5 +31,5 @@ export default function MemberList({ members, onViewDetails }: MemberListProps) 
         ))}
       </tbody>
     </Table>
-  );
+  )
 }

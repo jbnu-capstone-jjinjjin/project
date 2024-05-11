@@ -56,7 +56,7 @@ public class MetricsService {
     public List<ResponseMetricsDTO> findMetricsByMachineIdAndTimeRange(Long machineId, LocalDateTime from, LocalDateTime to) {
         return metricsRepository.findByMachineIdAndCreatedAtBetween(machineId, from, to)
                 .stream()
-                .map(metric -> new ResponseMetricsDTO(metric.getId(), metric.getMetricType(), metric.getData()))
+                .map(metric -> new ResponseMetricsDTO(metric.getId(), metric.getMetricType(), metric.getCreatedAt(), metric.getData()))
                 .toList();
     }
 }

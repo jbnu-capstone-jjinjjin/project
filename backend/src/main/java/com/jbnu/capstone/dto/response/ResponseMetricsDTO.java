@@ -25,15 +25,15 @@ public class ResponseMetricsDTO {
     private MetricsType metricType;
 
     @Schema(description = "응답 시간", example = "2024-05-04 19:04:29")
-    private String createAt;
+    private LocalDateTime createdAt;
 
     @Schema(description = "메트릭의 데이터를 저장")
     private Map<String, Object> data;
 
-    public ResponseMetricsDTO(Long metrics_id, MetricsType metricType, LocalDateTime createAt, Map<String, Object> data) {
+    public ResponseMetricsDTO(Long metrics_id, MetricsType metricType, LocalDateTime createdAt, Map<String, Object> data) {
         this.metrics_id = metrics_id;
         this.metricType = metricType;
-        this.createAt = createAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.createdAt = createdAt;
         this.data = data;
     }
 }

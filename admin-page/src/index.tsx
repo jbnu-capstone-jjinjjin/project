@@ -5,15 +5,13 @@ import { MantineProvider } from '@mantine/core'
 
 import App from './App'
 
-const container = document.getElementById('root')
+const container = document.getElementById('root') as HTMLElement
 const root = createRoot(container)
 
 root.render(
   <React.StrictMode>
     <MantineProvider
-      theme={{ colorScheme: 'light' }}
-      withGlobalStyles
-      withNormalizeCSS
+      defaultColorScheme="light"
     >
       <BrowserRouter>
         <App />

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { GoogleAuthProvider, signInWithRedirect, signOut } from 'firebase/auth'
 import { Container, Button } from '@mantine/core'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { auth } from './firebase-config'
 import Sidebar from './Components/Sidebar'
@@ -10,6 +11,8 @@ import MemberDetail from './Components/MemberDetails'
 import { Member } from './Data/data'
 import membersData from './Data/membersdata.json'
 import Message from './Components/Message'
+
+const queryClient = new QueryClient()
 
 export default function App() {
   const [user, loading] = useAuthState(auth)
@@ -79,7 +82,9 @@ export default function App() {
           )}
           {activeTab === 'message' && (
             <Container>
-              <Message />
+              <QueryClientProvider client={queryClient}>
+                <Message />
+              </QueryClientProvider>
             </Container>
           )}
         </Container>

@@ -1,5 +1,6 @@
 package com.jbnu.capstone.dto.request;
 
+import com.jbnu.capstone.entity.MetricsType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class RequestMetricsDTO {
     private LocalDateTime createdAt;
 
     @Schema(description = "메트릭 유형", example = "Specs")
-    private String metricType;
+    private MetricsType metricType;
 
     @Schema(description = "메트릭의 데이터를 저장")
     private Map<String, Object> data;

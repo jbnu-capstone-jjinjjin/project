@@ -37,8 +37,8 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
     >
       <Tabs.List style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
         <Tabs.Tab
-          value="memberManagement"
-          style={activeTab === 'memberManagement' ? activeTabStyle : tabStyle}>
+          value="machineManagement"
+          style={activeTab === 'machineManagement' ? activeTabStyle : tabStyle}>
           회원관리
         </Tabs.Tab>
         <Tabs.Tab

@@ -1,3 +1,5 @@
 export enum MetricType {
-    FullSystemInfo = "full_system_info",
+    HW_INFO = "HW_INFO",
+    SPECS = "SPECS"
+
 }

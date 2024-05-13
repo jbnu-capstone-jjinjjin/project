@@ -3,22 +3,28 @@ import { collectSystemInfo } from './dataCollector';
 import { SystemInfo } from './dataInterface';
 import { MetricType } from './MetricTypes';
 
-const API_URL = process.env.API_URL
+const API_URL = `http://localhost:8080`
 
 async function sendSystemInfo(systemInfo: SystemInfo): Promise<void> {
     try {
-        const machineId = 1;  // 임시 방편
+        // 기기 정보를 서버에 등록
+        // 아래 주석 코드는 서버 반응을 통해 머신 ID를 갖고 온다면 해제함.
+        // const machineResponse = await axios.post(`${API_URL}/machines`, {
+        //     machine_name: systemInfo.os.hostname 
+        // });
+
+        // 기기 ID를 응답에서 추출
+        //machineResponse.data.id // 서버 반응을 통해 머신 ID를 갖고온다면 1 대신에 이것을 사용함.
+        const machineId = 1
+
+        // 메트릭 정보를 서버에 보냄
 
         const metricsResponse = await axios.post(`${API_URL}/metrics`, {
             machine_id: machineId,
             timestamp: new Date().toISOString(),
-            metric_type: MetricType.FullSystemInfo,
+            metric_type: MetricType.HW_INFO,
             data: systemInfo
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        },);
 
         console.log('Data sent successfully:', metricsResponse.data);
     } catch (error: any) {
@@ -35,6 +41,7 @@ async function sendSystemInfo(systemInfo: SystemInfo): Promise<void> {
 async function main() {
     const systemInfo = await collectSystemInfo();
     await sendSystemInfo(systemInfo);
+    console.log(API_URL)
 }
 
-console.log(API_URL)
+main();

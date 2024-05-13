@@ -8,22 +8,22 @@ interface SystemInfo {
     os: OSInfo;
   }
   
-  interface CPUInfo {
+interface CPUInfo {
     model: string;
     speed: number;
     cores: number;
   }
   
-  interface RAMInfo {
+interface RAMInfo {
     total: number;
   }
   
-  interface GPUInfo {
+interface GPUInfo {
     model: string;
     vram: number | null;
   }
   
-  interface DiskInfo {
+interface DiskInfo {
     filesystem: string;
     size: number;
     used: number;
@@ -32,7 +32,7 @@ interface SystemInfo {
     mount: string;
   }
   
-  interface NetworkInterface {
+interface NetworkInterface {
     iface: string;
     mac: string;
     ip4?: string;
@@ -44,4 +44,14 @@ interface SystemInfo {
     hostname: string;
   }
 
-export type { SystemInfo};
+interface SDKInfo {
+  dotnet?: string;
+  java?: string;
+}
+
+interface HWUsage {
+  cpuUsage : number
+  memoryUsage : number
+}
+
+export type { SystemInfo, SDKInfo, HWUsage};

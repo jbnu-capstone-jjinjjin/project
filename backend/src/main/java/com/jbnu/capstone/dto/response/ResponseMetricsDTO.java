@@ -19,7 +19,7 @@ import java.util.Map;
 public class ResponseMetricsDTO {
 
     @Schema(description = "고유 식별자", example = "12345")
-    private Long metrics_id;
+    private Long metricsId;
 
     @Schema(description = "메트릭 유형", example = "Specs")
     private MetricsType metricType;
@@ -30,8 +30,8 @@ public class ResponseMetricsDTO {
     @Schema(description = "메트릭의 데이터를 저장")
     private Map<String, Object> data;
 
-    public ResponseMetricsDTO(Long metrics_id, MetricsType metricType, LocalDateTime createdAt, Map<String, Object> data) {
-        this.metrics_id = metrics_id;
+    public ResponseMetricsDTO(Long metricsId, MetricsType metricType, LocalDateTime createdAt, Map<String, Object> data) {
+        this.metricsId = metricsId;
         this.metricType = metricType;
         this.createdAt = createdAt;
         this.data = data;

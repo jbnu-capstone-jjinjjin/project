@@ -17,7 +17,7 @@ import java.util.Map;
 public class RequestMetricsDTO {
 
     @Schema(description = "기기의 고유 식별자", example = "12345")
-    private Long machine_id;
+    private Long machineId;
 
     @Schema(description = "메트릭 데이터가 생성된 시간", example = "2024-05-04 19:04:29")
     private LocalDateTime createdAt;

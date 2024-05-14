@@ -13,7 +13,7 @@ import lombok.Setter;
 @Schema(description = "Machine Response DTO")
 public class ResponseMachineDTO {
     @Schema(description = "고유 식별자", example = "12345")
-    private Long machine_id;
+    private Long machineId;
 
     @Schema(description = "기기의 이름", example = "POS")
     private String machineName;

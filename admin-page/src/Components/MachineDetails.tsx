@@ -2,7 +2,7 @@ import { Container, Button, Table } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 
-import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
+import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
 
 export default function MachineDetails({ machineId, onBack }: MachineDetailsProps) {
   const { data, isLoading, error } = useQuery<MachineDetail, Error>(

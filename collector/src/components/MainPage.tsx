@@ -8,25 +8,23 @@ const MainPage=() =>{
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user: User | null) => {
       if (user) {
-        (async () => {
-          try {
-            const idToken = await user.getIdToken();
-            setToken(idToken);
-          } catch (error) {
-            console.error("Error fetching ID token:", error);
-            setError('Failed to fetch ID token');
-          } finally {
-            setLoading(false);
-          }
-        })();
+        try {
+          const idToken = await user.getIdToken();
+          setToken(idToken);
+        } catch (error) {
+          console.error("Error fetching ID token:", error);
+          setError('Failed to fetch ID token');
+        } finally {
+          setLoading(false);
+        }
       } else {
-        setLoading(false);
         setToken('');
+        setLoading(false);
       }
     });
-
+  
     return () => unsubscribe();
   }, []);
 

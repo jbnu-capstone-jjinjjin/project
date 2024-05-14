@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Acme Corp",
+    "streetAddress": "123 Elm St"
+  },
+  {
+    "id": 2,
+    "name": "Widget Inc.",
+    "streetAddress": "456 Oak St"
+  }
+]

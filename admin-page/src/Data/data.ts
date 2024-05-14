@@ -1,7 +1,7 @@
 export interface Member {
     id: number;
-    name: string;
-    email: string;
+    pos_num: number;
+    pos_name: string;
     specs: Specs;
     network: Network;
     os: Os;

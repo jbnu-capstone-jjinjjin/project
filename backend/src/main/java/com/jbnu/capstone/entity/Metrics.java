@@ -2,9 +2,7 @@ package com.jbnu.capstone.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
@@ -27,7 +25,8 @@ public class Metrics {
 
     private LocalDateTime createdAt;
 
-    private String metricType;
+    @Enumerated(EnumType.STRING)
+    private MetricsType metricType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> data;

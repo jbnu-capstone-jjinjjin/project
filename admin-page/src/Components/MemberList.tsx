@@ -1,27 +1,29 @@
 import React from 'react';
 import { Table, Button } from '@mantine/core';
-import { Member } from './data.ts';
+import { Member } from '../Data/data.ts';
 
 interface MemberListProps {
   members: Member[];
   onViewDetails: (member: Member) => void;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ members, onViewDetails }) => {
+export default function MemberList({ members, onViewDetails }: MemberListProps) {
   return (
     <Table striped highlightOnHover>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Email</th>
+          <th>ID</th>
+          <th>POS_NUM</th>
+          <th>POS_NAME</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {members.map((member) => (
           <tr key={member.id}>
-            <td>{member.name}</td>
-            <td>{member.email}</td>
+            <td>{member.id}</td>
+            <td>{member.pos_num}</td>
+            <td>{member.pos_name}</td>
             <td>
               <Button onClick={() => onViewDetails(member)}>View</Button>
             </td>
@@ -30,6 +32,4 @@ const MemberList: React.FC<MemberListProps> = ({ members, onViewDetails }) => {
       </tbody>
     </Table>
   );
-};
-
-export default MemberList;
+}

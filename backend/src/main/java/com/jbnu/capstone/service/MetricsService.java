@@ -26,7 +26,7 @@ public class MetricsService {
     
     public void createMetrics(RequestMetricsDTO requestMetricsDTO) {
 
-        Machine machine = machineRepository.findById(requestMetricsDTO.getMachine_id()).orElse(null);
+        Machine machine = machineRepository.findById(requestMetricsDTO.getMachineId()).orElse(null);
 
         if (machine == null) {
             throw new RuntimeException("Machine not found");

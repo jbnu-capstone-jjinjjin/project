@@ -9,5 +9,5 @@ import java.util.List;
 public interface ScreenshotRepository extends JpaRepository<Screenshot, Long> {
 
     List<Screenshot> findByMachineIdAndCreatedAtBetween(Long machineId, LocalDateTime from, LocalDateTime to);
-    List<Screenshot> findByCreatedAtBefore(LocalDateTime createdAt);
+    void deleteByCreatedAtBefore(LocalDateTime createdAt);
 }

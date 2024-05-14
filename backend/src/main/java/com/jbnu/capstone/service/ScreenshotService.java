@@ -61,10 +61,7 @@ public class ScreenshotService {
 
     public void removeOldScreenshot() {
         LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
-        List<Screenshot> oldScreenshot = screenshotRepository.findByCreatedAtBefore(oneDayAgo);
 
-        if (!oldScreenshot.isEmpty()) {
-            screenshotRepository.deleteAll(oldScreenshot);
-        }
+        screenshotRepository.deleteByCreatedAtBefore(oneDayAgo);
     }
 }

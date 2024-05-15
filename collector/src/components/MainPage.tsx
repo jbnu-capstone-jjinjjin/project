@@ -1,8 +1,9 @@
-import DataSection from "./DataSection";
-import { MetricType } from "../dataHandler/MetricTypes";
+import { MetricType } from '../dataHandler/MetricTypes'
+
+import DataSection from './DataSection'
 
 type MainPageProps = {
-  timeStamp: String;
+  timeStamp: string
 };
 
 function MainPage({ timeStamp }: MainPageProps) {
@@ -15,7 +16,7 @@ function MainPage({ timeStamp }: MainPageProps) {
         <h2> Last Server Connection time is {timeStamp}</h2>
       </div>
     </header>
-  );
+  )
 }
 
-export default MainPage;
+export default MainPage

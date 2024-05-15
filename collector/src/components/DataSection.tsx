@@ -1,38 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
-import {sendAndGetHwInfo,sendAndGetResourceInfo,sendAndGetSDKInfo,} from "../dataHandler/dataSender";
-import { MetricType } from "../dataHandler/MetricTypes";
-import { machineData } from "../dataHandler/dataInterface";
+import { sendAndGetHwInfo, sendAndGetResourceInfo, sendAndGetSDKInfo } from '../dataHandler/dataSender'
+import { MetricType } from '../dataHandler/MetricTypes'
+import { MachineData } from '../dataHandler/dataInterface'
 
 type DataSectionProps = {
-  metricType: MetricType;
+  metricType: MetricType
 };
 
-function initializeMachineData(metricType: MetricType): Promise<machineData> {
+function initializeMachineData(metricType: MetricType): Promise<MachineData> {
   switch (metricType) {
     case MetricType.HW_INFO:
-      return sendAndGetHwInfo();
+      return sendAndGetHwInfo()
     case MetricType.RESOURCE_INFO:
-      return sendAndGetResourceInfo();
+      return sendAndGetResourceInfo()
     case MetricType.SDK_INFO:
-      return sendAndGetSDKInfo();
+      return sendAndGetSDKInfo()
     default:
       return Promise.resolve({
         info: null,
         metricType: null,
-      });
+      })
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function renderInfoContent(infoData: any) {
   return Object.entries(infoData).map(([key, value]) => {
-    if (value && typeof value === "object" && !Array.isArray(value)) {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
       return (
         <div key={key} className="section">
           <h3>{key.toUpperCase()}</h3>
           {renderInfoContent(value)}
         </div>
-      );
+      )
     } else if (Array.isArray(value)) {
       return (
         <div key={key} className="section">
@@ -41,34 +42,36 @@ function renderInfoContent(infoData: any) {
             <div key={index} className="item">{renderInfoContent(item)}</div>
           ))}
         </div>
-      );
+      )
     } else {
-      return <p key={key}><strong>{key}:</strong> {String(value) ?? "Not available"}</p>
+      return <p key={key}><strong>{key}:</strong> {String(value) ?? 'Not available'}</p>
     }
-  });
+  })
 }
 
 function DataSection({ metricType }: DataSectionProps): React.ReactElement {
-  const [info, setInfo] = useState<machineData | null>(null);
+  const [info, setInfo] = useState<MachineData | null>(null)
 
   useEffect(() => {
     initializeMachineData(metricType).then((data) => {
-      setInfo(data);
-    });
-  }, [metricType]);
+      setInfo(data)
+    })
+  }, [metricType])
 
   return (
     <div id="result">
-      {info ? (
-        <div>
-          <h2>{`${info.metricType}:`}</h2>
-          {info.info ? renderInfoContent(info.info) : <p>No data available.</p>}
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      {info
+        ? (
+          <div>
+            <h2>{`${info.metricType}:`}</h2>
+            {info.info ? renderInfoContent(info.info) : <p>No data available.</p>}
+          </div>
+        )
+        : (
+          <p>Loading...</p>
+        )}
     </div>
-  );
+  )
 }
 
-export default DataSection;
+export default DataSection

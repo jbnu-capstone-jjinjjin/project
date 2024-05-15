@@ -12,7 +12,7 @@ function MainPage({ timeStamp }: MainPageProps) {
       <DataSection metricType={MetricType.SDK_INFO} />
       <DataSection metricType={MetricType.RESOURCE_INFO} />
       <div id="result" >
-        <h2> Last Server Connetion time is {timeStamp}</h2>
+        <h2> Last Server Connection time is {timeStamp}</h2>
       </div>
     </header>
   );

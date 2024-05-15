@@ -60,5 +60,12 @@
       "name": "collector",
       "icon": "./src/assets/icon.png"
     }
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "eslint-plugin-valtio": "^0.6.3",
+    "standard": "^17.1.0"
   }
 }

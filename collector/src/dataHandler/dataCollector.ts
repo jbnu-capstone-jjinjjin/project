@@ -3,12 +3,12 @@ import * as si from 'systeminformation';
 import { machineId } from 'node-machine-id';
 import {execSync} from 'child_process'
 
-import { HWUsage, SDKInfo, SystemInfo} from './dataInterface';
+import { machineData, hwInfo, sdkInfo, resourceInfo} from './dataInterface';
+import { MetricType } from './MetricTypes';
 
-async function collectSystemInfo(): Promise<SystemInfo> {
+async function collectHwInfo(): Promise<machineData> {
   try {
-    console.log("=== Start Collect System Info ===");
-
+    console.log("=== Start collect HW information ===");
     const cpuInfo = os.cpus();
     const cpuCores = cpuInfo.length;
     const cpuModel = cpuInfo[0].model;
@@ -28,7 +28,7 @@ async function collectSystemInfo(): Promise<SystemInfo> {
 
     const networkInterfaces = Array.isArray(rawNetworkInterfaces) ? rawNetworkInterfaces : [rawNetworkInterfaces];
 
-    const systemInfo: SystemInfo = {
+    const hwInfo: hwInfo = {
       identifier: UUID,
       cpu: {
         model: cpuModel,
@@ -62,20 +62,24 @@ async function collectSystemInfo(): Promise<SystemInfo> {
       }
     };
 
-    console.log(systemInfo);
-    console.log("=== Success Collect System Info ===");
-    return systemInfo;
+    const returnData : machineData ={
+      info : hwInfo,
+      metricType : MetricType.HW_INFO
+    } 
+    console.log(returnData);
+    console.log("=== Success Collect HW information ===");
+    return returnData;
   } catch (error) {
-    console.error("Failed to fetch system information:", error);
-    throw new Error("Failed to fetch system information");
+    console.error("Failed to fetch HW information:", error);
+    throw new Error("Failed to fetch HW information");
   }
 }
 
-async function collectSDKInfo(): Promise<SDKInfo> {
+async function collectSDKInfo(): Promise<machineData> {
   try {
-      console.log("=== Start Collect SDK Info ===");
+      console.log("=== Start collect SDK information ===");
 
-      const sdkInfo: SDKInfo = {};
+      const sdkInfo: sdkInfo = {};
 
       const javaVersion = execSync('java --version').toString();
       sdkInfo.java = javaVersion || 'Java not found';
@@ -83,19 +87,22 @@ async function collectSDKInfo(): Promise<SDKInfo> {
       const dotnetVersion = execSync('dotnet --version').toString().trim();
       sdkInfo.dotnet = dotnetVersion || 'dotnet not found';
 
-      console.log(sdkInfo);
-      console.log("=== Success Collect SDK Info ===");
-
-      return sdkInfo;
+      const returnData : machineData = {
+        info:sdkInfo,
+        metricType : MetricType.SDK_INFO
+      }
+      console.log(returnData)
+      console.log("=== Success collect SDK information ===");
+      return returnData;
   } catch (error) {
       console.error("Failed to fetch SDK information:", error);
       throw new Error("Failed to fetch SDK information");
   }
 }
 
-async function collectSystemUsageInfo(): Promise<HWUsage> {
+async function collectResouceInfo(): Promise<machineData> {
   try {
-      console.log("=== Start Collect Usage Info ===");
+      console.log("=== Start collect resource information ===");
       
       const cpuLoad = await si.currentLoad();
       const cpuUsage = cpuLoad.currentLoad;
@@ -104,18 +111,23 @@ async function collectSystemUsageInfo(): Promise<HWUsage> {
       const freeMemory = os.freemem();
       const memoryUsage = ((totalMemory - freeMemory) / totalMemory) * 100;
 
-      const usage: HWUsage = {
+      const resourceInfo: resourceInfo = {
           cpuUsage: cpuUsage,
           memoryUsage: memoryUsage
       };
+
+      const returnData : machineData = {
+        info : resourceInfo,
+        metricType : MetricType.RESOURCE_INFO
+      }
       
-      console.log(usage);
-      console.log("=== Success Collect Usage Info ===");
-      return usage;
+      console.log(returnData);
+      console.log("=== Success collect resource information ===");
+      return returnData;
   } catch (error) {
-      console.error("Failed to fetch usage information:", error);
-      throw new Error("Failed to fetch usage information");
+      console.error("Failed to fetch resource information:", error);
+      throw new Error("Failed to fetch resource information");
   }
 }
 
-export {collectSystemInfo, collectSDKInfo, collectSystemUsageInfo};
+export {collectHwInfo, collectSDKInfo, collectResouceInfo};

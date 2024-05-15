@@ -1,20 +1,18 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# dependencies
+/node_modules
+.pnp.js
 
-node_modules
+# build outputs
 dist
 dist-ssr
-*.local
-.env
 build
+/out
 
-# Editor directories and files
+# environment files
+.env*
+!.env.example
+
+# editors and operating systems
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -25,4 +23,14 @@ build
 *.sln
 *.sw?
 
-# enviroment
+# logs
+logs
+*.log
+*debug.log*
+*error.log*
+
+# testing
+/coverage
+
+# caching
+/cache

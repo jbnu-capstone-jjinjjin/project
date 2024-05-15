@@ -1,52 +1,57 @@
-import axios from 'axios';
-import {config as configDotenv} from 'dotenv'
+import axios from "axios";
+import * as os from "os";
 
-import { collectSystemInfo } from './dataCollector';
-import { SystemInfo } from './dataInterface';
-import { MetricType } from './MetricTypes';
+import { machineData} from "./dataInterface";
+import {collectHwInfo, collectSDKInfo, collectResouceInfo} from "./dataCollector"
 
-configDotenv();
 const API_URL = process.env.API_URL;
 
-async function sendSystemHWInfo(systemInfo: SystemInfo): Promise<void> {
-    try {
+async function sendMachineData(machineData:machineData) {
+  try{
+    const machineResponse = await axios.post(`${API_URL}/machines`, {
+      machineName: os.hostname(),
+    });
+    const machineId = machineResponse.data.data.machine_id;
 
-        // 기기 정보를 서버에 등록
-        // 아래 주석 코드는 서버 반응을 통해 머신 ID를 갖고 온다면 해제함.
-        const machineResponse = await axios.post(`${API_URL}/machines`, {
-            machineName: systemInfo.os.hostname 
-        });
+    const metricsResponse = await axios.post(`${API_URL}/metrics`,{
+      machine_Id: machineId,
+      timestamp : new Date().toISOString(),
+      metric_type:machineData.metricType,
+      data:machineData.info,
+    });
 
-        // 기기 ID를 응답에서 추출
-        const machineId = machineResponse.data.data.machine_id; // 서버 반응을 통해 머신 ID를 갖고온다면 1 대신에 이것을 사용함.
-        
-        // const machineId = 1
-
-        // 메트릭 정보를 서버에 보냄
-
-        const metricsResponse = await axios.post(`${API_URL}/metrics`, {
-            machine_id: machineId,
-            timestamp: new Date().toISOString(),
-            metric_type: MetricType.HW_INFO,
-            data: systemInfo
-        },);
-
-        console.log('Data sent successfully:', metricsResponse.data);
-    } catch (error: any) {
-        if (error.response) {
-            console.error('Failed to send system info:', error.response.status, error.response.data);
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Error setting up the request:', error.message);
-        }
+    console.log("MachineData sent successfully:", metricsResponse.data);
+  }
+  catch(error : any){
+    if (error.response) {
+      console.error(
+        "Failed to send machine data:",
+        machineData.metricType,
+        machineData.info,
+        error.response.status
+      );
+    } else if (error.request) {
+      console.error("No response received:", error.request);
+    } else {
+      console.error("Error setting up the request:", error.message);
     }
+  }
 }
 
-async function main() {
-    const systemInfo = await collectSystemInfo();
-    await sendSystemHWInfo(systemInfo)
-    console.log(API_URL)
+async function sendAndGetSDKInfo(): Promise<machineData> {
+  const machineData = await collectSDKInfo();
+  await sendMachineData(machineData);
+  return machineData
+}
+async function sendAndGetHwInfo(): Promise<machineData> {
+  const machineData = await collectHwInfo();
+  await sendMachineData(machineData);
+  return machineData
+}
+async function sendAndGetResourceInfo(): Promise<machineData> {
+  const machineData = await collectResouceInfo();
+  await sendMachineData(machineData);
+  return machineData
 }
 
-main();
+export {sendAndGetSDKInfo, sendAndGetHwInfo, sendAndGetResourceInfo}

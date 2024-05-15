@@ -1,4 +1,11 @@
-interface SystemInfo {
+import { MetricType } from "./MetricTypes";
+
+interface machineData {
+  info : hwInfo | sdkInfo | resourceInfo | null,
+  metricType : MetricType | null
+}
+
+interface hwInfo {
     identifier: string;
     cpu: CPUInfo;
     ram: RAMInfo;
@@ -44,14 +51,14 @@ interface NetworkInterface {
     hostname: string;
   }
 
-interface SDKInfo {
+interface sdkInfo {
   dotnet?: string;
   java?: string;
 }
 
-interface HWUsage {
+interface resourceInfo {
   cpuUsage : number
   memoryUsage : number
 }
 
-export type { SystemInfo, SDKInfo, HWUsage};
+export type { machineData, hwInfo, sdkInfo, resourceInfo};

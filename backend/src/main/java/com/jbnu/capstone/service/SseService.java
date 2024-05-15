@@ -15,21 +15,22 @@ public class SseService {
 
     public SseEmitter createEmitter(Long machineId) {
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
-        emitters.put(machineId, emitter);
-
-        emitter.onCompletion(() -> emitters.remove(machineId));
-        emitter.onTimeout(() -> emitters.remove(machineId));
-        emitter.onError(e -> emitters.remove(machineId));
 
         try {
             emitter.send(SseEmitter.event()
                     .name("connect")
                     .data("connected"));
 
+            emitters.put(machineId, emitter);
+
         } catch (IOException e) {
             emitters.remove(machineId);
             throw new RuntimeException("초기 연결 메시지 전송 실패");
         }
+
+        emitter.onCompletion(() -> emitters.remove(machineId));
+        emitter.onTimeout(() -> emitters.remove(machineId));
+        emitter.onError(e -> emitters.remove(machineId));
 
         return emitter;
     }

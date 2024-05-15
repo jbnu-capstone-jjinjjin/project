@@ -24,7 +24,6 @@ public class SseService {
             emitters.put(machineId, emitter);
 
         } catch (IOException e) {
-            emitters.remove(machineId);
             throw new RuntimeException("초기 연결 메시지 전송 실패");
         }
 

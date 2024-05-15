@@ -1,5 +1,5 @@
 export enum MetricType {
-    HW_INFO = "HW_INFO",
-    SPECS = "SPECS"
-
+  SDK_INFO = "SDK_INFO",
+  HW_INFO = "HW_INFO",
+  RESOURCE_INFO = "RESOURCE_INFO"
 }

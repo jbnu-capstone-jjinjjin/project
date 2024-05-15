@@ -2,19 +2,33 @@
   "name": "collector",
   "version": "0.1.0",
   "private": true,
-  "main": "./build/index.html",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.97",
+    "@types/nw.js": "^0.13.21",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "node-machine-id": "^1.1.12",
+    "nw-react-scripts": "5.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "systeminformation": "^5.22.9",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint . --ext .js,.jsx --report-unused-disable-directives --max-warnings 0",
-    "nw": "nw ."
+    "start": "nw-react-scripts start",
+    "build": "nw-react-scripts build",
+    "test": "nw-react-scripts test",
+    "eject": "nw-react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "nw-react-app",
+      "nw-react-app/jest"
     ]
   },
   "browserslist": {
@@ -29,24 +43,21 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.10",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.0",
-    "axios": "^1.6.8",
-    "firebase": "^10.11.1",
-    "node-machine-id": "^1.1.12",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "react-firebase-hooks": "^5.1.1",
-    "react-router-dom": "^6.23.0",
-    "react-scripts": "5.0.1",
-    "systeminformation": "^5.22.8",
-    "typescript": "^4.9.5"
-  },
-  "devDependencies": {
-    "dotenv": "^16.4.5",
-    "nw": "^0.87.0"
+  "main": "index.html",
+  "nwbuilds": {
+    "//": "https://nwutils.io/nw-builder/",
+    "platforms": [
+      "osx64",
+      "win32",
+      "win64"
+    ],
+    "version": "latest",
+    "flavor": "normal",
+    "outDir": "./out",
+    "cacheDir": "./cache",
+    "app": {
+      "name": "collector",
+      "icon": "./src/icon.png"
+    }
   }
 }

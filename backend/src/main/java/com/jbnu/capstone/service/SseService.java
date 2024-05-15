@@ -43,7 +43,11 @@ public class SseService {
 
             } catch (IOException e) {
                 emitters.remove(machineId);
+                throw new RuntimeException("클라이언트에 명령을 전송하는 데 실패하였습니다.");
             }
+
+        } else {
+            throw new RuntimeException("해당 머신 ID에 대응하는 Emitter를 찾을 수 없습니다.");
         }
     }
 

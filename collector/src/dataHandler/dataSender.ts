@@ -5,7 +5,7 @@ import { machineData} from "./dataInterface";
 import {collectHwInfo, collectSDKInfo, collectResouceInfo} from "./dataCollector"
 
 config();
-const API_URL = process.env.API_URL;
+const API_URL = process.env.API_URL || "http://localhost:8080";
 
 async function sendMachineData(machineData:machineData) {
   try{

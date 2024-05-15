@@ -11,6 +11,7 @@
     "@types/nw.js": "^0.13.21",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
+    "dotenv": "^16.4.5",
     "node-machine-id": "^1.1.12",
     "nw-react-scripts": "5.1.1",
     "react": "^18.3.1",

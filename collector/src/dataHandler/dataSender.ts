@@ -1,9 +1,10 @@
 import axios from "axios";
 import * as os from "os";
-
+import {config} from 'dotenv'
 import { machineData} from "./dataInterface";
 import {collectHwInfo, collectSDKInfo, collectResouceInfo} from "./dataCollector"
 
+config();
 const API_URL = process.env.API_URL;
 
 async function sendMachineData(machineData:machineData) {
@@ -11,10 +12,10 @@ async function sendMachineData(machineData:machineData) {
     const machineResponse = await axios.post(`${API_URL}/machines`, {
       machineName: os.hostname(),
     });
-    const machineId = machineResponse.data.data.machine_id;
+    const machineId = machineResponse.data.data.machineId ;
 
     const metricsResponse = await axios.post(`${API_URL}/metrics`,{
-      machine_Id: machineId,
+      machineId : machineId,
       timestamp : new Date().toISOString(),
       metric_type:machineData.metricType,
       data:machineData.info,

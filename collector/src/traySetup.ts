@@ -1,6 +1,6 @@
 export function setupTray() {
   let window = nw.Window.get();  // 현재 윈도우 인스턴스 가져오기
-  let tray = new nw.Tray({ title: 'My App', icon: './assets/icon.png' });  // 트레이 아이콘 생성
+  let tray = new nw.Tray({ title: 'My App', icon:'C:/Project/capstoneProject/collector/src/assets/icon.png' });  // 트레이 아이콘 생성
 
   let menu = new nw.Menu();
   menu.append(new nw.MenuItem({

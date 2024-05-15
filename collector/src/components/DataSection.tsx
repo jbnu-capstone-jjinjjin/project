@@ -28,22 +28,22 @@ function renderInfoContent(infoData: any) {
   return Object.entries(infoData).map(([key, value]) => {
     if (value && typeof value === "object" && !Array.isArray(value)) {
       return (
-        <div key={key}>
-          <h3>{key}</h3>
+        <div key={key} className="section">
+          <h3>{key.toUpperCase()}</h3>
           {renderInfoContent(value)}
         </div>
       );
     } else if (Array.isArray(value)) {
       return (
-        <div key={key}>
-          <h3>{key}</h3>
+        <div key={key} className="section">
+          <h3>{key.toUpperCase()}</h3>
           {value.map((item, index) => (
-            <div key={index}>{renderInfoContent(item)}</div>
+            <div key={index} className="item">{renderInfoContent(item)}</div>
           ))}
         </div>
       );
     } else {
-      return <p key={key}>{`${key}: ${value ?? "Not available"}`}</p>;
+      return <p key={key}><strong>{key}:</strong> {String(value) ?? "Not available"}</p>
     }
   });
 }
@@ -61,7 +61,7 @@ function DataSection({ metricType }: DataSectionProps): React.ReactElement {
     <div id="result">
       {info ? (
         <div>
-          <h2>{`${info.metricType} Information:`}</h2>
+          <h2>{`${info.metricType}:`}</h2>
           {info.info ? renderInfoContent(info.info) : <p>No data available.</p>}
         </div>
       ) : (

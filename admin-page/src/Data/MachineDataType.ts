@@ -1,5 +1,5 @@
 export interface Machine {
-  machine_id: number
+  machineId: number
   machineName: string
 }
 
@@ -20,7 +20,7 @@ export interface MachineListProps {
 
 export interface MachineDetail {
   metrics_id: number
-  metricType: string
+  metricsType: string
   createdAt: string
   data: {
     os: { release: string; hostname: string; platform: string }

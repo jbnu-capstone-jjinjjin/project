@@ -1,4 +1,4 @@
-import { Tabs } from '@mantine/core'
+import { Tabs, Container, Space, Text } from '@mantine/core'
 
 interface SidebarProps {
   activeTab: string | null
@@ -6,47 +6,24 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
-  const tabStyle = {
-    height: '50px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    border: 'none',
-    borderRadius: '8px',
-    margin: '5px',
-    cursor: 'pointer'
-  }
-
-  const activeTabStyle = {
-    ...tabStyle,
-    backgroundColor: '#1C7ED6',
-    color: 'white',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
-  }
-
   return (
-    <Tabs
-      value={activeTab}
-      onChange={onTabChange}
-      orientation="vertical"
-      style={{
-        width: '200px',
-        height: '100vh',
-        backgroundColor: '#f4f4f4',
-        padding: '10px',
-      }}
-    >
-      <Tabs.List style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <Tabs.Tab
-          value="machineManagement"
-          style={activeTab === 'machineManagement' ? activeTabStyle : tabStyle}>
-          회원관리
-        </Tabs.Tab>
-        <Tabs.Tab
-          value="message"
-          style={activeTab === 'message' ? activeTabStyle : tabStyle}>
-          메시지함
-        </Tabs.Tab>
-      </Tabs.List>
-    </Tabs>
+    <Container bg="#f5f5f5">
+      <Space h="xl" />
+      <Tabs
+        value={activeTab}
+        onChange={onTabChange}
+        color="blue" variant='pills' orientation="vertical"
+        bg='white'
+      >
+        <Tabs.List>
+          <Tabs.Tab value="machineManagement">
+            <Text size='xl'>회원관리</Text>
+          </Tabs.Tab>
+          <Tabs.Tab value="message">
+            <Text size='xl'>메시지함</Text>
+          </Tabs.Tab>
+        </Tabs.List>
+      </Tabs>
+    </Container>
   )
 }

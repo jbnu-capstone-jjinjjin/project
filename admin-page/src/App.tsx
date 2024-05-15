@@ -38,6 +38,12 @@ export default function App() {
     setSelectedMachine(null)
   }
 
+  const switchTab = (tab: string | null) => {
+    setSelectedMachine(null)
+    if (tab) {
+      setActiveTab(tab)
+    }
+  }
   if (loading) {
     return <Container> 로 딩 중 . . .</Container>
   }
@@ -56,12 +62,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Container style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <Container
+        <Container bg="#f5f5f5"
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
             padding: '10px 20px',
-            background: '#f5f5f5',
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
           }}
         >
@@ -71,7 +76,7 @@ export default function App() {
           </Container>
         </Container>
         <Container style={{ display: 'flex', flex: 1 }}>
-          <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+          <Sidebar activeTab={activeTab} onTabChange={switchTab} />
           <Container style={{ flex: 1, padding: '20px' }}>
             {activeTab === 'machineManagement' && !selectedMachine && (
               <MachineList onViewDetails={handleViewDetails} />

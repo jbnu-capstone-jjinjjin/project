@@ -1,10 +1,15 @@
-import { Container, Button, Table } from '@mantine/core'
+import { Container, Button, Table, Group, Space } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
+import { useState } from 'react'
 
 import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
 
+import LogPage from './LogPage'
+
 export default function MachineDetails({ machineId, onBack }: MachineDetailsProps) {
+  const [viewLogPage, setViewLogPage] = useState(false)
+
   const { data, isLoading, error } = useQuery<MachineDetail, Error>(
     ['fetchMachineDetails', machineId],
     () => axios.get(`http://localhost:8080/machines/${machineId}/metrics`).then(res => res.data),
@@ -15,9 +20,13 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
   if (!data) return <Container>데이터를 찾을 수 없음 machindId: {machineId}</Container>
 
   const machineData = data.data[0]
+  if (!machineData) return <Container>데이터를 찾을 수 없음 machindId: {machineId}</Container>
 
+  if (viewLogPage) {
+    return <LogPage machineId={machineId} onBack={() => setViewLogPage(false)} />
+  }
   const rows = [
-    ['Metric Type', machineData.metricType],
+    ['Metric Type', machineData.metricsType],
     ['Created At', machineData.createdAt],
     ['OS Release', machineData?.data?.os?.release ?? 'N/A'],
     ['Hostname', machineData?.data?.os?.hostname ?? 'N/A'],
@@ -36,26 +45,31 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
 
   return (
     <Container>
-      <Button onClick={onBack} style={{ marginTop: '20px', marginBottom: '20px' }}>Back</Button>
-      <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            <th>Field</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Space h="xl" />
+      <Button onClick={onBack}>Back</Button>
+      <Space h="xl" />
+      <Table withColumnBorders striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Field</Table.Th>
+            <Table.Th>Value</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {rows.map((row, index) => (
-            <tr key={index}>
-              <td>{row[0]}</td>
-              <td>{row[1]}</td>
-            </tr>
+            <Table.Tr key={index}>
+              <Table.Td>{row[0]}</Table.Td>
+              <Table.Td>{row[1]}</Table.Td>
+            </Table.Tr>
           ))}
-        </tbody>
+        </Table.Tbody>
       </Table>
-      <Button style={{ marginTop: '20px' }}>Request Screenshot</Button>
-      <Button style={{ marginLeft: '10px' }}>View Logs</Button>
-      <Button style={{ marginLeft: '10px' }}>Send Message</Button>
-    </Container>
+      <Space h="xl" />
+      <Group justify="center" gap="xl" grow>
+        <Button onClick={() => setViewLogPage(true)}>View Logs</Button>
+        <Button>Request Screenshot</Button>
+        <Button>Send Message</Button>
+      </Group>
+    </Container >
   )
 }

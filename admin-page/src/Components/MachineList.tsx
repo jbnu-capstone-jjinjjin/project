@@ -1,4 +1,4 @@
-import { Container, Table, Button } from '@mantine/core'
+import { Container, Table, Button, Space } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 
@@ -12,25 +12,28 @@ export default function MachineList({ onViewDetails }: MachineListProps) {
   if (error) return <Container>오류 : {error.message}</Container>
 
   return (
-    <Table striped highlightOnHover>
-      <thead>
-        <tr>
-          <th>Machine ID</th>
-          <th>Machine Name</th>
-          <th>View</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data?.data.map((machine) => (
-          <tr key={machine.machine_id}>
-            <td>{machine.machine_id}</td>
-            <td>{machine.machineName}</td>
-            <td>
-              <Button onClick={() => onViewDetails(machine.machine_id)}>상세보기</Button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <Container>
+      <Space h="xl" />
+      <Table withColumnBorders striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Machine ID</Table.Th>
+            <Table.Th>Machine Name</Table.Th>
+            <Table.Th>View</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {data?.data.map((machine) => (
+            <Table.Tr key={machine.machineId}>
+              <Table.Td>{machine.machineId}</Table.Td>
+              <Table.Td>{machine.machineName}</Table.Td>
+              <Table.Td>
+                <Button onClick={() => onViewDetails(machine.machineId)}>상세보기</Button>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+    </Container>
   )
 }

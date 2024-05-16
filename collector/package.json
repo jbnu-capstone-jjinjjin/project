@@ -11,6 +11,7 @@
     "@types/nw.js": "^0.13.21",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
+    "dotenv": "^16.4.5",
     "node-machine-id": "^1.1.12",
     "nw-react-scripts": "5.1.1",
     "react": "^18.3.1",
@@ -46,11 +47,7 @@
   "main": "index.html",
   "nwbuilds": {
     "//": "https://nwutils.io/nw-builder/",
-    "platforms": [
-      "osx64",
-      "win32",
-      "win64"
-    ],
+    "platforms": ["osx64","win32","win64"],
     "version": "latest",
     "flavor": "normal",
     "outDir": "./out",
@@ -59,5 +56,12 @@
       "name": "collector",
       "icon": "./src/assets/icon.png"
     }
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "eslint-plugin-valtio": "^0.6.3",
+    "standard": "^17.1.0"
   }
 }

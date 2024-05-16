@@ -1,64 +1,62 @@
-import { MetricType } from "./MetricTypes";
+import { MetricType } from './MetricTypes'
 
-interface machineData {
-  info : hwInfo | sdkInfo | resourceInfo | null,
-  metricType : MetricType | null
-}
-
-interface hwInfo {
-    identifier: string;
-    cpu: CPUInfo;
-    ram: RAMInfo;
-    gpu: GPUInfo[];
-    disk: DiskInfo[];
-    network: NetworkInterface[];
-    os: OSInfo;
-  }
-  
 interface CPUInfo {
-    model: string;
-    speed: number;
-    cores: number;
-  }
-  
+  model: string
+  speed: number
+  cores: number
+}
+
 interface RAMInfo {
-    total: number;
-  }
-  
+  total: number
+}
+
 interface GPUInfo {
-    model: string;
-    vram: number | null;
-  }
-  
+  model: string
+  vram: number | null
+}
+
 interface DiskInfo {
-    filesystem: string;
-    size: number;
-    used: number;
-    available: number;
-    use: number;
-    mount: string;
-  }
-  
+  filesystem: string
+  size: number
+  used: number
+  available: number
+  use: number
+  mount: string
+}
+
 interface NetworkInterface {
-    iface: string;
-    mac: string;
-    ip4?: string;
-  }
-  
-  interface OSInfo {
-    platform: string;
-    release: string;
-    hostname: string;
-  }
-
-interface sdkInfo {
-  dotnet?: string;
-  java?: string;
+  iface: string
+  mac: string
+  ip4?: string
 }
 
-interface resourceInfo {
-  cpuUsage : number
-  memoryUsage : number
+interface OSInfo {
+  platform: string
+  release: string
+  hostname: string
 }
 
-export type { machineData, hwInfo, sdkInfo, resourceInfo};
+export interface SDKInfo {
+  dotnet?: string
+  java?: string
+}
+
+export interface ResourceInfo {
+  cpuUsage: number
+  memoryUsage: number
+}
+
+export interface HwInfo {
+  identifier: string
+  cpu: CPUInfo
+  ram: RAMInfo
+  gpu: GPUInfo[]
+  disk: DiskInfo[]
+  network: NetworkInterface[]
+  os: OSInfo
+}
+
+export interface MachineData {
+  info: HwInfo | SDKInfo | ResourceInfo | null
+  metricType: MetricType | null
+}

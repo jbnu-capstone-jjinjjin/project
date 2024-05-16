@@ -1,18 +1,19 @@
-import * as os from 'os';  
-import * as si from 'systeminformation';
-import { machineId } from 'node-machine-id';
-import {execSync} from 'child_process'
+import * as os from 'os'
+import { execSync } from 'child_process'
 
-import { machineData, hwInfo, sdkInfo, resourceInfo} from './dataInterface';
-import { MetricType } from './MetricTypes';
+import * as si from 'systeminformation'
+import { machineId } from 'node-machine-id'
 
-async function collectHwInfo(): Promise<machineData> {
+import { MachineData, HwInfo, SDKInfo, ResourceInfo } from './dataInterface'
+import { MetricType } from './MetricTypes'
+
+async function collectHwInfo(): Promise<MachineData> {
   try {
-    console.log("=== Start collect HW information ===");
-    const cpuInfo = os.cpus();
-    const cpuCores = cpuInfo.length;
-    const cpuModel = cpuInfo[0].model;
-    const cpuSpeed = cpuInfo[0].speed;
+    console.log('=== Start collect HW information ===')
+    const cpuInfo = os.cpus()
+    const cpuCores = cpuInfo.length
+    const cpuModel = cpuInfo[0].model
+    const cpuSpeed = cpuInfo[0].speed
 
     const [
       graphics,
@@ -24,11 +25,11 @@ async function collectHwInfo(): Promise<machineData> {
       si.networkInterfaces(),
       machineId(true),
       si.fsSize()
-    ]);
+    ])
 
-    const networkInterfaces = Array.isArray(rawNetworkInterfaces) ? rawNetworkInterfaces : [rawNetworkInterfaces];
+    const networkInterfaces = Array.isArray(rawNetworkInterfaces) ? rawNetworkInterfaces : [rawNetworkInterfaces]
 
-    const hwInfo: hwInfo = {
+    const hwInfo: HwInfo = {
       identifier: UUID,
       cpu: {
         model: cpuModel,
@@ -60,74 +61,74 @@ async function collectHwInfo(): Promise<machineData> {
         release: os.release(),
         hostname: os.hostname()
       }
-    };
+    }
 
-    const returnData : machineData ={
-      info : hwInfo,
-      metricType : MetricType.HW_INFO
-    } 
-    console.log(returnData);
-    console.log("=== Success Collect HW information ===");
-    return returnData;
+    const returnData : MachineData = {
+      info: hwInfo,
+      metricType: MetricType.HW_INFO
+    }
+    console.log(returnData)
+    console.log('=== Success Collect HW information ===')
+    return returnData
   } catch (error) {
-    console.error("Failed to fetch HW information:", error);
-    throw new Error("Failed to fetch HW information");
+    console.error('Failed to fetch HW information:', error)
+    throw new Error('Failed to fetch HW information')
   }
 }
 
-async function collectSDKInfo(): Promise<machineData> {
+async function collectSDKInfo(): Promise<MachineData> {
   try {
-      console.log("=== Start collect SDK information ===");
+    console.log('=== Start collect SDK information ===')
 
-      const sdkInfo: sdkInfo = {};
+    const sdkInfo: SDKInfo = {}
 
-      const javaVersion = execSync('java --version').toString();
-      sdkInfo.java = javaVersion || 'Java not found';
+    const javaVersion = execSync('java --version').toString()
+    sdkInfo.java = javaVersion || 'Java not found'
 
-      const dotnetVersion = execSync('dotnet --version').toString().trim();
-      sdkInfo.dotnet = dotnetVersion || 'dotnet not found';
+    const dotnetVersion = execSync('dotnet --version').toString().trim()
+    sdkInfo.dotnet = dotnetVersion || 'dotnet not found'
 
-      const returnData : machineData = {
-        info:sdkInfo,
-        metricType : MetricType.SDK_INFO
-      }
-      console.log(returnData)
-      console.log("=== Success collect SDK information ===");
-      return returnData;
+    const returnData : MachineData = {
+      info: sdkInfo,
+      metricType: MetricType.SDK_INFO
+    }
+    console.log(returnData)
+    console.log('=== Success collect SDK information ===')
+    return returnData
   } catch (error) {
-      console.error("Failed to fetch SDK information:", error);
-      throw new Error("Failed to fetch SDK information");
+    console.error('Failed to fetch SDK information:', error)
+    throw new Error('Failed to fetch SDK information')
   }
 }
 
-async function collectResouceInfo(): Promise<machineData> {
+async function collectResouceInfo(): Promise<MachineData> {
   try {
-      console.log("=== Start collect resource information ===");
-      
-      const cpuLoad = await si.currentLoad();
-      const cpuUsage = cpuLoad.currentLoad;
+    console.log('=== Start collect resource information ===')
 
-      const totalMemory = os.totalmem();
-      const freeMemory = os.freemem();
-      const memoryUsage = ((totalMemory - freeMemory) / totalMemory) * 100;
+    const cpuLoad = await si.currentLoad()
+    const cpuUsage = cpuLoad.currentLoad
 
-      const resourceInfo: resourceInfo = {
-          cpuUsage: cpuUsage,
-          memoryUsage: memoryUsage
-      };
+    const totalMemory = os.totalmem()
+    const freeMemory = os.freemem()
+    const memoryUsage = ((totalMemory - freeMemory) / totalMemory) * 100
 
-      const returnData : machineData = {
-        info : resourceInfo,
-        metricType : MetricType.RESOURCE_INFO
-      }
-      
-      console.log(returnData);
-      console.log("=== Success collect resource information ===");
-      return returnData;
+    const resourceInfo: ResourceInfo = {
+      cpuUsage,
+      memoryUsage
+    }
+
+    const returnData : MachineData = {
+      info: resourceInfo,
+      metricType: MetricType.RESOURCE_INFO
+    }
+
+    console.log(returnData)
+    console.log('=== Success collect resource information ===')
+    return returnData
   } catch (error) {
-      console.error("Failed to fetch resource information:", error);
-      throw new Error("Failed to fetch resource information");
+    console.error('Failed to fetch resource information:', error)
+    throw new Error('Failed to fetch resource information')
   }
 }
 
-export {collectHwInfo, collectSDKInfo, collectResouceInfo};
+export { collectHwInfo, collectSDKInfo, collectResouceInfo }

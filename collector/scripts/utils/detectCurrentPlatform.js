@@ -1,0 +1,27 @@
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+'use strict'
+
+/**
+ * detect the current platform according to expected constants
+ *
+ * return undefined if platform is unrecognized
+ */
+module.exports = function () {
+  switch (process.platform) {
+    case 'darwin':
+      return process.arch === 'x64' || process.arch === 'arm64'
+        ? 'osx64'
+        : 'osx32'
+
+    case 'win32':
+      return process.arch === 'x64' ||
+      process.env.PROCESSOR_ARCHITEW6432
+        ? 'win64'
+        : 'win32'
+
+    case 'linux':
+      return process.arch === 'x64' ? 'linux64' : 'linux32'
+  }
+}

@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict'
 
 // Do this as the first thing so that any code reading it knows the right env.
@@ -23,6 +25,8 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages')
 const { NwBuilder } = require('nw-builder-platforms')
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter')
 const printBuildError = require('react-dev-utils/printBuildError')
+const paths = require('../config/paths')
+const configFactory = require('../config/webpack.config')
 
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild
@@ -49,8 +53,6 @@ const config = configFactory('production')
 // browserslist defaults.
 const { checkBrowsers } = require('react-dev-utils/browsersHelper')
 
-const paths = require('../config/paths')
-const configFactory = require('../config/webpack.config')
 checkBrowsers(paths.appPath, isInteractive)
   .then(() => {
     // First, read the current file sizes in build directory.

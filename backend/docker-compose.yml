@@ -11,7 +11,8 @@ services:
       POSTGRES_PASSWORD: 123456
 
   springboot_container:
-    image: capstone_dev:v1
+#    image: capstone_dev:v1
+    build: .
     depends_on:
       - postgreSQL
     restart: always

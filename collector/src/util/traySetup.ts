@@ -1,5 +1,7 @@
 import * as path from 'path'
 
+import { publicPath } from './consts'
+
 const iconFileBaseName = {
   on: 'onTrayIcon.png',
   off: 'offTrayIcon.png'
@@ -7,10 +9,7 @@ const iconFileBaseName = {
 
 export function setupTray(isConnected: boolean | null) {
   const window = nw.Window.get() // 현재 윈도우 인스턴스 가져오기
-
-  const iconPath = path.resolve(process.cwd(), iconFileBaseName[isConnected ? 'on' : 'off'])
-  console.log('iconPath: ', iconPath)
-
+  const iconPath = path.resolve(publicPath, iconFileBaseName[isConnected ? 'on' : 'off'])
   const tray = new nw.Tray({ title: 'My App', icon: iconPath }) // 트레이 아이콘 생성
 
   const menu = new nw.Menu()

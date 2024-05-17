@@ -1,14 +1,16 @@
-// import * as nodeWindows from 'node-windows'
+import * as nodeWindows from 'node-windows'
+
+import { nodeLogger } from './log'
 
 // console.log(__dirname)
 const serviceName = 'com.example.collector'
 
 export async function checkService(): Promise<void> {
   const res = await new Promise((resolve, reject) => {
-    // nodeWindows.list((services) => {
-    //   console.log(services)
-    //   resolve(null)
-    // })
+    nodeWindows.list((services) => {
+      nodeLogger.info(services)
+      resolve(null)
+    })
   })
 
   console.log(res)

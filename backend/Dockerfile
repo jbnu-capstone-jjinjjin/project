@@ -11,5 +11,6 @@ RUN dos2unix ./gradlew && chmod +x ./gradlew
 RUN ./gradlew build -x test
 
 FROM openjdk:21-slim
+ENV TZ=Asia/Seoul
 COPY --from=build /workspace/app/build/libs/*.jar capstone.jar
 ENTRYPOINT ["java","-jar","/capstone.jar"]

@@ -41,6 +41,9 @@
     "node-machine-id": "^1.1.12",
     "node-windows": "^1.0.0-beta.8",
     "nw-builder-platforms": "^1.0.6",
+    "pino": "^9.1.0",
+    "pino-multi-stream": "^6.0.0",
+    "pino-pretty": "^11.0.0",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^6.2.1",
@@ -111,6 +114,7 @@
   },
   "devDependencies": {
     "@types/node-windows": "^0.1.6",
+    "@types/pino-multi-stream": "^5.1.6",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.2.0",

@@ -1,10 +1,3 @@
-import fs from 'fs'
+import { main } from './nodeContext/main'
 
-(async () => {
-  console.log('initializing services')
-  fs.writeFileSync('output.log', 'hello world')
-  // await checkService()
-  // await registerService()
-})()
-
-export { }
+main()

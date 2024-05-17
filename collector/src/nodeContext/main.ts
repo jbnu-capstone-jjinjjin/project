@@ -1,10 +1,10 @@
 import './monkeyPatch'
 
 import { nodeLogger } from './log'
-import { checkService } from './windowsService'
+import { registerService } from './windowsService'
 
 export async function main() {
   nodeLogger.info('start main')
-  await checkService()
+  await registerService()
   nodeLogger.info('done')
 }

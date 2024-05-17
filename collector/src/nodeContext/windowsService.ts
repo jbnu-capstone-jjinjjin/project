@@ -2,42 +2,47 @@ import * as nodeWindows from 'node-windows'
 
 import { nodeLogger } from './log'
 
-// console.log(__dirname)
-const serviceName = 'com.example.collector'
+console.log('dirname: ', __dirname)
+const serviceName = 'Collector Service'
+const service = new nodeWindows.Service({
+  name: serviceName,
+  description: 'Collector service',
+  script: '',
+})
 
-export async function checkService(): Promise<void> {
-  const res = await new Promise((resolve, reject) => {
-    nodeWindows.list((services) => {
-      nodeLogger.info(services)
-      resolve(null)
-    })
-  })
+service.on('install', () => {
+  nodeLogger.info('Service installed successfully.')
+  service.start()
+})
 
-  console.log(res)
-}
+service.on('alreadyInstalled', () => {
+  nodeLogger.info('Service is already installed.')
+  service.start()
+})
 
 export async function registerService(): Promise<void> {
   await new Promise((resolve, reject) => {
-    console.log('Registering service')
+    service.once('error', (error) => {
+      nodeLogger.error(`Service error: ${error}`)
+      reject(error)
+    })
+
+    service.install()
+    service.restart()
+    nodeLogger.info('Service installed.')
     resolve(null)
-    // const service = new nodeWindows.Service({
-    //   name: 'collector',
-    //   description: 'Collector service',
-    //   script: '',
+  })
+}
 
-    // })
+export async function unRegisterService(): Promise<void> {
+  await new Promise((resolve, reject) => {
+    service.once('error', (error) => {
+      nodeLogger.error(`Service error: ${error}`)
+      reject(error)
+    })
 
-    // service.on('install', () => {
-    //   console.log('Service installed successfully.')
-    //   service.start()
-    //   resolve()
-    // })
-
-    // service.on('error', (err) => {
-    //   console.error('Failed to install service:', err)
-    //   reject(err)
-    // })
-
-    // service.install()
+    service.uninstall()
+    nodeLogger.info('Service uninstalled.')
+    resolve(null)
   })
 }

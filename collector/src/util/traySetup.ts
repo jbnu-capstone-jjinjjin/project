@@ -1,9 +1,15 @@
+import * as path from 'path'
+
+const iconFileBaseName = {
+  on: 'onTrayIcon.png',
+  off: 'offTrayIcon.png'
+}
+
 export function setupTray(isConnected: boolean | null) {
   const window = nw.Window.get() // 현재 윈도우 인스턴스 가져오기
 
-  const iconPath = isConnected
-    ? 'C:/Project/capstoneProject/collector/src/assets/onTrayIcon.png'
-    : 'C:/Project/capstoneProject/collector/src/assets/offTrayIcon.png'
+  const iconPath = path.resolve(process.cwd(), iconFileBaseName[isConnected ? 'on' : 'off'])
+  console.log('iconPath: ', iconPath)
 
   const tray = new nw.Tray({ title: 'My App', icon: iconPath }) // 트레이 아이콘 생성
 

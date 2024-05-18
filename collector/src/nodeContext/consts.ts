@@ -6,3 +6,6 @@ export const nssmPath = {
   win32: path.resolve(nssmDir, 'win32', 'nssm.exe'),
   win64: path.resolve(nssmDir, 'win64', 'nssm.exe'),
 }
+
+const publicPath = process.cwd()
+export const startBatPath = path.resolve(publicPath, 'start.bat')

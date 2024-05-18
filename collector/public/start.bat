@@ -1,4 +1,3 @@
 @echo off
-cd ..
-
-collector.exe
+cd /d "%~dp0"
+start "" "..\collector.exe"

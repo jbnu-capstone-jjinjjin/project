@@ -10,4 +10,4 @@ export const nssmPath = {
 const publicPath = process.cwd()
 export const startBatPath = path.resolve(publicPath, 'start.bat')
 
-export const execPathDir = path.dirname(process.execPath)
+export const collectorDirPath = path.resolve(process.cwd(), '../')

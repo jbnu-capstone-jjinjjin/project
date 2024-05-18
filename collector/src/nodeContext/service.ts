@@ -5,11 +5,11 @@ import { execSync } from 'child_process'
 
 import sudo from 'sudo-prompt'
 
-import { execPathDir, nssmPath, startBatPath } from './consts'
+import { collectorDirPath, nssmPath, startBatPath } from './consts'
 import { nodeLogger } from './log'
 
 const serviceName = 'Collector'
-const lockFilePath = path.join(execPathDir, `${serviceName}.lock`)
+const lockFilePath = path.join(collectorDirPath, `${serviceName}.lock`)
 
 export class ServiceManager {
   static getNssmPath(): string {

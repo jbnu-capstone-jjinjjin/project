@@ -114,6 +114,8 @@ if %errorlevel% equ 0 (
 echo Registering service...
 %nssm% install %serviceName% ${execPath}
 %nssm% set %serviceName% AppDirectory ${execDir}
+%nssm% set %serviceName% ObjectName LocalSystem
+%nssm% set %serviceName% Type SERVICE_INTERACTIVE_PROCESS
 %nssm% start %serviceName%
 endlocal
 

@@ -115,7 +115,9 @@ echo Registering service...
 %nssm% install %serviceName% ${execPath}
 %nssm% set %serviceName% AppDirectory ${execDir}
 %nssm% start %serviceName%
-endlocal      
+endlocal
+
+exit
       `
 
       fs.writeFileSync(batchScriptPath, batchScript.trim())

@@ -102,20 +102,20 @@ set nssm="${nssm}"
 set serviceName=${serviceName}
 %nssm% status %serviceName% | find "SERVICE_RUNNING" > nul
 if %errorlevel% equ 0 (
-  echo Service is already running.
-  exit /b 0
+  echo Service is already running. Attempting to remove...
+  %nssm% stop %serviceName%
+  %nssm% remove %serviceName% confirm
 )
 %nssm% status %serviceName% | find "SERVICE_STOPPED" > nul
 if %errorlevel% equ 0 (
-  echo Service is already installed but stopped.
-  %nssm% start %serviceName%
-  exit /b 0
+  echo Service is already installed but stopped. Attempting to remove...
+  %nssm% remove %serviceName% confirm
 )
 echo Registering service...
 %nssm% install %serviceName% ${execPath}
 %nssm% set %serviceName% AppDirectory ${execDir}
 %nssm% start %serviceName%
-endlocal
+endlocal      
       `
 
       fs.writeFileSync(batchScriptPath, batchScript.trim())

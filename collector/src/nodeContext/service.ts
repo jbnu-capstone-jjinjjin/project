@@ -13,31 +13,43 @@ const lockFilePath = path.join(collectorDirPath, `${serviceName}.lock`)
 
 export class ServiceManager {
   static getNssmPath(): string {
+    nodeLogger.debug('Determining NSSM path based on system architecture')
     const arch = os.arch()
-    return arch === 'x64' ? nssmPath.win64 : nssmPath.win32
+    const nssmPath2 = arch === 'x64' ? nssmPath.win64 : nssmPath.win32
+    nodeLogger.debug(`NSSM path: ${nssmPath2}`)
+    return nssmPath2
   }
 
   static isServiceRunning(): boolean {
     try {
       const nssm = this.getNssmPath()
+      nodeLogger.debug(`Checking if service is running with command: ${nssm} status ${serviceName}`)
       const output = execSync(`${nssm} status ${serviceName}`, { encoding: 'utf-8' }).toString()
       nodeLogger.info(`Service status: ${output}`)
       return output.includes('SERVICE_RUNNING') || output.includes('SERVICE_STOPPED')
     } catch (error) {
+      nodeLogger.debug('Service is not running or failed to check status')
       return false
     }
   }
 
   static createLockFile(): void {
-    if (fs.existsSync(lockFilePath)) {
-      throw new Error('Service registration is already in progress.')
+    nodeLogger.info(`Creating lock file to indicate service registration. Path: ${lockFilePath}`)
+    if (!fs.existsSync(lockFilePath)) {
+      fs.writeFileSync(lockFilePath, 'lock', { flag: 'w' })
+      nodeLogger.debug('Lock file created successfully')
+    } else {
+      nodeLogger.debug('Lock file already exists')
     }
-    fs.writeFileSync(lockFilePath, 'lock', { flag: 'wx' })
   }
 
   static removeLockFile(): void {
+    nodeLogger.debug('Attempting to remove lock file')
     if (fs.existsSync(lockFilePath)) {
       fs.unlinkSync(lockFilePath)
+      nodeLogger.debug('Lock file removed successfully')
+    } else {
+      nodeLogger.debug('Lock file does not exist')
     }
   }
 
@@ -46,6 +58,7 @@ export class ServiceManager {
       name: 'Collector Service',
     }
 
+    nodeLogger.debug(`Executing elevated command: ${command}`)
     sudo.exec(command, options, (error, stdout, stderr) => {
       if (error) {
         const err = error as Error
@@ -53,17 +66,27 @@ export class ServiceManager {
         throw new Error(`Failed to run elevated command: ${err.message}`)
       }
       nodeLogger.info('Elevated command executed successfully')
-      console.log(stdout)
-      console.error(stderr)
+      if (stdout) {
+        nodeLogger.info(`Standard Output: ${stdout}`)
+      }
+      if (stderr) {
+        nodeLogger.error(`Standard Error: ${stderr}`)
+      }
     })
   }
 
   static checkAndRegisterService(): boolean {
+    if (fs.existsSync(lockFilePath)) {
+      nodeLogger.info('Service is already registered as indicated by the lock file.')
+      return false
+    }
+
     try {
-      this.createLockFile()
+      nodeLogger.info(`Checking service status: ${serviceName}`)
 
       if (this.isServiceRunning()) {
         nodeLogger.info(`Service already registered: ${serviceName}`)
+        this.createLockFile()
         return false
       }
 
@@ -91,23 +114,22 @@ if %errorlevel% equ 0 (
 echo Registering service...
 %nssm% install %serviceName% ${execPath}
 %nssm% set %serviceName% AppDirectory ${execDir}
-%nssm% set %serviceName% ObjectName LocalSystem
-%nssm% set %serviceName% Type SERVICE_INTERACTIVE_PROCESS
 %nssm% start %serviceName%
 endlocal
       `
 
       fs.writeFileSync(batchScriptPath, batchScript.trim())
       nodeLogger.info(`Running batch script to register service: ${batchScriptPath}`)
+      nodeLogger.debug(`Batch script content: ${batchScript}`)
 
       this.runElevatedCommand(batchScriptPath)
       nodeLogger.info(`Service checked and registered if necessary: ${serviceName}`)
+
+      this.createLockFile()
     } catch (error) {
       const err = error as Error
       nodeLogger.error(`Failed to register service: ${err.message}`)
       throw err
-    } finally {
-      this.removeLockFile()
     }
 
     return true

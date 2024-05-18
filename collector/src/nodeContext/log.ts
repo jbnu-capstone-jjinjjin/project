@@ -62,6 +62,11 @@ export const nodeLogger = {
     logToConsole(formattedMessage)
     logToFile(formattedMessage)
   },
+  debug: (message: string) => {
+    const formattedMessage = `[DEBUG]: ${message}`
+    logToConsole(formattedMessage)
+    logToFile(formattedMessage)
+  },
   error: (message: string) => {
     const formattedMessage = `[ERROR]: ${message}`
     logToConsole(formattedMessage)

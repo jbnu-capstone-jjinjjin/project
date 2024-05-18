@@ -9,7 +9,7 @@ import { collectorDirPath, nssmPath, startBatPath } from './consts'
 import { nodeLogger } from './log'
 
 const serviceName = 'Collector'
-const lockFilePath = path.join(collectorDirPath, `${serviceName}.lock`)
+const lockFilePath = path.join(collectorDirPath, 'INSTALL_LOCK')
 
 export class ServiceManager {
   static getNssmPath(): string {
@@ -82,14 +82,6 @@ export class ServiceManager {
     }
 
     try {
-      nodeLogger.info(`Checking service status: ${serviceName}`)
-
-      if (this.isServiceRunning()) {
-        nodeLogger.info(`Service already registered: ${serviceName}`)
-        this.createLockFile()
-        return false
-      }
-
       const execPath = startBatPath
       const execDir = path.dirname(execPath)
       const nssm = this.getNssmPath()

@@ -110,8 +110,6 @@ echo Registering service...
 %nssm% set %serviceName% Type SERVICE_INTERACTIVE_PROCESS
 %nssm% start %serviceName%
 endlocal
-
-exit
       `
 
       fs.writeFileSync(batchScriptPath, batchScript.trim())

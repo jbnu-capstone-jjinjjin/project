@@ -8,7 +8,7 @@ export interface Config {
   pc_name: string
 }
 
-export async function loadConfig(): Promise<Config> {
+export function loadConfig() {
   try {
     const configFilePath = path.resolve(publicPath, 'config.json')
     const data = fs.readFileSync(configFilePath, 'utf-8')

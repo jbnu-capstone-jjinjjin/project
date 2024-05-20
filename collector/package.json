@@ -47,7 +47,7 @@
   "main": "index.html",
   "nwbuilds": {
     "//": "https://nwutils.io/nw-builder/",
-    "platforms": ["osx64","win32","win64"],
+    "platforms": ["win32","win64"],
     "version": "latest",
     "flavor": "normal",
     "outDir": "./out",

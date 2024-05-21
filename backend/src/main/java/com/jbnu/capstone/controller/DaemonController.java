@@ -5,6 +5,7 @@ import com.jbnu.capstone.dto.request.RequestMachineConnectionDTO;
 import com.jbnu.capstone.dto.response.ResponseDTO;
 import com.jbnu.capstone.exception.CommandSendException;
 import com.jbnu.capstone.exception.EmitterNotFoundException;
+import com.jbnu.capstone.exception.MachineNotRegisteredException;
 import com.jbnu.capstone.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class DaemonController {
 
     @PostMapping("/connect")
     @ResponseStatus(HttpStatus.OK)
-    public SseEmitter connectDaemon(@RequestBody RequestMachineConnectionDTO requestMachineConnectionDTO) {
+    public SseEmitter connectDaemon(@RequestBody RequestMachineConnectionDTO requestMachineConnectionDTO) throws MachineNotRegisteredException {
         return sseService.createEmitter(requestMachineConnectionDTO.getMachineId());
     }
 

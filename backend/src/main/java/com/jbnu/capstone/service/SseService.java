@@ -2,6 +2,8 @@ package com.jbnu.capstone.service;
 
 import com.jbnu.capstone.exception.CommandSendException;
 import com.jbnu.capstone.exception.EmitterNotFoundException;
+import com.jbnu.capstone.exception.MachineNotRegisteredException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -12,10 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SseService {
+    private final MachineService machineService;
+
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
-    public SseEmitter createEmitter(Long machineId) {
+    public SseEmitter createEmitter(Long machineId) throws MachineNotRegisteredException {
+        if (!machineService.isMachineRegistered(machineId)) {
+            throw new MachineNotRegisteredException("ID가 " + machineId + "인 머신이 등록되어 있지 않습니다.");
+        }
+
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
         try {

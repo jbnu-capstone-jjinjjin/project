@@ -1,5 +1,6 @@
 package com.jbnu.capstone.service;
 
+import com.jbnu.capstone.exception.CommandSendException;
 import com.jbnu.capstone.exception.EmitterNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class SseService {
         return emitter;
     }
 
-    public void sendToDaemon(Long machineId, Object data) throws EmitterNotFoundException {
+    public void sendToDaemon(Long machineId, Object data) throws EmitterNotFoundException, CommandSendException {
         SseEmitter emitter = emitters.get(machineId);
 
         if (emitter != null) {
@@ -44,7 +45,7 @@ public class SseService {
 
             } catch (IOException e) {
                 emitters.remove(machineId);
-                throw new RuntimeException("클라이언트에 명령을 전송하는 데 실패하였습니다.");
+                throw new CommandSendException("클라이언트에 명령을 전송하는 데 실패하였습니다.");
             }
 
         } else {

@@ -3,6 +3,7 @@ package com.jbnu.capstone.controller;
 import com.jbnu.capstone.dto.request.RequestDaemonCommandDTO;
 import com.jbnu.capstone.dto.request.RequestMachineConnectionDTO;
 import com.jbnu.capstone.dto.response.ResponseDTO;
+import com.jbnu.capstone.exception.CommandSendException;
 import com.jbnu.capstone.exception.EmitterNotFoundException;
 import com.jbnu.capstone.service.SseService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class DaemonController {
 
     @PostMapping("/control")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDTO controlDaemon(@RequestBody RequestDaemonCommandDTO requestDaemonCommandDTO) throws EmitterNotFoundException {
+    public ResponseDTO controlDaemon(@RequestBody RequestDaemonCommandDTO requestDaemonCommandDTO) throws EmitterNotFoundException, CommandSendException {
         sseService.sendToDaemon(requestDaemonCommandDTO.getMachineId(), requestDaemonCommandDTO.getControl());
 
         return new ResponseDTO(HttpStatus.OK.value(), "명령 제어 전송에 성공했습니다.");

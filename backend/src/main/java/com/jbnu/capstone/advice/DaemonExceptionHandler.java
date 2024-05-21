@@ -4,6 +4,7 @@ import com.jbnu.capstone.controller.DaemonController;
 import com.jbnu.capstone.dto.response.ResponseDTO;
 import com.jbnu.capstone.exception.CommandSendException;
 import com.jbnu.capstone.exception.EmitterNotFoundException;
+import com.jbnu.capstone.exception.InitialConnectionException;
 import com.jbnu.capstone.exception.MachineNotRegisteredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,12 @@ public class DaemonExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseDTO handleMachineNotRegisteredException(MachineNotRegisteredException ex) {
         return new ResponseDTO(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(InitialConnectionException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseDTO handleInitialConnectionException(InitialConnectionException ex) {
+        return new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
     }
 
 }

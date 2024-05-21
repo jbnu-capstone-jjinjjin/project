@@ -3,6 +3,7 @@ package com.jbnu.capstone.controller;
 import com.jbnu.capstone.dto.request.RequestDaemonCommandDTO;
 import com.jbnu.capstone.dto.request.RequestMachineConnectionDTO;
 import com.jbnu.capstone.dto.response.ResponseDTO;
+import com.jbnu.capstone.exception.EmitterNotFoundException;
 import com.jbnu.capstone.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class DaemonController {
 
     @PostMapping("/control")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDTO controlDaemon(@RequestBody RequestDaemonCommandDTO requestDaemonCommandDTO) {
+    public ResponseDTO controlDaemon(@RequestBody RequestDaemonCommandDTO requestDaemonCommandDTO) throws EmitterNotFoundException {
         sseService.sendToDaemon(requestDaemonCommandDTO.getMachineId(), requestDaemonCommandDTO.getControl());
 
         return new ResponseDTO(HttpStatus.OK.value(), "명령 제어 전송에 성공했습니다.");

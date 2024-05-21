@@ -1,5 +1,6 @@
 package com.jbnu.capstone.service;
 
+import com.jbnu.capstone.exception.EmitterNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -34,7 +35,7 @@ public class SseService {
         return emitter;
     }
 
-    public void sendToDaemon(Long machineId, Object data) {
+    public void sendToDaemon(Long machineId, Object data) throws EmitterNotFoundException {
         SseEmitter emitter = emitters.get(machineId);
 
         if (emitter != null) {
@@ -47,7 +48,7 @@ public class SseService {
             }
 
         } else {
-            throw new RuntimeException("해당 머신 ID에 대응하는 Emitter를 찾을 수 없습니다.");
+            throw new EmitterNotFoundException("해당 머신 ID에 대응하는 Emitter를 찾을 수 없습니다.");
         }
     }
 

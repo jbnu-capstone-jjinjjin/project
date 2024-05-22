@@ -44,4 +44,7 @@ public class MachineService {
                 .toList();
     }
 
+    public boolean isMachineRegistered(Long machineId) {
+        return machineRepository.existsById(machineId);
+    }
 }

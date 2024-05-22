@@ -11,8 +11,8 @@ function MainPage({ timeStamp }: MainPageProps) {
     <header id="header">
       <DataSection metricType={MetricType.HW_INFO} />
       <DataSection metricType={MetricType.SDK_INFO} />
-      <DataSection metricType={MetricType.RESOURCE_INFO} />
-      <div id="result" >
+      <DataSection metricType={MetricType.RESOURCE_INFO} key={timeStamp} />
+      <div id="result">
         <h2> Last Server Connection time is {timeStamp}</h2>
       </div>
     </header>

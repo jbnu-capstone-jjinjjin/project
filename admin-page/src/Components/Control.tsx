@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
-import { Container, Button } from '@mantine/core'
+import { Container, Button, TextInput, Group } from '@mantine/core'
+import { useState } from 'react'
 
 interface CommandData {
   machineId: number
@@ -20,6 +21,9 @@ const controlDaemon = async (commandData: CommandData): Promise<ResponseData> =>
 }
 
 export default function Control({ machineId }: { machineId: number }) {
+  const [command, setCommand] = useState('')
+  const [args, setArgs] = useState('')
+
   const controlMutation = useMutation<ResponseData, AxiosError<ResponseData>, CommandData>(controlDaemon, {
     onSuccess: (data) => {
       console.log('성공:', data.message)
@@ -29,12 +33,12 @@ export default function Control({ machineId }: { machineId: number }) {
     }
   })
 
-  const handleControl = (machineId: number, command: string, args: string[]) => {
+  const handleControl = () => {
     controlMutation.mutate({
       machineId,
       control: {
         command,
-        args
+        args: args.split(' '),
       }
     })
   }
@@ -42,8 +46,22 @@ export default function Control({ machineId }: { machineId: number }) {
   return (
     <Container>
       <h3>Control Page for Machine {machineId}</h3>
-      <Button onClick={() => handleControl(machineId, 'kill', ['screenshot'])}>Send Command</Button>
-      {controlMutation.isLoading && <p>Command 전송 중</p>}
+      <TextInput
+        label="Command"
+        placeholder="명령어를 입력해주세요. ex) process-kill, upload-screenshot"
+        value={command}
+        onChange={(event) => setCommand(event.currentTarget.value)}
+      />
+      <TextInput
+        label="Arguments"
+        placeholder="인자를 입력해주세요. (띄어쓰기로 구분)"
+        value={args}
+        onChange={(event) => setArgs(event.currentTarget.value)}
+      />
+      <Group mt="md">
+        <Button onClick={handleControl} disabled={!command}>Send Command</Button>
+      </Group>
+      {controlMutation.isLoading && <p>Command 전송 중...</p>}
       {controlMutation.isError &&
         <p>에러: {controlMutation.error?.response?.data.message || controlMutation.error?.message}</p>}
       {controlMutation.isSuccess && <p>Command 전송 완료</p>}

@@ -1,10 +1,12 @@
 import * as os from 'os'
 import { execSync } from 'child_process'
 
+import psList from 'ps-list'
+import pidusage from 'pidusage'
 import * as si from 'systeminformation'
 import { machineId } from 'node-machine-id'
 
-import { MachineData, HwInfo, SDKInfo, ResourceInfo } from './dataInterface'
+import { MachineData, HwInfo, SDKInfo, ResourceInfo, ProcessInfo } from './dataInterface'
 import { MetricType } from './MetricTypes'
 
 async function collectHwInfo(): Promise<MachineData> {
@@ -104,24 +106,33 @@ async function collectSDKInfo(): Promise<MachineData> {
 async function collectResouceInfo(): Promise<MachineData> {
   try {
     console.log('=== Start collect resource information ===')
+    const processes = await psList() // 모든 프로세서 얻어옴
+    const pids = processes.map(process => process.pid) // 프로세스 아이디만 추출
+    const stats = await pidusage(pids) // 프로세스 아이디로 cpu, memory 사용량 얻어옴
+    console.log(stats)
 
-    const cpuLoad = await si.currentLoad()
-    const cpuUsage = cpuLoad.currentLoad
+    const processInfo: ProcessInfo[] = processes.map(process => {
+      const stat = stats[process.pid]
+      return {
+        pid: process.pid,
+        name: process.name,
+        cpu: stat ? stat.cpu : 0, // stats가 존재하지 않으면 0으로 설정
+        memory: stat ? stat.memory / (1024 * 1024) : 0 // stats가 존재하지 않으면 0으로 설정
+      }
+    }) // 프로세스 정보와 cpu, memory 사용량을 합침
 
-    const totalMemory = os.totalmem()
-    const freeMemory = os.freemem()
-    const memoryUsage = ((totalMemory - freeMemory) / totalMemory) * 100
+    const topCpu = processInfo.sort((a, b) => b.cpu - a.cpu).slice(0, 10) // cpu 사용량이 높은 10개 프로세스
+    const topMemory = processInfo.sort((a, b) => b.memory - a.memory).slice(0, 10) // memory 사용량이 높은 10개 프로세스
 
     const resourceInfo: ResourceInfo = {
-      cpuUsage,
-      memoryUsage
-    }
+      topCpu,
+      topMemory
+    } // cpu, memory 사용량이 높은 10개 프로세스
 
     const returnData : MachineData = {
       info: resourceInfo,
       metricType: MetricType.RESOURCE_INFO
     }
-
     console.log(returnData)
     console.log('=== Success collect resource information ===')
     return returnData

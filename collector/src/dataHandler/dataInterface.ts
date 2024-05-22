@@ -36,14 +36,21 @@ interface OSInfo {
   hostname: string
 }
 
+export interface ProcessInfo{
+  pid : number
+  name : string
+  cpu : number
+  memory : number
+}
+
 export interface SDKInfo {
   dotnet?: string
   java?: string
 }
 
 export interface ResourceInfo {
-  cpuUsage: number
-  memoryUsage: number
+  topCpu : ProcessInfo[]
+  topMemory : ProcessInfo[]
 }
 
 export interface HwInfo {

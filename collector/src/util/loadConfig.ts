@@ -4,11 +4,11 @@ import * as fs from 'fs'
 import { publicPath } from './consts'
 
 export interface Config {
-  collection_interval: number
+  interval: number
   pc_name: string
 }
 
-export function loadConfig() {
+export async function getConfig() : Promise<Config> {
   try {
     const configFilePath = path.resolve(publicPath, 'config.json')
     const data = fs.readFileSync(configFilePath, 'utf-8')

@@ -1,43 +1,43 @@
 import { useEffect, useState } from 'react'
 
-import { echoServer } from './util/echoServer'
-import { setupTray } from './util/traySetup'
-import { loadConfig } from './util/loadConfig'
 import MainPage from './components/MainPage'
-
-async function checkServerConnection(
-  setIsConnected: (value: boolean) => void, setLastConnectTime: (time: string) => void
-) {
-  const result = await echoServer()
-  setIsConnected(result)
-  if (result) {
-    setLastConnectTime(new Date().toISOString()) // 연결 성공시 시간 업데이트
-  }
-}
+import { Config, getConfig } from './util/loadConfig'
+import { setupTray } from './util/traySetup'
+import { echoServer } from './util/echoServer'
 
 function App() {
+  // 1. 상태 선언 (State Declaration)
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
-  const [lastConnectTime, setLastConnectTime] = useState<string>('')
-  const config = loadConfig()
+  const [timeStamp, setTimeStamp] = useState<string>('')
+  const [config, setConfig] = useState<Config | null>(null)
 
+  // 4. 사이드 이펙트 (useEffect)
   useEffect(() => {
-    /**
-     * App 컴포넌트를 처음 마운트 할때 실행함
-     * 초기 서버 연결을 확인하고 5분마다 연결 확인하는 함수를 실행함
-     * 만일 App 컴포넌트가 언마운트된다면, 5분마다 확인하는 함수를 종료시킴
-    */
-    checkServerConnection(setIsConnected, setLastConnectTime) // 초기 연결 확인
-    const interval = setInterval(() => {
-      checkServerConnection(setIsConnected, setLastConnectTime) // 5분마다 연결 확인
-    }, config.collection_interval) // 300000 = 5분
-    return () => clearInterval(interval) // 컴포넌트 언마운트 시 인터벌 정리
+    const setUpConfig = async () => {
+      try {
+        const configData = await getConfig()
+        setConfig(configData)
+      } catch (error) {
+        console.error('Error loading config:', error)
+      }
+    }
+    const checkConnection = async () => {
+      setTimeStamp(new Date().toISOString())
+      setIsConnected(await echoServer())
+    }
+    setUpConfig()
+    checkConnection()
+
+    // 타이머 설정
+    const timer = setInterval(checkConnection, config?.interval ?? 300000)
+
+    return () => {
+      clearInterval(timer)
+    }
   }, [])
 
   useEffect(() => {
-    /**
-     * 서버와 연결상태에 따른 아이콘 변경
-     */
-    setupTray(isConnected) // 트레이 아이콘 설정
+    setupTray(isConnected)
   }, [isConnected])
 
   if (isConnected === null) {
@@ -45,8 +45,8 @@ function App() {
   }
 
   return isConnected
-    ? (<MainPage timeStamp={lastConnectTime} />)
-    : (<p>Unable to connect to server. Please check your connection and try again later.</p>)
+    ? (<MainPage timeStamp={timeStamp} />)
+    : (<>Not connected</>)
 }
 
 export default App

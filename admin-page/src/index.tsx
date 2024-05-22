@@ -17,6 +17,8 @@ import '@mantine/core/styles/CloseButton.css'
 import '@mantine/core/styles/Table.css'
 import '@mantine/core/styles/Tabs.css'
 import '@mantine/core/styles/Text.css'
+import '@mantine/core/styles/ModalBase.css'
+import '@mantine/core/styles/Modal.css'
 
 const container = document.getElementById('root') as HTMLElement
 const root = createRoot(container)

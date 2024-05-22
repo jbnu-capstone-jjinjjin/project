@@ -40,8 +40,8 @@ function App() {
     setupTray(isConnected)
   }, [isConnected])
 
-  if (config === null) {
-    return <div>Loading...</div>
+  if (isConnected === null) {
+    return <p>Loading...</p>
   }
 
   return isConnected

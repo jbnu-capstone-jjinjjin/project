@@ -9,6 +9,8 @@ services:
     environment:
       POSTGRES_DB: dev
       POSTGRES_PASSWORD: 123456
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   springboot_container:
 #    image: capstone_dev:v1
@@ -18,3 +20,6 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+volumes:
+  postgres_data:

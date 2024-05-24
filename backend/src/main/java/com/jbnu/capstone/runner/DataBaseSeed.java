@@ -40,6 +40,7 @@ public class DataBaseSeed implements ApplicationRunner {
         for (String machineName : machineNameList) {
             Machine machine = Machine.builder()
                     .machineName(machineName)
+                    .uuid(UUID.randomUUID())
                     .build();
 
             machineRepository.save(machine);

@@ -1,13 +1,11 @@
 import axios, { AxiosError } from 'axios'
-import { config } from 'dotenv'
 
-config()
-const API_URL = process.env.API_URL || 'http://localhost:8080'
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL
 
 async function echoServer(): Promise<boolean> {
   try {
     console.log('=== Start get server response ===')
-    const machineResponse = await axios.get(`${API_URL}/echo`)
+    const machineResponse = await axios.get(`${REACT_APP_API_URL}/echo`)
     const status = machineResponse.status
 
     if (status === 200) {

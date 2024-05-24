@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,4 +16,7 @@ import lombok.Setter;
 public class RequestMachineDTO {
     @Schema(description = "기기의 이름", example = "POS")
     private String machineName;
+
+    @Schema(description = "기기의 UUID", example = "123e4567-e89b-12d3-a456-426614174000")
+    private UUID uuid;
 }

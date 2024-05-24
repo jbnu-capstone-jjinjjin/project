@@ -109,7 +109,6 @@ async function collectResouceInfo(): Promise<MachineData> {
     const processes = await psList() // 모든 프로세서 얻어옴
     const pids = processes.map(process => process.pid) // 프로세스 아이디만 추출
     const stats = await pidusage(pids) // 프로세스 아이디로 cpu, memory 사용량 얻어옴
-    console.log(stats)
 
     const processInfo: ProcessInfo[] = processes.map(process => {
       const stat = stats[process.pid]

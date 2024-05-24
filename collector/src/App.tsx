@@ -1,43 +1,27 @@
 import { useEffect, useState } from 'react'
-import { useSSE } from 'react-hooks-sse'
+import { SSEProvider } from 'react-hooks-sse'
+import axios from 'axios'
 
 import MainPage from './components/MainPage'
-import { Config, getConfig } from './util/loadConfig'
+import { config as localConfig, Config } from './util/getConfig'
 import { setupTray } from './util/traySetup'
 import { echoServer } from './util/echoServer'
+import { serverId } from './util/serverIdSetup'
 
-const handleConrolEvent = async (event: { type: string; pid?:number }) => {
-  console.log('Event:', event)
-  try {
-    switch (event.type) {
-      case 'KILL_PROCESS':
-        console.log('KILL_PROCESS')
-        break
-      case 'RESTART_PROCESS':
-        console.log('RESTART_PROCESS')
-        break
-      case 'TAKE_SCREENSHOT':
-        console.log('TAKE_SCREENSHOT')
-        break
-      default:
-        console.log('Unknown event type:', event.type)
-    }
-  } catch (error) {
-    console.error('Error handling control event:', error)
-  }
-}
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+const REACT_APP_SSE_ENDPOINT = process.env.REACT_APP_SSE_ENDPOINT
+const SSE_ENDPOINT = `${REACT_APP_API_BASE_URL}${REACT_APP_SSE_ENDPOINT}`
+console.log(SSE_ENDPOINT)
 
 function App() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const [timeStamp, setTimeStamp] = useState<string>('')
-  const [config, setConfig] = useState<Config | null>(null)
-  const sseEvent = useSSE('PC_CONTROL_EVNET', { type: 'init' })
+  const [configState, setConfig] = useState<Config | null>(null)
 
   useEffect(() => {
     const setUpConfig = async () => {
       try {
-        const configData = await getConfig()
-        setConfig(configData)
+        setConfig(localConfig)
       } catch (error) {
         console.error('Error loading config:', error)
       }
@@ -46,36 +30,45 @@ function App() {
       setTimeStamp(new Date().toISOString())
       setIsConnected(await echoServer())
     }
+    const setUpSSEReceiver = async () => {
+      try {
+        const sseRespone = await axios.post(`${SSE_ENDPOINT}`, {
+          machineId: serverId
+        })
+        console.log('Success setting up SSE receiver:', sseRespone.status)
+      } catch (error) {
+        console.error('Error setting up SSE receiver:', error)
+      }
+    }
     setUpConfig()
     checkConnection()
-
+    setUpSSEReceiver()
     // 타이머 설정
-    const timer = setInterval(checkConnection, config?.interval ?? 300000)
+    const timer = setInterval(checkConnection, configState?.interval ?? 300000)
 
     return () => {
       clearInterval(timer)
     }
   }, [])
-
   useEffect(() => {
     setupTray(isConnected)
   }, [isConnected])
-
-  useEffect(() => {
-    if (sseEvent.type !== 'init') {
-      handleConrolEvent(sseEvent)
-    }
-  }, [sseEvent])
 
   if (isConnected === null) {
     return <p>Loading...</p>
   }
 
   return (
-    isConnected
-      ? (<MainPage timeStamp={timeStamp} />)
-      : (<>Not connected</>)
+    <SSEProvider endpoint={`${REACT_APP_SSE_ENDPOINT}`}>
+      {isConnected
+        ? (<MainPage timeStamp={timeStamp} />)
+        : (<>Not connected</>)}
+    </SSEProvider>
   )
 }
+
+// isConnected
+//  ? (<MainPage timeStamp={timeStamp} />)
+//  : (<>Not connected</>)
 
 export default App

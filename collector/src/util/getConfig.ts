@@ -8,7 +8,7 @@ export interface Config {
   pc_name: string
 }
 
-export async function getConfig() : Promise<Config> {
+async function getConfig() : Promise<Config> {
   try {
     const configFilePath = path.resolve(publicPath, 'config.json')
     const data = fs.readFileSync(configFilePath, 'utf-8')
@@ -19,3 +19,7 @@ export async function getConfig() : Promise<Config> {
     throw new Error(`Failed to read config file: ${err.message}`)
   }
 }
+
+const config = await getConfig()
+
+export { config }

@@ -17,6 +17,11 @@ import '@mantine/core/styles/CloseButton.css'
 import '@mantine/core/styles/Table.css'
 import '@mantine/core/styles/Tabs.css'
 import '@mantine/core/styles/Text.css'
+import '@mantine/core/styles/ModalBase.css'
+import '@mantine/core/styles/Modal.css'
+import '@mantine/core/styles/Accordion.css'
+import '@mantine/core/styles/Loader.css'
+import '@mantine/core/styles/Overlay.css'
 
 const container = document.getElementById('root') as HTMLElement
 const root = createRoot(container)

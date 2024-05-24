@@ -1,14 +1,18 @@
-import { Container, Button, Table, Group, Space } from '@mantine/core'
+import { Container, Button, Table, Group, Space, Modal } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import { useState } from 'react'
 
 import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
 
+import Control from './ControlModal'
 import LogPage from './LogPage'
+import ScreenshotModal from './ScreenshotModal'
 
 export default function MachineDetails({ machineId, onBack }: MachineDetailsProps) {
   const [viewLogPage, setViewLogPage] = useState(false)
+  const [isControlModalOpen, setControlModalOpen] = useState(false)
+  const [isScreenshotModalOpen, setScreenshotModalOpen] = useState(false)
 
   const { data, isLoading, error } = useQuery<MachineDetail, Error>(
     ['fetchMachineDetails', machineId],
@@ -67,9 +71,25 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
       <Space h="xl" />
       <Group justify="center" gap="xl" grow>
         <Button onClick={() => setViewLogPage(true)}>View Logs</Button>
-        <Button>Request Screenshot</Button>
-        <Button>Send Message</Button>
+        <Button onClick={() => setControlModalOpen(true)}>Command</Button>
+        <Button onClick={() => setScreenshotModalOpen(true)}>Screenshot</Button>
       </Group>
+      <Modal
+        opened={isControlModalOpen}
+        onClose={() => setControlModalOpen(false)}
+        title="Control Page"
+        size="lg"
+      >
+        <Control machineId={machineId} />
+      </Modal>
+      <Modal
+        opened={isScreenshotModalOpen}
+        onClose={() => setScreenshotModalOpen(false)}
+        title="Screenshot Page"
+        size="lg"
+      >
+        <ScreenshotModal machineId={machineId} />
+      </Modal>
     </Container >
   )
 }

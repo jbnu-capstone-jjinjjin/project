@@ -1,5 +1,5 @@
 import { Container, Button, Table, Group, Space } from '@mantine/core'
-import { DateTimePicker } from '@mantine/dates' // Import DateTimePicker
+import { DateTimePicker } from '@mantine/dates'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import { useState } from 'react'
@@ -37,6 +37,9 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
   )
 
   const machineData = data?.data[0]
+
+  console.log(data)
+  console.log(machineData)
 
   return (
     <Container>

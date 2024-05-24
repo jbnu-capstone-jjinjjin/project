@@ -1,17 +1,38 @@
 import { useEffect, useState } from 'react'
+import { useSSE } from 'react-hooks-sse'
 
 import MainPage from './components/MainPage'
 import { Config, getConfig } from './util/loadConfig'
 import { setupTray } from './util/traySetup'
 import { echoServer } from './util/echoServer'
 
+const handleConrolEvent = async (event: { type: string; pid?:number }) => {
+  console.log('Event:', event)
+  try {
+    switch (event.type) {
+      case 'KILL_PROCESS':
+        console.log('KILL_PROCESS')
+        break
+      case 'RESTART_PROCESS':
+        console.log('RESTART_PROCESS')
+        break
+      case 'TAKE_SCREENSHOT':
+        console.log('TAKE_SCREENSHOT')
+        break
+      default:
+        console.log('Unknown event type:', event.type)
+    }
+  } catch (error) {
+    console.error('Error handling control event:', error)
+  }
+}
+
 function App() {
-  // 1. 상태 선언 (State Declaration)
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const [timeStamp, setTimeStamp] = useState<string>('')
   const [config, setConfig] = useState<Config | null>(null)
+  const sseEvent = useSSE('PC_CONTROL_EVNET', { type: 'init' })
 
-  // 4. 사이드 이펙트 (useEffect)
   useEffect(() => {
     const setUpConfig = async () => {
       try {
@@ -40,13 +61,21 @@ function App() {
     setupTray(isConnected)
   }, [isConnected])
 
+  useEffect(() => {
+    if (sseEvent.type !== 'init') {
+      handleConrolEvent(sseEvent)
+    }
+  }, [sseEvent])
+
   if (isConnected === null) {
     return <p>Loading...</p>
   }
 
-  return isConnected
-    ? (<MainPage timeStamp={timeStamp} />)
-    : (<>Not connected</>)
+  return (
+    isConnected
+      ? (<MainPage timeStamp={timeStamp} />)
+      : (<>Not connected</>)
+  )
 }
 
 export default App

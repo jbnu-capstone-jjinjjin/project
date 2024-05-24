@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { SSEProvider } from 'react-hooks-sse'
 import { config } from 'dotenv'
 
 import './index.css'
@@ -12,12 +13,16 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 
+const result = config()
+console.log('dotenv config result:', result)
+const RECAT_APP_API_URL = process.env.REACT_APP_API_URL
+
 async function renderApp() {
-  const result = config()
-  console.log('dotenv config result:', result)
   root.render(
     <React.StrictMode>
-      <App />
+      <SSEProvider endpoint={`${RECAT_APP_API_URL}/daemon/connect`}>
+        <App />
+      </SSEProvider>
     </React.StrictMode>
   )
 }

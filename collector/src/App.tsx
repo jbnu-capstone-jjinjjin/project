@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react'
+import { SSEProvider } from 'react-hooks-sse'
+import axios from 'axios'
 
 import MainPage from './components/MainPage'
-import { Config, getConfig } from './util/loadConfig'
+import { config as localConfig, Config } from './util/getConfig'
 import { setupTray } from './util/traySetup'
 import { echoServer } from './util/echoServer'
+import { serverId } from './util/serverIdSetup'
+
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+const REACT_APP_SSE_ENDPOINT = process.env.REACT_APP_SSE_ENDPOINT
+const SSE_ENDPOINT = `${REACT_APP_API_BASE_URL}${REACT_APP_SSE_ENDPOINT}`
+console.log(SSE_ENDPOINT)
 
 function App() {
-  // 1. 상태 선언 (State Declaration)
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const [timeStamp, setTimeStamp] = useState<string>('')
-  const [config, setConfig] = useState<Config | null>(null)
+  const [configState, setConfig] = useState<Config | null>(null)
 
-  // 4. 사이드 이펙트 (useEffect)
   useEffect(() => {
     const setUpConfig = async () => {
       try {
-        const configData = await getConfig()
-        setConfig(configData)
+        setConfig(localConfig)
       } catch (error) {
         console.error('Error loading config:', error)
       }
@@ -25,17 +30,26 @@ function App() {
       setTimeStamp(new Date().toISOString())
       setIsConnected(await echoServer())
     }
+    const setUpSSEReceiver = async () => {
+      try {
+        const sseRespone = await axios.post(`${SSE_ENDPOINT}`, {
+          machineId: serverId
+        })
+        console.log('Success setting up SSE receiver:', sseRespone.status)
+      } catch (error) {
+        console.error('Error setting up SSE receiver:', error)
+      }
+    }
     setUpConfig()
     checkConnection()
-
+    setUpSSEReceiver()
     // 타이머 설정
-    const timer = setInterval(checkConnection, config?.interval ?? 300000)
+    const timer = setInterval(checkConnection, configState?.interval ?? 300000)
 
     return () => {
       clearInterval(timer)
     }
   }, [])
-
   useEffect(() => {
     setupTray(isConnected)
   }, [isConnected])
@@ -44,9 +58,17 @@ function App() {
     return <p>Loading...</p>
   }
 
-  return isConnected
-    ? (<MainPage timeStamp={timeStamp} />)
-    : (<>Not connected</>)
+  return (
+    <SSEProvider endpoint={`${REACT_APP_SSE_ENDPOINT}`}>
+      {isConnected
+        ? (<MainPage timeStamp={timeStamp} />)
+        : (<>Not connected</>)}
+    </SSEProvider>
+  )
 }
+
+// isConnected
+//  ? (<MainPage timeStamp={timeStamp} />)
+//  : (<>Not connected</>)
 
 export default App

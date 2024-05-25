@@ -1,7 +1,6 @@
-import * as os from 'os'
-
 import axios, { AxiosError } from 'axios'
-import { config } from 'dotenv'
+
+import { serverId } from '../util/serverIdSetup'
 
 import { MachineData } from './dataInterface'
 import {
@@ -10,18 +9,15 @@ import {
   collectResouceInfo,
 } from './dataCollector'
 
-config()
-const API_URL = process.env.API_URL || 'http://localhost:8080'
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+const REACT_APP_METRICS_ENDPOINT = process.env.REACT_APP_METRICS_ENDPOINT
+const METRICS_ENDPOINT = `${REACT_APP_API_BASE_URL}${REACT_APP_METRICS_ENDPOINT}`
 
 async function sendMachineData(machineData: MachineData) {
   try {
-    const machineResponse = await axios.post(`${API_URL}/machines`, {
-      machineName: os.hostname(),
-    })
-    const machineId = machineResponse.data.data.machineId
-
-    const metricsResponse = await axios.post(`${API_URL}/metrics`, {
-      machineId,
+    console.log('MACHINEID : ', serverId)
+    const metricsResponse = await axios.post(METRICS_ENDPOINT, {
+      serverId,
       timestamp: new Date().toISOString(),
       metric_type: machineData.metricType,
       data: machineData.info,

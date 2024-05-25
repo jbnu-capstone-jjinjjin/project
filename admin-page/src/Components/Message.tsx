@@ -1,5 +1,5 @@
 export default function Message() {
   return (
-    <div>Hello</div>
+    <div> Message CONTENT</div>
   )
 }

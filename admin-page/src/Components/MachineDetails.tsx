@@ -1,14 +1,16 @@
-import { Container, Button, Table, Group, Space } from '@mantine/core'
+import { Container, Button, Table, Group, Space, Modal } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import { useState } from 'react'
 
 import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
 
+import Control from './Control'
 import LogPage from './LogPage'
 
 export default function MachineDetails({ machineId, onBack }: MachineDetailsProps) {
   const [viewLogPage, setViewLogPage] = useState(false)
+  const [isControlModalOpen, setControlModalOpen] = useState(false)
 
   const { data, isLoading, error } = useQuery<MachineDetail, Error>(
     ['fetchMachineDetails', machineId],
@@ -67,9 +69,17 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
       <Space h="xl" />
       <Group justify="center" gap="xl" grow>
         <Button onClick={() => setViewLogPage(true)}>View Logs</Button>
+        <Button onClick={() => setControlModalOpen(true)}>Control Command</Button>
         <Button>Request Screenshot</Button>
-        <Button>Send Message</Button>
       </Group>
+      <Modal
+        opened={isControlModalOpen}
+        onClose={() => setControlModalOpen(false)}
+        title="Control Page"
+        size="lg"
+      >
+        <Control machineId={machineId} />
+      </Modal>
     </Container >
   )
 }

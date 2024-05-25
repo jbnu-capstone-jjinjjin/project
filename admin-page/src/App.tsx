@@ -51,7 +51,6 @@ export default function App() {
   if (!user) {
     return (
       <Container style={{ display: 'flex', justifyContent: 'center' }}>
-        <h1>Please Log in</h1>
         <Button onClick={handleLogin} style={{ fontSize: '30px' }}>
           구글 로그인
         </Button>

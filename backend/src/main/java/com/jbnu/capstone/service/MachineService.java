@@ -31,7 +31,17 @@ public class MachineService {
         return new ResponseMachineDTO(savedMachine.getId(), savedMachine.getMachineName());
     }
 
-    public ResponseMachineDTO findMachineIdByUuid(UUID uuid) throws MachineNotFoundException {
+    public ResponseMachineDTO findMachineById(Long id) throws MachineNotFoundException {
+        Machine machine = machineRepository.findById(id).orElse(null);
+
+        if (machine == null) {
+            throw new MachineNotFoundException("id에 해당하는 머신을 찾을 수 없습니다.");
+        }
+
+        return new ResponseMachineDTO(machine.getId(), machine.getMachineName());
+    }
+
+    public ResponseMachineDTO findMachineByUuid(UUID uuid) throws MachineNotFoundException {
         Machine machine = machineRepository.findByUuid(uuid);
 
         if (machine == null) {

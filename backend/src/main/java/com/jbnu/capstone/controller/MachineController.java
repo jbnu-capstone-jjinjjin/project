@@ -52,14 +52,22 @@ public class MachineController {
                 machines);
     }
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDataDTO<ResponseMachineDTO> getMachineByUuid(@PathVariable UUID uuid, @RequestParam("type") String type) throws MachineNotFoundException, InvalidTypeParameterException {
-        if (!"client".equals(type) && !"admin".equals(type)) {
+    public ResponseDataDTO<ResponseMachineDTO> getMachineByUuidOrId(@PathVariable String id, @RequestParam(value = "type", required = false) String type) throws MachineNotFoundException, InvalidTypeParameterException {
+        if (type == null) {
+            Long machineId = Long.parseLong(id);
+            ResponseMachineDTO machine = machineService.findMachineById(machineId);
+
+            return new ResponseDataDTO<>(HttpStatus.OK.value(), "id를 통해 기기를 성공적으로 조회했습니다.", machine);
+        }
+
+        if (!"client".equals(type)) {
             throw new InvalidTypeParameterException("유효하지 않은 쿼리 문자열 매개변수: 'type'은 'client' 또는 'admin'이어야 합니다.");
         }
 
-        ResponseMachineDTO machine = machineService.findMachineIdByUuid(uuid);
+        UUID uuid = UUID.fromString(id);
+        ResponseMachineDTO machine = machineService.findMachineByUuid(uuid);
 
         return new ResponseDataDTO<>(HttpStatus.OK.value(),
                 "uuid를 통해 기기를 성공적으로 조회했습니다.",

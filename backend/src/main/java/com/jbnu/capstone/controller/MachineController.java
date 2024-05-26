@@ -63,7 +63,7 @@ public class MachineController {
         }
 
         if (!"client".equals(type)) {
-            throw new InvalidTypeParameterException("유효하지 않은 쿼리 문자열 매개변수: 'type'은 'client' 또는 'admin'이어야 합니다.");
+            throw new InvalidTypeParameterException("유효하지 않은 쿼리 문자열 매개변수: 'type'은 'client' 이어야 합니다.");
         }
 
         UUID uuid = UUID.fromString(id);

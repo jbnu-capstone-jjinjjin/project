@@ -5,6 +5,8 @@ import com.jbnu.capstone.dto.response.ResponseDTO;
 import com.jbnu.capstone.dto.response.ResponseDataDTO;
 import com.jbnu.capstone.dto.response.ResponseMachineDTO;
 import com.jbnu.capstone.dto.response.ResponseMetricsDTO;
+import com.jbnu.capstone.exception.InvalidTypeParameterException;
+import com.jbnu.capstone.exception.MachineNotFoundException;
 import com.jbnu.capstone.service.MachineService;
 import com.jbnu.capstone.service.MetricsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -47,6 +50,28 @@ public class MachineController {
         return new ResponseDataDTO<>(HttpStatus.OK.value(),
                 "현재 등록된 모든 기기를 성공적으로 조회했습니다.",
                 machines);
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseDataDTO<ResponseMachineDTO> getMachineByUuidOrId(@PathVariable String id, @RequestParam(value = "type", required = false) String type) throws MachineNotFoundException, InvalidTypeParameterException {
+        if (type == null) {
+            Long machineId = Long.parseLong(id);
+            ResponseMachineDTO machine = machineService.findMachineById(machineId);
+
+            return new ResponseDataDTO<>(HttpStatus.OK.value(), "id를 통해 기기를 성공적으로 조회했습니다.", machine);
+        }
+
+        if (!"client".equals(type)) {
+            throw new InvalidTypeParameterException("유효하지 않은 쿼리 문자열 매개변수: 'type'은 'client' 이어야 합니다.");
+        }
+
+        UUID uuid = UUID.fromString(id);
+        ResponseMachineDTO machine = machineService.findMachineByUuid(uuid);
+
+        return new ResponseDataDTO<>(HttpStatus.OK.value(),
+                "uuid를 통해 기기를 성공적으로 조회했습니다.",
+                machine);
     }
 
 

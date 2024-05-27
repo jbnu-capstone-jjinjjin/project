@@ -1,4 +1,4 @@
-import { Container, Button, Table, Group, Space } from '@mantine/core'
+import { Container, Button, Table, Group, Space, Accordion } from '@mantine/core'
 import { DateTimePicker } from '@mantine/dates'
 import axios from 'axios'
 import { useQuery } from 'react-query'
@@ -6,14 +6,10 @@ import { useState } from 'react'
 import dayjs from 'dayjs'
 
 import 'dayjs/locale/ko'
-import { MachineDetail } from '../Data/MachineDataType'
+import { MachineDetail } from '../Data/DataType'
+import { LogPageProps } from '../Data/PropsType'
 
 dayjs.locale('ko')
-
-type LogPageProps = {
-  machineId: number
-  onBack: () => void
-};
 
 export default function LogPage({ machineId, onBack }: LogPageProps) {
   const [fromDate, setFromDate] = useState(new Date())
@@ -22,24 +18,20 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
   const fetchData = () => {
     const formattedFrom = dayjs(fromDate).format('YYYY-MM-DDTHH:mm:ss')
     const formattedTo = dayjs(toDate).format('YYYY-MM-DDTHH:mm:ss')
-    console.log(`Fetching data from: ${formattedFrom} to: ${formattedTo}`)
-    return axios
-      .get(
-        `http://localhost:8080/machines/${machineId}/metrics?from=${formattedFrom}&to=${formattedTo}`
-      )
-      .then(res => res.data)
+    return axios.get(`http://localhost:8080/machines/${machineId}/metrics?from=${formattedFrom}&to=${formattedTo}`)
+      .then(res => {
+        return res.data.data.filter((
+          item: MachineDetail
+        ) => item.metricsType === 'RESOURCE_INFO' || item.metricsType === 'SDK_INFO')
+      })
+      .catch(err => Promise.reject(err.response?.data || err.message))
   }
 
-  const { data, isLoading, error, refetch } = useQuery<MachineDetail, Error>(
+  const { data, isLoading, error, refetch } = useQuery<MachineDetail[], Error>(
     ['fetchMachineDetails', machineId, fromDate, toDate],
     fetchData,
     { enabled: false }
   )
-
-  const machineData = data?.data[0]
-
-  console.log(data)
-  console.log(machineData)
 
   return (
     <Container>
@@ -62,67 +54,64 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
           locale="ko"
         />
         <Button onClick={() => refetch()} size="sm">
-          데이터 가져오기
+          Fetch Data
         </Button>
       </Group>
-      {isLoading && <Container>로 딩 중 . . .</Container>}
-      {error && <Container>에러: {error.message}</Container>}
-      {!machineData && !isLoading && (
-        <Container>데이터를 찾을 수 없음 machineId: {machineId}</Container>
-      )}
-      {machineData && (
-        <Table withColumnBorders striped highlightOnHover>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Field</Table.Th>
-              <Table.Th>Value</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {[
-              ['Metric Type', machineData.metricsType],
-              ['Created At', machineData.createdAt],
-              ['OS Release', machineData?.data?.os?.release ?? 'N/A'],
-              ['Hostname', machineData?.data?.os?.hostname ?? 'N/A'],
-              ['Platform', machineData?.data?.os?.platform ?? 'N/A'],
-              ['CPU Cores', machineData?.data?.cpu?.cores ?? 'N/A'],
-              ['CPU Model', machineData?.data?.cpu?.model ?? 'N/A'],
-              ['CPU Speed', `${machineData?.data?.cpu?.speed ?? 'N/A'} MHz`],
-              [
-                'GPU Models',
-                machineData?.data?.gpu
-                  ?.map(g => `${g.model} (${g.vram} MB)`)
-                  .join(', ') ?? 'N/A'
-              ],
-              [
-                'RAM Total',
-                `${machineData?.data?.ram?.total / 1024 / 1024 / 1024 ?? 'N/A'} GB`
-              ],
-              [
-                'Disk Info',
-                machineData?.data?.disk
-                  ?.map(
-                    d =>
-                      `${d.fs} - ${d.size / 1024 / 1024 / 1024} GB, ${d.use
-                      }% used`
-                  )
-                  .join(', ') ?? 'N/A'
-              ],
-              [
-                'Network Interfaces',
-                machineData?.data?.network
-                  ?.map(n => `${n.iface}: ${n.ip4}`)
-                  .join(', ') ?? 'N/A'
-              ],
-              ['Identifier', machineData?.data?.identifier ?? 'N/A']
-            ].map((row, index) => (
-              <Table.Tr key={index}>
-                <Table.Td>{row[0]}</Table.Td>
-                <Table.Td>{row[1]}</Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
+      <Space h="xl" />
+      {isLoading && <Container>Loading...</Container>}
+      {error && <Container>Error: {error.message}</Container>}
+      {!data && !isLoading && <Container>No data available for machineId: {machineId}</Container>}
+      {data && (
+        <Accordion variant="separated" radius="xs">
+          {data.map((machineDetail, index) => {
+            const rows = [
+              ['Metric Type', machineDetail.metricsType],
+              ['Created At', machineDetail.createdAt],
+              ['OS Release', machineDetail.data.os.release],
+              ['Hostname', machineDetail.data.os.hostname],
+              ['Platform', machineDetail.data.os.platform],
+              ['CPU Cores', machineDetail.data.cpu.cores],
+              ['CPU Model', machineDetail.data.cpu.model],
+              ['CPU Speed', `${machineDetail.data.cpu.speed} MHz`],
+              ['GPU Models', machineDetail.data.gpu.map(g => `${g.model} (${g.vram} MB)`).join(', ')],
+              ['RAM Total', `${machineDetail.data.ram.total / 1024 / 1024 / 1024} GB`],
+              ['Disk Info', machineDetail.data.disk.map(
+                d => `${d.fs} - ${d.size / 1024 / 1024 / 1024} GB, ${d.use}% used`
+              ).join(', ')],
+              ['Network Interfaces', machineDetail.data.network.map(
+                n => `${n.iface}: ${n.ip4} (${n.mac})`
+              ).join(', ')],
+              ['Identifier', machineDetail.data.identifier]
+            ]
+            return (
+              <Accordion.Item key={index} value={`item-${index}`}>
+                <Accordion.Control>
+                  Metric Type: {machineDetail.metricsType}
+                  <br />
+                  Created At: {machineDetail.createdAt}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Table withColumnBorders striped highlightOnHover>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>Field</Table.Th>
+                        <Table.Th>Value</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      {rows.map((row, idx) => (
+                        <Table.Tr key={idx}>
+                          <Table.Td>{row[0]}</Table.Td>
+                          <Table.Td>{row[1]}</Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
+                </Accordion.Panel>
+              </Accordion.Item>
+            )
+          })}
+        </Accordion>
       )}
     </Container>
   )

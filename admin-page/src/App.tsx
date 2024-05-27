@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { GoogleAuthProvider, signInWithRedirect, signOut } from 'firebase/auth'
+import { signOut } from 'firebase/auth'
 import { Container, Button } from '@mantine/core'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
+import LoginPage from './Components/LoginPage'
 import { auth } from './firebase-config'
 import Sidebar from './Components/Sidebar'
 import MachineList from './Components/MachineList'
@@ -16,11 +17,6 @@ export default function App() {
   const [user, loading] = useAuthState(auth)
   const [activeTab, setActiveTab] = useState<string | null>('machineManagement')
   const [selectedMachine, setSelectedMachine] = useState<number | null>(null)
-
-  const handleLogin = () => {
-    const provider = new GoogleAuthProvider()
-    signInWithRedirect(auth, provider)
-  }
 
   const handleLogout = () => {
     signOut(auth).then(() => {
@@ -49,13 +45,7 @@ export default function App() {
   }
 
   if (!user) {
-    return (
-      <Container style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={handleLogin} style={{ fontSize: '30px' }}>
-          구글 로그인
-        </Button>
-      </Container>
-    )
+    return <LoginPage />
   }
 
   return (

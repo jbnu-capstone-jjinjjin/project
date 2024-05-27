@@ -5,19 +5,10 @@ import { useState } from 'react'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import ScreenImage from './ScreenImage'
+import { ScreenshotData, ErrorResponse } from '../Data/DataType'
+
+import ScreenImage from './ScreenshotImage'
 import 'dayjs/locale/ko'
-
-interface ScreenshotData {
-  machineId: number
-  screenshotId: number
-  imageName: string
-  createdAt: string
-}
-
-interface ErrorWithMessage {
-  message: string
-}
 
 export default function ScreenshotModal({ machineId }: { machineId: number }) {
   const [fromDate, setFromDate] = useState(new Date())
@@ -36,7 +27,7 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
       .catch(err => Promise.reject(err.response?.data || err.message))
   }
 
-  const { data, isLoading, error, refetch } = useQuery<ScreenshotData[], ErrorWithMessage>(
+  const { data, isLoading, error, refetch } = useQuery<ScreenshotData[], ErrorResponse>(
     ['fetchScreenshotData', machineId, fromDate, toDate],
     fetchData,
     { enabled: false }

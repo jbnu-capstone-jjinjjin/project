@@ -2,11 +2,7 @@ import { Container, Loader, Text } from '@mantine/core'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-interface ScreenImageProps {
-  screenshotId: number
-}
-
-export default function ScreenImage({ screenshotId }: ScreenImageProps) {
+export default function ScreenImage({ screenshotId }: { screenshotId: number }) {
   const [imageData, setImageData] = useState<{ imageName: string; imageData: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string>('')

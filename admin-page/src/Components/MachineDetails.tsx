@@ -3,7 +3,8 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import { useState } from 'react'
 
-import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
+import { MachineDetail } from '../Data/DataType'
+import { MachineDetailsProps } from '../Data/PropsType'
 
 import Control from './ControlModal'
 import LogPage from './LogPage'
@@ -16,13 +17,15 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
 
   const { data, isLoading, error } = useQuery<MachineDetail, Error>(
     ['fetchMachineDetails', machineId],
-    () => axios.get(`http://localhost:8080/machines/${machineId}/metrics`).then(res => res.data),
+    () => axios.get(`http://localhost:8080/machines/${machineId}/metrics`)
+      .then(res => res.data),
     { enabled: !!machineId }
   )
   if (isLoading) return <Container>로 딩 중 . . .</Container>
   if (error) return <Container>오류: {error.message}</Container>
   if (!data) return <Container>데이터를 찾을 수 없음 machindId: {machineId}</Container>
 
+  console.log(data)
   const machineData = data.data[0]
   if (!machineData) return <Container>데이터를 찾을 수 없음 machindId: {machineId}</Container>
 

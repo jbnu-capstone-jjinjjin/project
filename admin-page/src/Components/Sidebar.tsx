@@ -1,9 +1,6 @@
 import { Tabs, Container, Space, Text } from '@mantine/core'
 
-interface SidebarProps {
-  activeTab: string | null
-  onTabChange: (tab: string | null) => void
-}
+import { SidebarProps } from '../Data/PropsType'
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (

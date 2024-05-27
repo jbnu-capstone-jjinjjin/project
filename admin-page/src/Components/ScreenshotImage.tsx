@@ -34,7 +34,7 @@ export default function ScreenImage({ screenshotId }: { screenshotId: number }) 
   }
 
   return (
-    <Container>
+    <Container fluid>
       <img
         src={`data:image/jpeg;base64,${imageData.imageData}`}
         alt={imageData.imageName || 'Screenshot'}

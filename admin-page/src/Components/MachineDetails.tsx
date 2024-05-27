@@ -51,7 +51,7 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
   ]
 
   return (
-    <Container>
+    <Container fluid>
       <Space h="xl" />
       <Button onClick={onBack}>Back</Button>
       <Space h="xl" />

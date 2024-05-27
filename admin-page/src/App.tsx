@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { signOut } from 'firebase/auth'
-import { Container, Button } from '@mantine/core'
+import { Container, Button, AppShell, Group } from '@mantine/core'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 import LoginPage from './Components/LoginPage'
@@ -50,35 +50,35 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Container style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <Container bg="#f5f5f5"
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            padding: '10px 20px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}
-        >
-          <Container style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+      <AppShell
+        header={{ height: 40 }}
+        navbar={{
+          width: 150,
+          breakpoint: 'sm',
+        }}
+        padding="md"
+      >
+        <AppShell.Header>
+          <Group justify="flex-end">
             <span>Welcome, {user ? (user.displayName + ' UID : ' + user.uid) : 'No Name'}</span>
-            <Button onClick={handleLogout} style={{ fontSize: '12px' }}>로그아웃</Button>
-          </Container>
-        </Container>
-        <Container style={{ display: 'flex', flex: 1 }}>
+            <Button onClick={handleLogout}>로그아웃</Button>
+          </Group>
+        </AppShell.Header>
+        <AppShell.Navbar>
           <Sidebar activeTab={activeTab} onTabChange={switchTab} />
-          <Container style={{ flex: 1, padding: '20px' }}>
-            {activeTab === 'machineManagement' && !selectedMachine && (
-              <MachineList onViewDetails={handleViewDetails} />
-            )}
-            {activeTab === 'machineManagement' && selectedMachine && (
-              <MachineDetails machineId={selectedMachine} onBack={handleBack} />
-            )}
-            {activeTab === 'message' && (
-              <Message />
-            )}
-          </Container>
-        </Container>
-      </Container>
+        </AppShell.Navbar>
+        <AppShell.Main>
+          {activeTab === 'machineManagement' && !selectedMachine && (
+            <MachineList onViewDetails={handleViewDetails} />
+          )}
+          {activeTab === 'machineManagement' && selectedMachine && (
+            <MachineDetails machineId={selectedMachine} onBack={handleBack} />
+          )}
+          {activeTab === 'message' && (
+            <Message />
+          )}
+        </AppShell.Main>
+      </AppShell>
     </QueryClientProvider>
   )
 }

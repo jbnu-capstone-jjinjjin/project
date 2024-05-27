@@ -34,7 +34,7 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
   )
 
   return (
-    <Container>
+    <Container fluid>
       <Space h="xl" />
       <h3>Screenshot Page for Machine {machineId}</h3>
       <Group>

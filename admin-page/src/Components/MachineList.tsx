@@ -13,7 +13,7 @@ export default function MachineList({ onViewDetails }: MachineListProps) {
   if (error) return <Container>오류 : {error.message}</Container>
 
   return (
-    <Container>
+    <Container fluid>
       <Space h="xl" />
       <Table withColumnBorders striped highlightOnHover>
         <Table.Thead>

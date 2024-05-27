@@ -40,10 +40,9 @@ export default function Control({ machineId }: { machineId: number }) {
   ]
 
   return (
-    <Container>
+    <Container fluid>
       <h3>Control Page for Machine {machineId}</h3>
       <Select
-        withCheckIcon={false}
         label="Command"
         placeholder="명령어를 선택해주세요."
         data={commands}

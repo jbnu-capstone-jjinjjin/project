@@ -34,7 +34,7 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
   )
 
   return (
-    <Container>
+    <Container fluid>
       <Space h="xl" />
       <Button onClick={onBack}>Back</Button>
       <h3>Log Page for Machine {machineId}</h3>

@@ -30,6 +30,7 @@ export default function LoginPage() {
 
   return (
     <Container
+      fluid
       style={
         { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <Title order={1}>로그인</Title>

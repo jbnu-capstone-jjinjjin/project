@@ -4,7 +4,7 @@ import { SidebarProps } from '../Data/PropsType'
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (
-    <Container bg="#f5f5f5">
+    <Container fluid>
       <Space h="xl" />
       <Tabs
         value={activeTab}

@@ -9,14 +9,12 @@ import {
   collectResouceInfo,
 } from './dataCollector'
 
-const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 const REACT_APP_METRICS_ENDPOINT = process.env.REACT_APP_METRICS_ENDPOINT
-const METRICS_ENDPOINT = `${REACT_APP_API_BASE_URL}${REACT_APP_METRICS_ENDPOINT}`
 
 async function sendMachineData(machineData: MachineData) {
   try {
-    console.log('MACHINEID : ', serverId)
-    const metricsResponse = await axios.post(METRICS_ENDPOINT, {
+    console.log('Server ID : ', serverId)
+    const metricsResponse = await axios.post(`${REACT_APP_METRICS_ENDPOINT}`, {
       serverId,
       timestamp: new Date().toISOString(),
       metric_type: machineData.metricType,

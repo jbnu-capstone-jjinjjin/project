@@ -1,12 +1,11 @@
 import axios, { AxiosError } from 'axios'
 
-const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 const REACT_APP_ECHO_ENDPOINT = process.env.REACT_APP_ECHO_ENDPOINT
 
 async function echoServer(): Promise<boolean> {
   try {
     console.log('=== Start get server response ===')
-    const machineResponse = await axios.get(`${REACT_APP_API_BASE_URL}${REACT_APP_ECHO_ENDPOINT}`)
+    const machineResponse = await axios.get(`${REACT_APP_ECHO_ENDPOINT}`)
     const status = machineResponse.status
 
     if (status === 200) {

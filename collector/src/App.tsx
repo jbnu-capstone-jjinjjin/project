@@ -8,10 +8,7 @@ import { setupTray } from './util/traySetup'
 import { echoServer } from './util/echoServer'
 import { serverId } from './util/serverIdSetup'
 
-const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 const REACT_APP_SSE_ENDPOINT = process.env.REACT_APP_SSE_ENDPOINT
-const SSE_ENDPOINT = `${REACT_APP_API_BASE_URL}${REACT_APP_SSE_ENDPOINT}`
-console.log(SSE_ENDPOINT)
 
 function App() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
@@ -34,7 +31,7 @@ function App() {
       try {
         console.log('Setting up SSE receiver...')
         console.log('Server ID:', serverId)
-        const sseRespone = await axios.post(`${SSE_ENDPOINT}`, {
+        const sseRespone = await axios.post(`${REACT_APP_SSE_ENDPOINT}`, {
           machineId: serverId
         })
         console.log('Success setting up SSE receiver:', sseRespone.status)

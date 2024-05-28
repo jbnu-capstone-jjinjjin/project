@@ -20,7 +20,6 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
   const fetchData = () => {
     const formattedFrom = dayjs(fromDate).format('YYYY-MM-DDTHH:mm:ss')
     const formattedTo = dayjs(toDate).format('YYYY-MM-DDTHH:mm:ss')
-    console.log(`Fetching data from: ${formattedFrom} to: ${formattedTo}`)
     return axios
       .get(`http://localhost:8080/screenshot/${machineId}?from=${formattedFrom}&to=${formattedTo}`)
       .then(res => res.data.data || [])

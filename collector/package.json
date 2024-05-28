@@ -14,6 +14,8 @@
     "dotenv": "^16.4.5",
     "node-machine-id": "^1.1.12",
     "nw-react-scripts": "5.1.1",
+    "pidusage": "^3.0.2",
+    "ps-list": "^8.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hooks-sse": "^2.1.0",
@@ -62,6 +64,7 @@
     }
   },
   "devDependencies": {
+    "@types/pidusage": "^2.0.5",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.2.0",

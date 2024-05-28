@@ -3,24 +3,29 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import { useState } from 'react'
 
-import { MachineDetail, MachineDetailsProps } from '../Data/MachineDataType'
+import { MachineDetail } from '../Data/DataType'
+import { MachineDetailsProps } from '../Data/PropsType'
 
-import Control from './Control'
+import Control from './ControlModal'
 import LogPage from './LogPage'
+import ScreenshotModal from './ScreenshotModal'
 
 export default function MachineDetails({ machineId, onBack }: MachineDetailsProps) {
   const [viewLogPage, setViewLogPage] = useState(false)
   const [isControlModalOpen, setControlModalOpen] = useState(false)
+  const [isScreenshotModalOpen, setScreenshotModalOpen] = useState(false)
 
   const { data, isLoading, error } = useQuery<MachineDetail, Error>(
     ['fetchMachineDetails', machineId],
-    () => axios.get(`http://localhost:8080/machines/${machineId}/metrics`).then(res => res.data),
+    () => axios.get(`http://localhost:8080/machines/${machineId}/metrics`)
+      .then(res => res.data),
     { enabled: !!machineId }
   )
   if (isLoading) return <Container>로 딩 중 . . .</Container>
   if (error) return <Container>오류: {error.message}</Container>
   if (!data) return <Container>데이터를 찾을 수 없음 machindId: {machineId}</Container>
 
+  console.log(data)
   const machineData = data.data[0]
   if (!machineData) return <Container>데이터를 찾을 수 없음 machindId: {machineId}</Container>
 
@@ -46,7 +51,7 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
   ]
 
   return (
-    <Container>
+    <Container fluid>
       <Space h="xl" />
       <Button onClick={onBack}>Back</Button>
       <Space h="xl" />
@@ -69,8 +74,8 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
       <Space h="xl" />
       <Group justify="center" gap="xl" grow>
         <Button onClick={() => setViewLogPage(true)}>View Logs</Button>
-        <Button onClick={() => setControlModalOpen(true)}>Control Command</Button>
-        <Button>Request Screenshot</Button>
+        <Button onClick={() => setControlModalOpen(true)}>Command</Button>
+        <Button onClick={() => setScreenshotModalOpen(true)}>Screenshot</Button>
       </Group>
       <Modal
         opened={isControlModalOpen}
@@ -79,6 +84,14 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
         size="lg"
       >
         <Control machineId={machineId} />
+      </Modal>
+      <Modal
+        opened={isScreenshotModalOpen}
+        onClose={() => setScreenshotModalOpen(false)}
+        title="Screenshot Page"
+        size="lg"
+      >
+        <ScreenshotModal machineId={machineId} />
       </Modal>
     </Container >
   )

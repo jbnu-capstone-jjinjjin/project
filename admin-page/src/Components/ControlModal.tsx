@@ -1,19 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
-import { Container, Button, TextInput, Group } from '@mantine/core'
+import { Container, Button, TextInput, Group, Select } from '@mantine/core'
 import { useState } from 'react'
 
-interface CommandData {
-  machineId: number
-  control: {
-    command: string
-    args: string[]
-  }
-}
-
-interface ResponseData {
-  message: string
-}
+import { CommandData, ResponseData } from '../Data/DataType'
 
 const controlDaemon = async (commandData: CommandData): Promise<ResponseData> => {
   const response = await axios.post<ResponseData>('http://localhost:8080/daemon/control', commandData)
@@ -43,14 +33,21 @@ export default function Control({ machineId }: { machineId: number }) {
     })
   }
 
+  const commands = [
+    { value: 'KILL_PROCESS', label: 'KILL_PROCESS' },
+    { value: 'RESTART_PROCESS', label: 'RESTART_PROCESS' },
+    { value: 'TAKE_SCREENSHOT', label: 'TAKE_SCREENSHOT' }
+  ]
+
   return (
-    <Container>
+    <Container fluid>
       <h3>Control Page for Machine {machineId}</h3>
-      <TextInput
+      <Select
         label="Command"
-        placeholder="명령어를 입력해주세요. ex) process-kill, upload-screenshot"
+        placeholder="명령어를 선택해주세요."
+        data={commands}
         value={command}
-        onChange={(event) => setCommand(event.currentTarget.value)}
+        onChange={(value) => value ? setCommand(value) : null}
       />
       <TextInput
         label="Arguments"

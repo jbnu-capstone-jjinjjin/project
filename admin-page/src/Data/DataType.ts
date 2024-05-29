@@ -48,21 +48,6 @@ export interface Network {
   iface: string
 }
 
-export interface MachineDetail {
-  metrics_id: number
-  metricsType: string
-  createdAt: string
-  data: {
-    os: Os
-    cpu: Cpu
-    gpu: Gpu[]
-    ram: Ram
-    disk: Disk[]
-    network: Network[]
-    identifier: string
-  }
-}
-
 export interface CommandData {
   machineId: number
   control: {
@@ -94,11 +79,28 @@ export interface ProcessInfo {
 }
 
 export interface SDKInfo {
-  dotnet?: string
-  java?: string
+  dotnet: string
+  java: string
 }
 
 export interface ResourceInfo {
   topCpu: ProcessInfo[]
   topMemory: ProcessInfo[]
+}
+
+export interface HwInfo {
+  os: Os
+  cpu: Cpu
+  gpu: Gpu[]
+  ram: Ram
+  disk: Disk[]
+  network: Network[]
+  identifier: string
+}
+
+export interface InfoData {
+  metrics_id: number
+  metricsType: 'HW_INFO' | 'SDK_INFO' | 'RESOURCE_INFO'
+  createdAt: string
+  data: HwInfo | SDKInfo | ResourceInfo
 }

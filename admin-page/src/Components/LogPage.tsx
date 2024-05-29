@@ -23,7 +23,11 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
       .catch(err => Promise.reject(err.response?.data || err.message))
   }
 
-  const { data, isLoading, refetch } = useQuery<InfoData[]>('fetchMachineDetails', fetchData, { enabled: false })
+  const { data, isLoading, refetch } = useQuery<InfoData[]>(
+    'fetchMachineDetails',
+    fetchData,
+    { enabled: false }
+  )
 
   const renderDetails = (detail: InfoData) => {
     switch (detail.metricsType) {

@@ -97,6 +97,7 @@ export interface HwInfo {
   network: Network[]
   identifier: string
 }
+
 export interface InfoData {
   metrics_id: number
   metricsType: 'HW_INFO' | 'SDK_INFO' | 'RESOURCE_INFO'

@@ -9,10 +9,21 @@ type MainPageProps = {
   timeStamp: string
 };
 
-const handleConrolEvent = async (event: { type: string; args?: object }) => {
+type ControlEvent = {
+  command: string
+  args?: object
+}
+
+const initControlEvent: ControlEvent = {
+  command: 'init'
+}
+
+const handleConrolEvent = async (event: ControlEvent) => {
   console.log('Event:', event)
+  const command = event.command
+  const arg = event.args
   try {
-    switch (event.type) {
+    switch (command) {
       case 'KILL_PROCESS':
         console.log('KILL_PROCESS')
         break
@@ -23,7 +34,7 @@ const handleConrolEvent = async (event: { type: string; args?: object }) => {
         console.log('TAKE_SCREENSHOT')
         break
       default:
-        console.log('Unknown event type:', event.type)
+        console.log('Unknown event type:', command)
     }
   } catch (error) {
     console.error('Error handling control event:', error)
@@ -31,10 +42,9 @@ const handleConrolEvent = async (event: { type: string; args?: object }) => {
 }
 
 function MainPage({ timeStamp }: MainPageProps) {
-  const sseEvent = useSSE('PC_CONTROL_EVNET', { type: 'init' })
-
+  const sseEvent = useSSE('machineOrder', initControlEvent)
   useEffect(() => {
-    if (sseEvent.type !== 'init') {
+    if (sseEvent.command !== 'init') {
       handleConrolEvent(sseEvent)
     }
   }, [sseEvent])

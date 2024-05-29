@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { SSEProvider } from 'react-hooks-sse'
-import axios from 'axios'
 
 import MainPage from './components/MainPage'
 import { config as localConfig, Config } from './util/getConfig'

@@ -51,7 +51,9 @@ public class SseService {
 
         if (emitter != null) {
             try {
-                emitter.send(data);
+                emitter.send(SseEmitter.event()
+                        .name("machineOrder")  // 이벤트 이름을 "update"로 설정
+                        .data(data));
 
             } catch (IOException e) {
                 emitters.remove(machineId);

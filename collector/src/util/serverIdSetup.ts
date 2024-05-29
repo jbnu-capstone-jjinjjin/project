@@ -62,7 +62,7 @@ async function initializeServerId() {
   } else {
     console.log('Failed to get server ID... retrying...')
     const secondTryServerId = await getServerId()
-    return secondTryServerId.data.data.machineId
+    return secondTryServerId.data.machineId
   }
 }
 const serverId = await initializeServerId()

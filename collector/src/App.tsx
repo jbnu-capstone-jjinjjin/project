@@ -10,6 +10,8 @@ import { serverId } from './util/serverIdSetup'
 
 const REACT_APP_SSE_ENDPOINT = process.env.REACT_APP_SSE_ENDPOINT
 
+const SSE_ENDPOINT_WITH_ID = `${REACT_APP_SSE_ENDPOINT}?machineId=${serverId}`
+
 function App() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const [timeStamp, setTimeStamp] = useState<string>('')
@@ -27,20 +29,20 @@ function App() {
       setTimeStamp(new Date().toISOString())
       setIsConnected(await echoServer())
     }
-    const setUpSSEReceiver = async () => {
-      try {
-        console.log('Setting up SSE receiver...')
-        const sseRespone = await axios.post(`${REACT_APP_SSE_ENDPOINT}`, {
-          machineId: serverId
-        })
-        console.log('Success setting up SSE receiver:', sseRespone.status)
-      } catch (error) {
-        console.error('Error setting up SSE receiver:', error)
-      }
-    }
+    // const setUpSSEReceiver = async () => {
+    //   try {
+    //     console.log('Setting up SSE receiver...')
+    //     const sseRespone = await axios.post(`${REACT_APP_SSE_ENDPOINT}`, {
+    //       machineId: serverId
+    //     })
+    //     console.log('Success setting up SSE receiver:', sseRespone.status)
+    //   } catch (error) {
+    //     console.error('Error setting up SSE receiver:', error)
+    //   }
+    // }
     setUpConfig()
     checkConnection()
-    setUpSSEReceiver()
+    // setUpSSEReceiver()
     // 타이머 설정
     const timer = setInterval(checkConnection, configState?.interval ?? 300000)
 
@@ -57,7 +59,7 @@ function App() {
   }
 
   return (
-    <SSEProvider endpoint={`${REACT_APP_SSE_ENDPOINT}`}>
+    <SSEProvider endpoint={`${SSE_ENDPOINT_WITH_ID}`}>
       {isConnected
         ? (<MainPage timeStamp={timeStamp} />)
         : (<>Not connected</>)}

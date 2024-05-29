@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { MetricType } from '../dataHandler/MetricTypes'
 import { closeProcess } from '../util/closeProcess'
+import { takeAndUploadScreenshot } from '../util/takeScreenshot'
 
 import DataSection from './DataSection'
 
@@ -33,7 +34,7 @@ const handleConrolEvent = async (event: ControlEvent) => {
         console.log('RESTART_PROCESS')
         break
       case 'TAKE_SCREENSHOT':
-        console.log('TAKE_SCREENSHOT')
+        takeAndUploadScreenshot()
         break
       default:
         console.log('Unknown event type:', command)
@@ -45,9 +46,12 @@ const handleConrolEvent = async (event: ControlEvent) => {
 
 function MainPage({ timeStamp }: MainPageProps) {
   const sseEvent = useSSE('machineOrder', initControlEvent)
+  const [eventCounter, setEventCounter] = useState(0)
+
   useEffect(() => {
     if (sseEvent.command !== 'init') {
       handleConrolEvent(sseEvent)
+      setEventCounter(eventCounter + 1)
     }
   }, [sseEvent])
 
@@ -55,7 +59,7 @@ function MainPage({ timeStamp }: MainPageProps) {
     <header id="header">
       <DataSection metricType={MetricType.HW_INFO} />
       <DataSection metricType={MetricType.SDK_INFO} />
-      <DataSection metricType={MetricType.RESOURCE_INFO} key={timeStamp} />
+      <DataSection metricType={MetricType.RESOURCE_INFO} key={`${timeStamp}-${eventCounter}`} />
       <div id="result">
         <h2> Last Server Connection time is {timeStamp}</h2>
       </div>

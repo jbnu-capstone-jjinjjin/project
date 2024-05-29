@@ -28,30 +28,18 @@ function App() {
       setTimeStamp(new Date().toISOString())
       setIsConnected(await echoServer())
     }
-    // const setUpSSEReceiver = async () => {
-    //   try {
-    //     console.log('Setting up SSE receiver...')
-    //     const sseRespone = await axios.post(`${REACT_APP_SSE_ENDPOINT}`, {
-    //       machineId: serverId
-    //     })
-    //     console.log('Success setting up SSE receiver:', sseRespone.status)
-    //   } catch (error) {
-    //     console.error('Error setting up SSE receiver:', error)
-    //   }
-    // }
     setUpConfig()
     checkConnection()
-    // setUpSSEReceiver()
     // 타이머 설정
     const timer = setInterval(checkConnection, configState?.interval ?? 300000)
 
     return () => {
       clearInterval(timer)
     }
-  }, [])
+  }, [])// 처음 마우늩 될때만 실행
   useEffect(() => {
     setupTray(isConnected)
-  }, [isConnected])
+  }, [isConnected]) // isConnected가 바뀔때마다 실행
 
   if (isConnected === null) {
     return <p>Loading...</p>

@@ -8,9 +8,6 @@ dist-ssr
 build
 /out
 
-# environment files
-.env*
-!.env.example
 
 # editors and operating systems
 .vscode/*

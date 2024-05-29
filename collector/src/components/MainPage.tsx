@@ -1,7 +1,8 @@
 import { useSSE } from 'react-hooks-sse'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { MetricType } from '../dataHandler/MetricTypes'
+import { closeProcess } from '../util/closeProcess'
 
 import DataSection from './DataSection'
 
@@ -11,21 +12,22 @@ type MainPageProps = {
 
 type ControlEvent = {
   command: string
-  args?: object
+  args: object
 }
 
 const initControlEvent: ControlEvent = {
-  command: 'init'
+  command: 'init',
+  args: {}
 }
 
 const handleConrolEvent = async (event: ControlEvent) => {
   console.log('Event:', event)
   const command = event.command
-  const arg = event.args
+  const args = event.args
   try {
     switch (command) {
       case 'KILL_PROCESS':
-        console.log('KILL_PROCESS')
+        closeProcess(args)
         break
       case 'RESTART_PROCESS':
         console.log('RESTART_PROCESS')

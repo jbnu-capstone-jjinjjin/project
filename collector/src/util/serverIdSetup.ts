@@ -8,7 +8,7 @@ const localId = await machineId(true)
 const REACT_APP_CLIENT_TYPE = process.env.REACT_APP_CLIENT_TYPE
 const REACT_APP_MACHINES_ENDPOINT = process.env.REACT_APP_MACHINES_ENDPOINT
 
-const GET_SERVER_ID_ENDPOINT = `${REACT_APP_MACHINES_ENDPOINT}${localId}?type=${REACT_APP_CLIENT_TYPE}`
+const GET_SERVER_ID_ENDPOINT = `${REACT_APP_MACHINES_ENDPOINT}/${localId}?type=${REACT_APP_CLIENT_TYPE}`
 /**
  * 1. GET /machines/:id?type=clientType
  * 2-1. If the machineId exists, return the machineId
@@ -58,11 +58,11 @@ async function initializeServerId() {
   const firstTryServerId = await getServerId()
 
   if (firstTryServerId) {
-    return firstTryServerId
+    return firstTryServerId.data.machineId
   } else {
     console.log('Failed to get server ID... retrying...')
     const secondTryServerId = await getServerId()
-    return secondTryServerId
+    return secondTryServerId.data.data.machineId
   }
 }
 const serverId = await initializeServerId()

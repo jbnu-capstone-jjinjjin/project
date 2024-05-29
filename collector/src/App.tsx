@@ -30,7 +30,6 @@ function App() {
     const setUpSSEReceiver = async () => {
       try {
         console.log('Setting up SSE receiver...')
-        console.log('Server ID:', serverId)
         const sseRespone = await axios.post(`${REACT_APP_SSE_ENDPOINT}`, {
           machineId: serverId
         })

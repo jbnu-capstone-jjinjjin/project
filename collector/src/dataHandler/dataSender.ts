@@ -13,11 +13,11 @@ const REACT_APP_METRICS_ENDPOINT = process.env.REACT_APP_METRICS_ENDPOINT
 
 async function sendMachineData(machineData: MachineData) {
   try {
-    console.log('Server ID : ', serverId)
+    console.log('Sending machine data:', machineData.metricType, machineData.info)
     const metricsResponse = await axios.post(`${REACT_APP_METRICS_ENDPOINT}`, {
-      serverId,
-      timestamp: new Date().toISOString(),
-      metric_type: machineData.metricType,
+      machineId: serverId,
+      createdAt: new Date().toISOString(),
+      metricType: machineData.metricType,
       data: machineData.info,
     })
 

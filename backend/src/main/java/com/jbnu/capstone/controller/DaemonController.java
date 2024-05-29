@@ -21,8 +21,8 @@ public class DaemonController {
 
     @GetMapping("/connect")
     @ResponseStatus(HttpStatus.OK)
-    public SseEmitter connectDaemon(@RequestBody RequestMachineConnectionDTO requestMachineConnectionDTO) throws MachineNotRegisteredException, InitialConnectionException {
-        return sseService.createEmitter(requestMachineConnectionDTO.getMachineId());
+    public SseEmitter connectDaemon(@RequestParam Long machineId) throws MachineNotRegisteredException, InitialConnectionException {
+        return sseService.createEmitter(machineId);
     }
 
     @PostMapping("/control")

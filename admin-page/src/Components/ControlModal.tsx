@@ -37,7 +37,6 @@ export default function Control({ machineId }: { machineId: number }) {
 
   const commands = [
     { value: 'KILL_PROCESS', label: 'KILL_PROCESS' },
-    { value: 'RESTART_PROCESS', label: 'RESTART_PROCESS' },
     { value: 'TAKE_SCREENSHOT', label: 'TAKE_SCREENSHOT' }
   ]
 

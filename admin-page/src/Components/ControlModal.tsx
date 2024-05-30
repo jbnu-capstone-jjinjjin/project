@@ -5,8 +5,10 @@ import { useState } from 'react'
 
 import { CommandData, ResponseData } from '../Data/DataType'
 
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 const controlDaemon = async (commandData: CommandData): Promise<ResponseData> => {
-  const response = await axios.post<ResponseData>('http://localhost:8080/daemon/control', commandData)
+  const response = await axios.post<ResponseData>(`${REACT_APP_API_BASE_URL}/daemon/control`, commandData)
   return response.data
 }
 

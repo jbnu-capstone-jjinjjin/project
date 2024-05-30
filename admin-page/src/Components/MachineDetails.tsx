@@ -10,6 +10,8 @@ import Control from './ControlModal'
 import LogPage from './LogPage'
 import ScreenshotModal from './ScreenshotModal'
 
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 export default function MachineDetails({ machineId, onBack }: MachineDetailsProps) {
   const [viewLogPage, setViewLogPage] = useState(false)
   const [isControlModalOpen, setControlModalOpen] = useState(false)
@@ -34,7 +36,9 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
 
   const { data, isLoading, error } = useQuery<InfoData, Error>(
     ['fetchMachineDetails', machineId],
-    () => axios.get(`http://localhost:8080/machines/${machineId}/metrics?from=2024-01-01T00:00:00&to=${currentTime}`)
+    () => axios.get(
+      `${REACT_APP_API_BASE_URL}/machines/${machineId}/metrics?from=2024-01-01T00:00:00&to=${currentTime}`
+    )
       .then(res => res.data),
     { enabled: !!machineId }
   )

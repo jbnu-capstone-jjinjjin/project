@@ -24,14 +24,14 @@ public class DaemonController {
     @GetMapping("/connect")
     @ResponseStatus(HttpStatus.OK)
     public SseEmitter connectDaemon(@RequestParam Long machineId) throws MachineNotRegisteredException, InitialConnectionException {
-        log.info("connectDaemon 요청: Machine ID {}", machineId);
+        log.info("connectDaemon 요청 : [Machine ID : {}]", machineId);
         return sseService.createEmitter(machineId);
     }
 
     @PostMapping("/control")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDTO controlDaemon(@RequestBody RequestDaemonCommandDTO requestDaemonCommandDTO) throws EmitterNotFoundException, CommandSendException {
-        log.info("controlDaemon 요청: Machine ID {}", requestDaemonCommandDTO.getMachineId());
+        log.info("controlDaemon 요청 : [Machine ID : {}]", requestDaemonCommandDTO.getMachineId());
 
         sseService.sendToDaemon(requestDaemonCommandDTO.getMachineId(), requestDaemonCommandDTO.getControl());
 

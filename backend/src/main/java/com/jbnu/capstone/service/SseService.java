@@ -22,10 +22,10 @@ public class SseService {
     private final Map<Long, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter createEmitter(Long machineId) throws MachineNotRegisteredException, InitialConnectionException {
-        log.info("Machine ID {}에 대한 SseEmitter 생성 요청", machineId);
+        log.info("Machine ID {}에 대한 SseEmitter 생성", machineId);
 
         if (!machineService.isMachineRegistered(machineId)) {
-            log.warn("머신 ID에 대응하는 머신이 없음: Machine ID {}", machineId);
+            log.warn("머신 ID에 대응하는 머신이 없음 : [Machine ID : {}]", machineId);
             throw new MachineNotRegisteredException("ID가 " + machineId + "인 머신이 등록되어 있지 않습니다.");
         }
 
@@ -39,7 +39,7 @@ public class SseService {
             emitters.put(machineId, emitter);
 
         } catch (IOException e) {
-            log.error("초기 연결 메시지 전송 실패: Machine ID {}", machineId, e);
+            log.error("초기 연결 메시지 전송 실패 : [Machine ID : {}]", machineId, e);
             throw new InitialConnectionException("초기 연결 메시지 전송 실패");
         }
 
@@ -51,7 +51,7 @@ public class SseService {
     }
 
     public void sendToDaemon(Long machineId, Object data) throws EmitterNotFoundException, CommandSendException {
-        log.info("Machine ID {}에 명령 전송", machineId);
+        log.info("Machine ID {} 에 명령 전송", machineId);
 
         SseEmitter emitter = emitters.get(machineId);
 
@@ -63,12 +63,12 @@ public class SseService {
 
             } catch (IOException e) {
                 emitters.remove(machineId);
-                log.error("명령 전송 실패: Machine ID {}", machineId, e);
+                log.error("명령 전송 실패 : [Machine ID : {}]", machineId, e);
                 throw new CommandSendException("클라이언트에 명령을 전송하는 데 실패하였습니다.");
             }
 
         } else {
-            log.warn("Emitter를 찾을 수 없음: Machine ID {}", machineId);
+            log.warn("Emitter를 찾을 수 없음 : [Machine ID : {}]", machineId);
             throw new EmitterNotFoundException("해당 머신 ID에 대응하는 Emitter를 찾을 수 없습니다.");
         }
     }

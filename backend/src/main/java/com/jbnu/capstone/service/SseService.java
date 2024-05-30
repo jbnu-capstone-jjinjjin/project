@@ -51,7 +51,9 @@ public class SseService {
 
         if (emitter != null) {
             try {
-                emitter.send(data);
+                emitter.send(SseEmitter.event()
+                        .name("machineOrder")
+                        .data(data));
 
             } catch (IOException e) {
                 emitters.remove(machineId);

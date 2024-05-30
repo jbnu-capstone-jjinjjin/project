@@ -7,6 +7,7 @@ logging:
   level:
     org.hibernate.SQL: debug
     com.jbnu.capstone: debug
+    com.zaxxer.hikari: debug
 
 springdoc:
   default-consumes-media-type: application/json

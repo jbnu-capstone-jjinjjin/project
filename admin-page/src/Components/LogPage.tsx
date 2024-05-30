@@ -9,6 +9,8 @@ import 'dayjs/locale/ko'
 import { InfoData, HwInfo, ResourceInfo, SDKInfo } from '../Data/DataType'
 import { LogPageProps } from '../Data/PropsType'
 
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 dayjs.locale('ko')
 
 export default function LogPage({ machineId, onBack }: LogPageProps) {
@@ -18,8 +20,8 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
   const fetchData = () => {
     const formattedFrom = dayjs(fromDate).format('YYYY-MM-DDTHH:mm:ss')
     const formattedTo = dayjs(toDate).format('YYYY-MM-DDTHH:mm:ss')
-    return axios.get(`http://localhost:8080/machines/${machineId}/metrics?from=${formattedFrom}&to=${formattedTo}`)
-      .then(res => res.data.data) // Assuming the backend response structure accommodates this path
+    return axios.get(`${REACT_APP_API_BASE_URL}/machines/${machineId}/metrics?from=${formattedFrom}&to=${formattedTo}`)
+      .then(res => res.data.data)
       .catch(err => Promise.reject(err.response?.data || err.message))
   }
 

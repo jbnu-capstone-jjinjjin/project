@@ -10,6 +10,8 @@ import { ScreenshotData, ErrorResponse } from '../Data/DataType'
 import ScreenImage from './ScreenshotImage'
 import 'dayjs/locale/ko'
 
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 export default function ScreenshotModal({ machineId }: { machineId: number }) {
   const [fromDate, setFromDate] = useState(new Date())
   const [toDate, setToDate] = useState(new Date())
@@ -21,7 +23,7 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
     const formattedFrom = dayjs(fromDate).format('YYYY-MM-DDTHH:mm:ss')
     const formattedTo = dayjs(toDate).format('YYYY-MM-DDTHH:mm:ss')
     return axios
-      .get(`http://localhost:8080/screenshot/${machineId}?from=${formattedFrom}&to=${formattedTo}`)
+      .get(`${REACT_APP_API_BASE_URL}/screenshot/${machineId}?from=${formattedFrom}&to=${formattedTo}`)
       .then(res => res.data.data || [])
       .catch(err => Promise.reject(err.response?.data || err.message))
   }

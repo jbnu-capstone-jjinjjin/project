@@ -11,13 +11,19 @@
     "@types/nw.js": "^0.13.21",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
+    "desktop-screenshot": "^0.1.1",
     "dotenv": "^16.4.5",
+    "form-data": "^4.0.0",
     "node-machine-id": "^1.1.12",
     "nw-react-scripts": "5.1.1",
+    "pidusage": "^3.0.2",
+    "ps-list": "^8.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hooks-sse": "^2.1.0",
+    "screenshot-desktop": "^1.15.0",
     "systeminformation": "^5.22.9",
+    "tree-kill": "^1.2.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -62,6 +68,8 @@
     }
   },
   "devDependencies": {
+    "@types/pidusage": "^2.0.5",
+    "@types/screenshot-desktop": "^1.12.3",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "eslint": "^8.57.0",
     "eslint-plugin-unused-imports": "^3.2.0",

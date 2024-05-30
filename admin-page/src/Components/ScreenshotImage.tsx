@@ -2,6 +2,8 @@ import { Container, Loader, Text } from '@mantine/core'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+
 export default function ScreenImage({ screenshotId }: { screenshotId: number }) {
   const [imageData, setImageData] = useState<{ imageName: string; imageData: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -9,7 +11,7 @@ export default function ScreenImage({ screenshotId }: { screenshotId: number }) 
 
   useEffect(() => {
     setIsLoading(true)
-    axios.get(`http://localhost:8080/screenshot/${screenshotId}/detail`)
+    axios.get(`${REACT_APP_API_BASE_URL}/screenshot/${screenshotId}/detail`)
       .then(response => {
         setImageData(response.data.data)
         setIsLoading(false)

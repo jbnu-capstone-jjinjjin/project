@@ -1,7 +1,9 @@
 import { useSSE } from 'react-hooks-sse'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { MetricType } from '../dataHandler/MetricTypes'
+import { closeProcess } from '../util/closeProcess'
+import { takeAndUploadScreenshot } from '../util/takeScreenshot'
 
 import DataSection from './DataSection'
 
@@ -9,21 +11,33 @@ type MainPageProps = {
   timeStamp: string
 };
 
-const handleConrolEvent = async (event: { type: string; args?: object }) => {
+type ControlEvent = {
+  command: string
+  args: object
+}
+
+const initControlEvent: ControlEvent = {
+  command: 'init',
+  args: {}
+}
+
+const handleConrolEvent = async (event: ControlEvent) => {
   console.log('Event:', event)
+  const command = event.command
+  const args = event.args
   try {
-    switch (event.type) {
+    switch (command) {
       case 'KILL_PROCESS':
-        console.log('KILL_PROCESS')
+        closeProcess(args)
         break
       case 'RESTART_PROCESS':
         console.log('RESTART_PROCESS')
         break
       case 'TAKE_SCREENSHOT':
-        console.log('TAKE_SCREENSHOT')
+        takeAndUploadScreenshot()
         break
       default:
-        console.log('Unknown event type:', event.type)
+        console.log('Unknown event type:', command)
     }
   } catch (error) {
     console.error('Error handling control event:', error)
@@ -31,11 +45,13 @@ const handleConrolEvent = async (event: { type: string; args?: object }) => {
 }
 
 function MainPage({ timeStamp }: MainPageProps) {
-  const sseEvent = useSSE('PC_CONTROL_EVNET', { type: 'init' })
+  const sseEvent = useSSE('machineOrder', initControlEvent)
+  const [eventCounter, setEventCounter] = useState(0)
 
   useEffect(() => {
-    if (sseEvent.type !== 'init') {
+    if (sseEvent.command !== 'init') {
       handleConrolEvent(sseEvent)
+      setEventCounter(eventCounter + 1)
     }
   }, [sseEvent])
 
@@ -43,7 +59,7 @@ function MainPage({ timeStamp }: MainPageProps) {
     <header id="header">
       <DataSection metricType={MetricType.HW_INFO} />
       <DataSection metricType={MetricType.SDK_INFO} />
-      <DataSection metricType={MetricType.RESOURCE_INFO} key={timeStamp} />
+      <DataSection metricType={MetricType.RESOURCE_INFO} key={`${timeStamp}-${eventCounter}`} />
       <div id="result">
         <h2> Last Server Connection time is {timeStamp}</h2>
       </div>

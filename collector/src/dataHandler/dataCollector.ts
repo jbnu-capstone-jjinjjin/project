@@ -79,28 +79,36 @@ async function collectHwInfo(): Promise<MachineData> {
 }
 
 async function collectSDKInfo(): Promise<MachineData> {
+  const sdkInfo: SDKInfo = {}
   try {
-    console.log('=== Start collect SDK information ===')
-
-    const sdkInfo: SDKInfo = {}
-
+    console.log('=== Start collect Java information ===')
     const javaVersion = execSync('java --version').toString()
     sdkInfo.java = javaVersion || 'Java not found'
+    console.log('Java version:', javaVersion)
+    console.log('=== Success collect Java information ===')
+  } catch (error) {
+    console.error('Failed to fetch Java information:', error)
+    sdkInfo.java = 'Java not found'
+  }
 
+  try {
+    console.log('=== Start collect .NET information ===')
     const dotnetVersion = execSync('dotnet --version').toString().trim()
     sdkInfo.dotnet = dotnetVersion || 'dotnet not found'
-
-    const returnData : MachineData = {
-      info: sdkInfo,
-      metricType: MetricType.SDK_INFO
-    }
-    console.log(returnData)
-    console.log('=== Success collect SDK information ===')
-    return returnData
+    console.log('dotnet version:', dotnetVersion)
+    console.log('=== Success collect .NET information ===')
   } catch (error) {
-    console.error('Failed to fetch SDK information:', error)
-    throw new Error('Failed to fetch SDK information')
+    console.error('Failed to fetch .NET information:', error)
+    sdkInfo.dotnet = 'dotnet not found'
   }
+
+  const returnData : MachineData = {
+    info: sdkInfo,
+    metricType: MetricType.SDK_INFO
+  }
+  console.log(returnData)
+
+  return returnData
 }
 
 async function collectResouceInfo(): Promise<MachineData> {

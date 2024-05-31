@@ -1,49 +1,59 @@
-import fs from 'fs'
+import { exec } from 'child_process'
 import path from 'path'
 
-import FormData from 'form-data'
 import axios from 'axios'
-import screenshot from 'screenshot-desktop'
+import FormData from 'form-data'
 
 import { publicPath } from './consts'
 import { serverId } from './serverIdSetup'
 
-// 스크린샷을 찍고 저장할 파일 경로
-const screenshotFilePath = path.join(publicPath, `ScreenShot-${serverId}.png`)
+const SCREENSHOT_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/screenshot`
 
-// 스크린샷을 찍는 함수
-async function takeScreenshot(): Promise<void> {
-  try {
-    screenshot({ filename: screenshotFilePath })
-  } catch (err) {
-    console.error('Error taking screenshot:', err)
-  }
-}
+function takeScreenshot() {
+  return new Promise<void>((resolve, reject) => {
+    exec(`${publicPath}/getScreenshot.exe`, (error) => {
+      if (error) {
+        console.error(`Error executing getScreenshot.exe: ${error}`)
+        reject(error)
+        return
+      }
 
-// 스크린샷을 서버로 전송하는 함수
-async function uploadScreenshot(): Promise<void> {
-  const form = new FormData()
-  form.append('imageData', fs.createReadStream(screenshotFilePath))
-  form.append('machineId', serverId)
-  form.append('createdAt', new Date().toISOString())
-  form.append('imageName', `ScreenShot-${serverId}.png`)
-
-  try {
-    const response = await axios.post('http://localhost:8080/screenshot', form, {
-      headers: {
-        ...form.getHeaders(),
-      },
+      console.log('getScreenshot.exe executed successfully')
+      resolve()
     })
+  })
+}
+
+async function uploadScreenshot() {
+  try {
+    const screenshot = await fetch(`${publicPath}/screenshot.png`)
+    const blob = await screenshot.blob()
+
+    console.log(screenshot, blob)
+
+    const form = new FormData()
+    form.append('imageData', blob, {
+      filepath: path.resolve(`${publicPath}/screenshot.png`),
+      contentType: 'image/png',
+    })
+    form.append('machineId', serverId)
+    form.append('createdAt', new Date().toISOString())
+    form.append('imagneName', 'screenshot.png')
+
+    const response = await axios.post(`${SCREENSHOT_ENDPOINT}`, form)
+
     console.log('Screenshot uploaded successfully:', response.data)
-  } catch (err) {
-    console.error('Error uploading screenshot:', err)
+  } catch (error) {
+    console.error('Error uploading screenshot:', error)
   }
 }
 
-// 메인 함수
-async function takeAndUploadScreenshot(): Promise<void> {
-  await takeScreenshot()
-  await uploadScreenshot()
+function takeAndUploadScreenshot() {
+  takeScreenshot().then(() => {
+    uploadScreenshot()
+  }).catch((error) => {
+    console.error('Error taking and uploading screenshot:', error)
+  })
 }
 
 export { takeAndUploadScreenshot }

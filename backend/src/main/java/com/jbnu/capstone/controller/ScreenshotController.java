@@ -28,7 +28,7 @@ public class ScreenshotController {
     @PostMapping
     public ResponseEntity<ResponseDTO> addScreenshot(@RequestParam MultipartFile imageData,
                                      @RequestParam String imageName,
-                                     @RequestParam LocalDateTime createdAt,
+                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAt,
                                      @RequestParam Long machineId) throws IOException {
         log.info("스크린 샷 추가 요청 : [Machine ID : {}, Image Name : {}, createdAt : {}]", machineId, imageName, createdAt);
 

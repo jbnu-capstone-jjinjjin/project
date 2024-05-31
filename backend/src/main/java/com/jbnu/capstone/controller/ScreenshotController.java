@@ -30,8 +30,10 @@ public class ScreenshotController {
                                      @RequestParam String imageName,
                                      @RequestParam LocalDateTime createdAt,
                                      @RequestParam Long machineId) throws IOException {
+        log.info("스크린 샷 추가 요청 : [Machine ID : {}, Image Name : {}, createdAt : {}]", machineId, imageName, createdAt);
 
         if (!MediaType.IMAGE_PNG_VALUE.equals(imageData.getContentType())) {
+            log.warn("잘못된 파일 형식 : {}", imageData.getContentType());
             return ResponseEntity
                     .badRequest()
                     .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), "잘못된 파일 형식입니다."));
@@ -46,6 +48,8 @@ public class ScreenshotController {
 
     @GetMapping("/{id}/detail")
     public ResponseEntity<ResponseDataDTO<ResponseScreenshotDetailDTO>> getScreenshot(@PathVariable("id") Long screenshotId) {
+        log.info("특정 스크린 샷 조회 요청 : [Screenshot ID : {}]", screenshotId);
+
         ResponseScreenshotDetailDTO screenshot = screenshotService.findScreenshotById(screenshotId);
 
         return ResponseEntity
@@ -68,6 +72,8 @@ public class ScreenshotController {
         if (to == null) {
             to = now;
         }
+
+        log.info("특정 시간 범위의 스크린 샷 조회 요청 : [Machine ID : {}, From : {}, To : {}]", machineId, from, to);
 
         List<ResponseScreenshotDTO> screenshotDTOList = screenshotService.findScreenshotByMachineIdAndTimeRange(machineId, from, to);
 

@@ -36,9 +36,13 @@ async function uploadScreenshot() {
     })
     form.append('machineId', serverId)
     form.append('createdAt', new Date().toISOString())
-    form.append('imagneName', 'screenshot.png')
+    form.append('imageName', 'screenshot.png')
 
-    const response = await axios.post(`${SCREENSHOT_ENDPOINT}`, form)
+    const response = await axios.post(`${SCREENSHOT_ENDPOINT}`, form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
 
     console.log('Screenshot uploaded successfully:', response.data)
   } catch (error) {

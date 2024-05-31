@@ -29,8 +29,6 @@ async function uploadScreenshot() {
     const screenshot = await fetch(`${publicPath}/screenshot.png`)
     const blob = await screenshot.blob()
 
-    console.log(screenshot, blob)
-
     const form = new FormData()
     form.append('imageData', blob, {
       filepath: path.resolve(`${publicPath}/screenshot.png`),

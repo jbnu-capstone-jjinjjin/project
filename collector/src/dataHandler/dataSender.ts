@@ -9,7 +9,7 @@ import {
   collectResouceInfo,
 } from './dataCollector'
 
-const METRICS_ENDPOINT = `${process.env.REACT_APP_ECHO_ENDPOINT}/metrics`
+const METRICS_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/metrics`
 
 async function sendMachineData(machineData: MachineData) {
   try {

@@ -5,10 +5,8 @@ import { config } from './getConfig'
 
 const localId = await machineId(true)
 
-const REACT_APP_CLIENT_TYPE = process.env.REACT_APP_CLIENT_TYPE
-const REACT_APP_MACHINES_ENDPOINT = process.env.REACT_APP_MACHINES_ENDPOINT
-
-const GET_SERVER_ID_ENDPOINT = `${REACT_APP_MACHINES_ENDPOINT}/${localId}?type=${REACT_APP_CLIENT_TYPE}`
+const MACHINES_ENDPOINT = `${process.env.REACT_APP_ECHO_ENDPOINT}/machines`
+const GET_SERVER_ID_ENDPOINT = `${process.env.REACT_APP_ECHO_ENDPOINT}/machines/${localId}?type=client`
 /**
  * 1. GET /machines/:id?type=clientType
  * 2-1. If the machineId exists, return the machineId
@@ -37,7 +35,7 @@ async function getServerId() {
 async function registerServerId() {
   try {
     console.log('Registering server ID...')
-    const response = await axios.post(`${REACT_APP_MACHINES_ENDPOINT}`, {
+    const response = await axios.post(`${MACHINES_ENDPOINT}`, {
       machineName: config.pc_name,
       uuid: localId,
     })

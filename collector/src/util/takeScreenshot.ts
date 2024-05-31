@@ -7,16 +7,20 @@ import FormData from 'form-data'
 import { publicPath } from './consts'
 import { serverId } from './serverIdSetup'
 
-const SCREENSHOT_ENDPOINT = process.env.REACT_APP_SCREENSHOT_ENDPOINT
+const SCREENSHOT_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/screenshot`
 
-async function takeScreenshot() {
-  exec(`${publicPath}/getScreenshot.exe`, (error) => {
-    if (error) {
-      console.error(`Error executing getScreenshot.exe: ${error}`)
-      return
-    }
+function takeScreenshot() {
+  return new Promise<void>((resolve, reject) => {
+    exec(`${publicPath}/getScreenshot.exe`, (error) => {
+      if (error) {
+        console.error(`Error executing getScreenshot.exe: ${error}`)
+        reject(error)
+        return
+      }
 
-    console.log('getScreenshot.exe executed successfully')
+      console.log('getScreenshot.exe executed successfully')
+      resolve()
+    })
   })
 }
 
@@ -44,4 +48,12 @@ async function uploadScreenshot() {
   }
 }
 
-export { takeScreenshot, uploadScreenshot }
+function takeAndUploadScreenshot() {
+  takeScreenshot().then(() => {
+    uploadScreenshot()
+  }).catch((error) => {
+    console.error('Error taking and uploading screenshot:', error)
+  })
+}
+
+export { takeAndUploadScreenshot }

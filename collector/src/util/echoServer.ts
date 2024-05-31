@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 
-const REACT_APP_ECHO_ENDPOINT = process.env.REACT_APP_ECHO_ENDPOINT
+const REACT_APP_ECHO_ENDPOINT = `${process.env.REACT_APP_ECHO_ENDPOINT}/echo`
 
 async function echoServer(): Promise<boolean> {
   try {

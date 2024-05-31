@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { MetricType } from '../dataHandler/MetricTypes'
 import { closeProcess } from '../util/closeProcess'
-import { takeScreenshot, uploadScreenshot } from '../util/takeScreenshot'
+import { takeAndUploadScreenshot } from '../util/takeScreenshot'
 
 import DataSection from './DataSection'
 
@@ -34,8 +34,7 @@ const handleConrolEvent = async (event: ControlEvent) => {
         console.log('RESTART_PROCESS')
         break
       case 'TAKE_SCREENSHOT':
-        takeScreenshot()
-        uploadScreenshot()
+        takeAndUploadScreenshot()
         break
       default:
         console.log('Unknown event type:', command)

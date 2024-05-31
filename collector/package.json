@@ -26,10 +26,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "init" : "make && npm install && nw-react-scripts build",
     "start": "nw-react-scripts start",
     "build": "nw-react-scripts build",
+    "buildWithMake": "make && nw-react-scripts build",
     "test": "nw-react-scripts test",
-    "eject": "nw-react-scripts eject"
+    "eject": "nw-react-scripts eject",
+    "make" : "make"
   },
   "eslintConfig": {
     "extends": [

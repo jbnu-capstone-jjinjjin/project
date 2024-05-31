@@ -7,9 +7,7 @@ import { setupTray } from './util/traySetup'
 import { echoServer } from './util/echoServer'
 import { serverId } from './util/serverIdSetup'
 
-const REACT_APP_SSE_ENDPOINT = process.env.REACT_APP_SSE_ENDPOINT
-
-const SSE_ENDPOINT_WITH_ID = `${REACT_APP_SSE_ENDPOINT}?machineId=${serverId}`
+const SSE_ENDPOINT_WITH_ID = `${process.env.REACT_APP_API_BASE_URL}/daemon/connect?machineId=${serverId}`
 
 function App() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)

@@ -5,8 +5,10 @@ import { config } from './getConfig'
 
 const localId = await machineId(true)
 
-const MACHINES_ENDPOINT = `${process.env.REACT_APP_ECHO_ENDPOINT}/machines`
-const GET_SERVER_ID_ENDPOINT = `${process.env.REACT_APP_ECHO_ENDPOINT}/machines/${localId}?type=client`
+const MACHINES_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/machines`
+const GET_SERVER_ID_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/machines/${localId}?type=client`
+console.log('MACHINES_ENDPOINT:', MACHINES_ENDPOINT)
+console.log('GET_SERVER_ID_ENDPOINT:', GET_SERVER_ID_ENDPOINT)
 /**
  * 1. GET /machines/:id?type=clientType
  * 2-1. If the machineId exists, return the machineId

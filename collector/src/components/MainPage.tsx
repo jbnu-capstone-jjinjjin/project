@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react'
 
 import { MetricType } from '../dataHandler/MetricTypes'
 import { closeProcess } from '../util/closeProcess'
+
 import { takeScreenshot, uploadScreenshot } from '../util/takeScreenshot'
+
 
 import DataSection from './DataSection'
 

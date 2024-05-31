@@ -2,17 +2,20 @@ import { Container, Table, Button, Space } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 
-import { MachineData, ErrorResponse, MachineListProps } from '../Data/MachineDataType'
+import { MachineData, ErrorResponse } from '../Data/DataType'
+import { MachineListProps } from '../Data/PropsType'
+
+const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 
 export default function MachineList({ onViewDetails }: MachineListProps) {
   const { data, isLoading, error } = useQuery<MachineData, ErrorResponse>('machines', () =>
-    axios.get<MachineData>('http://localhost:8080/machines').then(res => res.data))
+    axios.get<MachineData>(`${REACT_APP_API_BASE_URL}/machines`).then(res => res.data))
 
   if (isLoading) return <Container>로 딩 중 . . .</Container>
   if (error) return <Container>오류 : {error.message}</Container>
 
   return (
-    <Container>
+    <Container fluid>
       <Space h="xl" />
       <Table withColumnBorders striped highlightOnHover>
         <Table.Thead>

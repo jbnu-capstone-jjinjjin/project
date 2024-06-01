@@ -1,7 +1,11 @@
-import { Container, Button, Table, Group, Space, Modal } from '@mantine/core'
+import { Container, Button, Group, Space, Modal, Grid, Paper, Text } from '@mantine/core'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 import { useState, useEffect } from 'react'
+import {
+  PiGraphicsCardThin, PiCpuThin, PiIdentificationCardThin, PiUserCircleThin, PiDatabaseThin,
+  PiClockThin, PiWindowsLogoThin, PiMemoryThin, PiNetworkThin, PiHardDrivesThin
+} from 'react-icons/pi'
 
 import { InfoData } from '../Data/DataType'
 import { MachineDetailsProps } from '../Data/PropsType'
@@ -55,45 +59,113 @@ export default function MachineDetails({ machineId, onBack }: MachineDetailsProp
 
   if (!hwInfo) return <Container>HW_INFO 데이터를 찾을 수 없음 machineId: {machineId}</Container>
 
-  const rows = [
-    ['Metric Type', hwInfo.metricsType],
-    ['Created At', hwInfo.createdAt],
-    ['OS Release', hwInfo.data.os.release ?? 'N/A'],
-    ['Hostname', hwInfo.data.os.hostname ?? 'N/A'],
-    ['Platform', hwInfo.data.os.platform ?? 'N/A'],
-    ['CPU Cores', hwInfo.data.cpu.cores ?? 'N/A'],
-    ['CPU Model', hwInfo.data.cpu.model ?? 'N/A'],
-    ['CPU Speed', `${hwInfo.data.cpu.speed ?? 'N/A'} MHz`],
-    ['GPU Models', hwInfo.data.gpu.map(g => `${g.model} (${g.vram} MB)`).join(', ') ?? 'N/A'],
-    ['RAM Total', `${Math.round(hwInfo.data.ram.total / 1024 / 1024 / 1024) ?? 'N/A'} GB`],
-    ['Disk Info', hwInfo.data.disk.map(
-      d => `${d.fs} - ${Math.round(d.size / 1024 / 1024 / 1024)} GB, ${d.use}% used`
-    ).join(', ') ?? 'N/A'],
-    ['Network Interfaces', hwInfo.data.network.map(n => `${n.iface}: ${n.ip4}`).join(', ') ?? 'N/A'],
-    ['Identifier', hwInfo.data.identifier ?? 'N/A']
-  ]
-
   return (
     <Container fluid>
       <Space h="xl" />
       <Button onClick={onBack}>Back</Button>
       <Space h="xl" />
-      <Table withColumnBorders striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Field</Table.Th>
-            <Table.Th>Value</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {rows.map((row, index) => (
-            <Table.Tr key={index}>
-              <Table.Td>{row[0]}</Table.Td>
-              <Table.Td>{row[1]}</Table.Td>
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+      <Grid>
+        <Grid.Col span={12}>
+          <Paper style={{ height: '35 px', overflow: 'auto' }}>
+            <Text ta="right" size='xs'>
+              <PiDatabaseThin size={10} />
+              METRICSTYPE : {hwInfo.metricsType}
+              <br />
+              <PiClockThin size={10} />
+              CREATED.AT : {hwInfo.createdAt}
+              <br />
+              <PiIdentificationCardThin size={10} />
+              UUID : {hwInfo.data.identifier}
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={12}>
+          <Paper shadow="xs" ta="center" p="md" withBorder radius="lg" style={{ height: '100px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiUserCircleThin size={50} />
+              HOSTNAME : {hwInfo.data.os.hostname}
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Paper shadow="xs" p="md" withBorder radius="lg" style={{ height: '300px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiWindowsLogoThin size={40} />
+              <ul>
+                <li>PLATFORM : {hwInfo.data.os.platform}</li>
+                <li>RELEASE : {hwInfo.data.os.release}</li>
+              </ul>
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Paper shadow="xs" p="md" withBorder radius="lg" style={{ height: '300px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiCpuThin size={40} />
+              <ul>
+                <li>MODEL : {hwInfo.data.cpu.model}</li>
+                <li>CORES : {hwInfo.data.cpu.cores}</li>
+                <li>SPEED : {Math.round(hwInfo.data.cpu.speed / 1024)}GHz</li>
+              </ul>
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Paper shadow="xs" p="md" withBorder radius="lg" style={{ height: '300px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiMemoryThin size={40} />
+              <ul>
+                <li>
+                  TOTAL MEMORY : {Math.round(hwInfo.data.ram.total / 1024 / 1024 / 1024)} GB
+                </li>
+              </ul>
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Paper shadow="xs" p="md" withBorder radius="lg" style={{ height: '300px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiGraphicsCardThin size={40} />
+              <ul>
+                {hwInfo.data.gpu.map((g, index) => (
+                  <li key={index}>
+                    {g.model} ({g.vram} MB)
+                  </li>
+                ))}
+              </ul>
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Paper shadow="xs" p="md" withBorder radius="lg" style={{ height: '300px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiHardDrivesThin size={40} />
+              <ul>
+                {hwInfo.data.disk.map((d, index) => (
+                  <li key={index}>
+                    {d.fs} - {Math.round(d.size / 1024 / 1024 / 1024)} GB, {d.use}% used
+                  </li>
+                ))}
+              </ul>
+            </Text>
+          </Paper>
+        </Grid.Col>
+        <Grid.Col span={4}>
+          <Paper shadow="xs" p="md" withBorder radius="lg" style={{ height: '300px', overflow: 'auto' }}>
+            <Text size='lg'>
+              <PiNetworkThin size={40} />
+              <ul>
+                {hwInfo.data.network.map(n => (
+                  <li key={n.iface}>
+                    {n.iface}: {n.ip4 || 'N/A'}
+                    <br />(MAC: {n.mac || 'N/A'})
+                  </li>
+                ))}
+              </ul>
+            </Text>
+          </Paper>
+        </Grid.Col>
+      </Grid>
       <Space h="xl" />
       <Group justify="center" gap="xl" grow>
         <Button onClick={() => setViewLogPage(true)}>View Logs</Button>

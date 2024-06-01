@@ -62,13 +62,13 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
         return renderTable([
           ['Top CPU Process', resource.topCpu
             ? resource.topCpu.map(
-              cpu => `${cpu.name} (${cpu.cpu}%)`
-            ).join(', ')
+              cpu => `${cpu.name} (${cpu.cpu}%)  PID : ${cpu.pid}`
+            ).join(' | ')
             : 'N/A'],
           ['Top Memory Process', resource.topMemory
             ? resource.topMemory.map(
-              mem => `${mem.name} (${mem.memory}MB)`
-            ).join(', ')
+              mem => `${mem.name} (${Math.round(mem.memory)}MB)  ${mem.pid}`
+            ).join(' | ')
             : 'N/A']
         ])
       }

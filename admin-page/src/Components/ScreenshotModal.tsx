@@ -1,7 +1,7 @@
-import { Container, Space, Button, Group, Table, Accordion, Modal } from '@mantine/core'
+import { Container, Space, Button, Group, Table, Accordion, Modal, Pagination } from '@mantine/core'
 import { useQuery } from 'react-query'
 import { DateTimePicker } from '@mantine/dates'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
@@ -13,8 +13,11 @@ import 'dayjs/locale/ko'
 const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 
 export default function ScreenshotModal({ machineId }: { machineId: number }) {
-  const [fromDate, setFromDate] = useState(new Date())
+  const [fromDate, setFromDate] = useState(new Date(Date.now() - 3600 * 1000))
   const [toDate, setToDate] = useState(new Date())
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
+  const [shouldFetch, setShouldFetch] = useState(true)
 
   const [modalOpened, setModalOpened] = useState(false)
   const toggleModal = () => setModalOpened(o => !o)
@@ -29,10 +32,22 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
   }
 
   const { data, isLoading, error, refetch } = useQuery<ScreenshotData[], ErrorResponse>(
-    ['fetchScreenshotData', machineId, fromDate, toDate],
-    fetchData,
-    { enabled: false }
+    ['fetchScreenshotData', machineId, fromDate, toDate], fetchData, { enabled: shouldFetch }
   )
+
+  useEffect(() => {
+    if (shouldFetch) {
+      refetch()
+      setShouldFetch(false)
+    }
+  }, [fromDate, toDate, refetch, shouldFetch])
+
+  const paginatedData = data
+    ? data.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    )
+    : []
 
   return (
     <Container fluid>
@@ -63,7 +78,7 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
       {!data && !isLoading && <Container>No data found for machineId: {machineId}</Container>}
       {data && (
         <Accordion variant="separated" radius="xs">
-          {data.map((screenshot, index) => (
+          {paginatedData.map((screenshot, index) => (
             <Accordion.Item key={index} value={`item-${index}`}>
               <Accordion.Control>
                 Created At: {screenshot.createdAt}
@@ -110,6 +125,15 @@ export default function ScreenshotModal({ machineId }: { machineId: number }) {
           ))}
         </Accordion>
       )}
+      <Space h="xl" />
+      <Group justify="center">
+        <Pagination
+          total={Math.ceil((data ? data.length : 0) / itemsPerPage)}
+          value={currentPage}
+          onChange={setCurrentPage}
+          size="lg"
+        />
+      </Group>
     </Container>
   )
 }

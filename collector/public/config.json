@@ -1,5 +1,5 @@
 {
     "interval": 3000000,
     "pc_name": "MyPC",
-    "API_BASE_URL": "http://34.64.47.84"
+    "API_BASE_URL": "http://localhost:8080"
 }

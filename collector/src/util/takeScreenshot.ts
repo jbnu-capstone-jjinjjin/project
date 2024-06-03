@@ -6,8 +6,9 @@ import FormData from 'form-data'
 
 import { publicPath } from './consts'
 import { serverId } from './serverIdSetup'
+import { config } from './getConfig'
 
-const SCREENSHOT_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/screenshot`
+const SCREENSHOT_ENDPOINT = `${config.API_BASE_URL}/screenshot`
 
 function takeScreenshot() {
   return new Promise<void>((resolve, reject) => {

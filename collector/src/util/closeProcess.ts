@@ -1,13 +1,17 @@
 import treeKill from 'tree-kill'
 
-function closeProcess(args: object): void {
+export function closeProcesses(args: object): void {
   console.log('args:', args)
   const argArray = Object.values(args)
-  const pid = argArray[0] as number
-  treeKill(pid, 'SIGTERM', (err: unknown) => {
-    console.error('Error closing process:', err)
-  })
-  console.log('Process closed:', pid)
-}
+  const pids = argArray as number[]
 
-export { closeProcess }
+  pids.forEach(pid => {
+    treeKill(pid, 'SIGTERM', (err: unknown) => {
+      if (err) {
+        console.error(`Error closing process ${pid}:`, err)
+      } else {
+        console.log(`Process closed: ${pid}`)
+      }
+    })
+  })
+}

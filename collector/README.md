@@ -1,46 +1,40 @@
-# Getting Started with Create NW.s React App
+# 2024 1학기 캡스톤 프로젝트 (메디앙 시스템)
 
-This project was bootstrapped with [Create NW.js React App](https://github.com/naviapps/create-nw-react-app).
+## 주제
+- 다중 PC 환경 모니터링 및 원격 채팅 기술
 
-## Available Scripts
+## 현재 프로젝트 설명
+- 해당 프로젝트는 원격 PC에 설치되어 서비스로 실행되는 Agent 프로그램을 담당함.
 
-In the project directory, you can run:
+## 현재 프로젝트 구현 내용
+- 설치시 서비스로 등록 및 실행
+- 트레이 영역에 에이전트 아이콘 노출 및 서버 연결 상태 표시
+- 프로그램 설정 정보 저장
+	- 정보 전송 주기
+	- PC 이름
+	- 연결 URL의 기본 주소
+- PC 환경 정보 전송
+	- PC 사양
+		- CPU
+		- RAM
+		- VGA
+		- Storage 
+	- 네트워크 사양
+		- IP 주소 
+		- MAC 주소 
+	- OS 정보
+	- SDK 정보
+- 실시간 운영 정보 전송
+	- 자원 점유 정보
+		- PID
+		- CPU 사용량
+		- RAM 사용량
+- 서버 명령 처리
+	- 프로세스 실행
+	- 스크린샷 전송
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 부가설명
+- `lib/` 폴더에 있는 `cpp` 코드는 스크린샷을 찍기 위한 코드임.
+	- `makefile`를 통해 해당 `cpp` 코드는 빌드되어 `public/` 폴더로 이동함
+- 해당 프로젝트는 `npm run build` 명령어를 통해서 `win32`,`win64` 버전이 `out/` 결과물로 나옴.
+- 빌드된 결과물 실행은 `collector.exe` 파일을 실행하면 됨.

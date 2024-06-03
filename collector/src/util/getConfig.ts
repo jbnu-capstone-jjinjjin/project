@@ -4,8 +4,9 @@ import * as fs from 'fs'
 import { publicPath } from './consts'
 
 export interface Config {
-  interval: number
-  pc_name: string
+  INTERVAL: number
+  PC_NAME: string
+  API_BASE_URL: string
 }
 
 async function getConfig() : Promise<Config> {

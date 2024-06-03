@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 import { serverId } from '../util/serverIdSetup'
+import { config } from '../util/getConfig'
 
 import { MachineData } from './dataInterface'
 import {
@@ -9,7 +10,7 @@ import {
   collectResouceInfo,
 } from './dataCollector'
 
-const METRICS_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/metrics`
+const METRICS_ENDPOINT = `${config.API_BASE_URL}/metrics`
 
 async function sendMachineData(machineData: MachineData) {
   try {

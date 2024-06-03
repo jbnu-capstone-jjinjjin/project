@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios'
 
-const REACT_APP_ECHO_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/echo`
+import { config } from './getConfig'
+
+const REACT_APP_ECHO_ENDPOINT = `${config.API_BASE_URL}/echo`
 
 async function echoServer(): Promise<boolean> {
   try {

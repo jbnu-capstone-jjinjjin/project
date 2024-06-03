@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { SSEProvider } from 'react-hooks-sse'
 
 import MainPage from './components/MainPage'
-import { config as localConfig, Config } from './util/getConfig'
+import { config, Config } from './util/getConfig'
 import { setupTray } from './util/traySetup'
 import { echoServer } from './util/echoServer'
 import { serverId } from './util/serverIdSetup'
 
-const SSE_ENDPOINT_WITH_ID = `${process.env.REACT_APP_API_BASE_URL}/api/daemon/connect?machineId=${serverId}`
+const SSE_ENDPOINT_WITH_ID = `${config.API_BASE_URL}/api/daemon/connect?machineId=${serverId}`
 
 function App() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     const setUpConfig = async () => {
       try {
-        setConfig(localConfig)
+        setConfig(config)
       } catch (error) {
         console.error('Error loading config:', error)
       }
@@ -29,7 +29,7 @@ function App() {
     setUpConfig()
     checkConnection()
     // 타이머 설정
-    const timer = setInterval(checkConnection, configState?.interval ?? 300000)
+    const timer = setInterval(checkConnection, configState?.INTERVAL ?? 300000)
 
     return () => {
       clearInterval(timer)

@@ -5,8 +5,8 @@ import { config } from './getConfig'
 
 const localId = await machineId(true)
 
-const MACHINES_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/machines`
-const GET_SERVER_ID_ENDPOINT = `${process.env.REACT_APP_API_BASE_URL}/machines/${localId}?type=client`
+const MACHINES_ENDPOINT = `${config.API_BASE_URL}/machines`
+const GET_SERVER_ID_ENDPOINT = `${config.API_BASE_URL}/machines/${localId}?type=client`
 console.log('MACHINES_ENDPOINT:', MACHINES_ENDPOINT)
 console.log('GET_SERVER_ID_ENDPOINT:', GET_SERVER_ID_ENDPOINT)
 /**
@@ -38,7 +38,7 @@ async function registerServerId() {
   try {
     console.log('Registering server ID...')
     const response = await axios.post(`${MACHINES_ENDPOINT}`, {
-      machineName: config.pc_name,
+      machineName: config.PC_NAME,
       uuid: localId,
     })
     console.log('Server ID registered : ', response.status)

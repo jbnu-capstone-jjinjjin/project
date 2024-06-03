@@ -2,7 +2,7 @@ import { useSSE } from 'react-hooks-sse'
 import { useEffect, useState } from 'react'
 
 import { MetricType } from '../dataHandler/MetricTypes'
-import { closeProcess } from '../util/closeProcess'
+import { closeProcesses } from '../util/closeProcess'
 import { takeAndUploadScreenshot } from '../util/takeScreenshot'
 
 import DataSection from './DataSection'
@@ -28,7 +28,7 @@ const handleConrolEvent = async (event: ControlEvent) => {
   try {
     switch (command) {
       case 'KILL_PROCESS':
-        closeProcess(args)
+        closeProcesses(args)
         break
       case 'RESTART_PROCESS':
         console.log('RESTART_PROCESS')

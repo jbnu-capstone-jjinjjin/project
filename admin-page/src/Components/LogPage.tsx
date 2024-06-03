@@ -1,8 +1,8 @@
-import { Container, Button, Group, Space, Accordion, Table, Text } from '@mantine/core'
+import { Container, Button, Group, Space, Accordion, Table, Text, Pagination } from '@mantine/core'
 import { DateTimePicker } from '@mantine/dates'
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 
 import 'dayjs/locale/ko'
@@ -14,8 +14,11 @@ const REACT_APP_API_BASE_URL = process.env.REACT_APP_API_BASE_URL
 dayjs.locale('ko')
 
 export default function LogPage({ machineId, onBack }: LogPageProps) {
-  const [fromDate, setFromDate] = useState(new Date())
+  const [fromDate, setFromDate] = useState(new Date(Date.now() - 3600 * 1000))
   const [toDate, setToDate] = useState(new Date())
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
+  const [shouldFetch, setShouldFetch] = useState(true)
 
   const fetchData = () => {
     const formattedFrom = dayjs(fromDate).format('YYYY-MM-DDTHH:mm:ss')
@@ -26,10 +29,15 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
   }
 
   const { data, isLoading, refetch } = useQuery<InfoData[]>(
-    'fetchMachineDetails',
-    fetchData,
-    { enabled: false }
+    'fetchMachineDetails', fetchData, { enabled: shouldFetch }
   )
+
+  useEffect(() => {
+    if (shouldFetch) {
+      refetch()
+      setShouldFetch(false)
+    }
+  }, [fromDate, toDate, refetch, shouldFetch])
 
   const renderDetails = (detail: InfoData) => {
     switch (detail.metricsType) {
@@ -62,13 +70,13 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
         return renderTable([
           ['Top CPU Process', resource.topCpu
             ? resource.topCpu.map(
-              cpu => `${cpu.name} (${cpu.cpu}%)`
-            ).join(', ')
+              cpu => `${cpu.name} (${cpu.cpu}%)  PID : ${cpu.pid}`
+            ).join(' | ')
             : 'N/A'],
           ['Top Memory Process', resource.topMemory
             ? resource.topMemory.map(
-              mem => `${mem.name} (${mem.memory}MB)`
-            ).join(', ')
+              mem => `${mem.name} (${Math.round(mem.memory)}MB)  ${mem.pid}`
+            ).join(' | ')
             : 'N/A']
         ])
       }
@@ -102,6 +110,12 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
       </tbody>
     </Table>
   )
+  const paginatedData = data
+    ? data.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    )
+    : []
 
   return (
     <Container fluid>
@@ -132,7 +146,7 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
       {!data && !isLoading && <div>No data available for machineId: {machineId}</div>}
       {data && (
         <Accordion variant="separated" radius="xs">
-          {data.map((detail, index) => (
+          {paginatedData.map((detail, index) => (
             <Accordion.Item key={index} value={`item-${index}`}>
               <Accordion.Control>
                 Metric Type: {detail.metricsType}
@@ -146,6 +160,15 @@ export default function LogPage({ machineId, onBack }: LogPageProps) {
           ))}
         </Accordion>
       )}
+      <Space h="xl" />
+      <Group justify="center">
+        <Pagination
+          total={Math.ceil((data ? data.length : 0) / itemsPerPage)}
+          value={currentPage}
+          onChange={setCurrentPage}
+          size="lg"
+        />
+      </Group>
     </Container>
   )
 }

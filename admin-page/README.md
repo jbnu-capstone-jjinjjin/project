@@ -6,8 +6,9 @@
 ### 사용 도구
 
 |FRONTEND|UI|LOGIN|
-|---|---|---|
-|![react](https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/61d7f3e2-262d-466b-8848-fd8203dfd41c)|![mantine](https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/73b88ceb-4c6c-4b80-a236-9d286274ab35)|![firebase](https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/92bd391c-6472-493a-a122-be007787b1af)|
+|:---:|:---:|:---:|
+|<img src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/61d7f3e2-262d-466b-8848-fd8203dfd41c" alt="react" width="100px">|<img src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/73b88ceb-4c6c-4b80-a236-9d286274ab35" alt="mantine" width="100px">|<img src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/92bd391c-6472-493a-a122-be007787b1af" alt="firebase" width="100px">|
+
 
 - Code : React
 - UI : Mantine, React-Icon

@@ -3,16 +3,12 @@
 ### 주제
 - 다중 PC 환경 모니터링 및 원격 채팅 기술
 
-### 사용 도구
 
+### 사용 도구
 |FRONTEND|UI|LOGIN|
 |:---:|:---:|:---:|
 |<img src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/61d7f3e2-262d-466b-8848-fd8203dfd41c" alt="react" width="100px">|<img src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/73b88ceb-4c6c-4b80-a236-9d286274ab35" alt="mantine" width="100px">|<img src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/92bd391c-6472-493a-a122-be007787b1af" alt="firebase" width="100px">|
 
-
-- Code : React
-- UI : Mantine, React-Icon
-- 로그인 : Firebase
   
 ### 주요 기능
 - PC 조회
@@ -39,6 +35,7 @@
   <p align="center">
     <img width="1470" alt="screenshot6" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/1932f0b8-6cf3-4726-b1dd-31017384566b">
   </p>
+
   
 ### 실행 방법
 - 'admin-page' 폴더로 이동 후 아래 아래 명령어를 입력
@@ -46,6 +43,7 @@
 npm install
 npm start
 ```
+
 
 ### 배포 후 수정 파일
 ```

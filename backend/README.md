@@ -36,7 +36,7 @@
                 "machineId": 2,
                 "control": {
                   "command": "kill",
-                  "args": ["1234"]
+                  "args": [1234]
                 }
               }
               ```
@@ -240,7 +240,7 @@
 - **POST**
     - **파라미터**:
         - `requestMetricsDTO` (JSON Body, required): 메타데이터 추가 요청 데이터
-            - **requestMetricsDTO **:
+            - **requestMetricsDTO**:
               ```json
               {
                 "machineId": 1,

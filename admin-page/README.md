@@ -13,12 +13,17 @@
   <p align="center">
     <img width="1470" alt="screenshot1" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/a93abaa8-52f1-4a7d-9567-d71dea25f0e0">
   </p>
-  
-- PC 로그 조회
+
+- PC 하드웨어 정보 조회
   <p align="center">
     <img width="1470" alt="screenshot2" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/8df10e4e-3060-4ab6-a9e9-a2ac3dec9fec">
   </p>
 
+- PC 로그 조회
+  <p align="center">
+    <img width="1470" alt="screenshot4" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/caf7fdea-6c05-4dbc-b146-f235d7b756e3">
+  </p>
+  
 - PC 제어 명령 전송
   <p align="center">
     <img width="1470" alt="screenshot3" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/7a119f7c-2b91-47ff-9785-548467e77c93">
@@ -26,7 +31,7 @@
   
 - PC 스크린샷 조회
   <p align="center">
-    <img width="1470" alt="screenshot4" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/efeea463-e578-4cd4-8c56-465a5d264515">
+    <img width="1470" alt="screenshot6" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/1932f0b8-6cf3-4726-b1dd-31017384566b">
   </p>
   
 ### 실행 방법

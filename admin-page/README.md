@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+## 2024 1학기 캡스톤 프로젝트 (메디앙 시스템 - 어드민페이지)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 주제
+- 다중 PC 환경 모니터링 및 원격 채팅 기술
 
-## Available Scripts
+### 사용 도구
+- Code : React
+- UI : Mantine, React-Icon
+- 로그인 : Firebase
+  
+### 주요 기능
+- PC 조회
+  <p align="center">
+    <img width="1470" alt="screenshot1" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/a93abaa8-52f1-4a7d-9567-d71dea25f0e0">
+  </p>
+  
+- PC 로그 조회
+  <p align="center">
+    <img width="1470" alt="screenshot2" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/8df10e4e-3060-4ab6-a9e9-a2ac3dec9fec">
+  </p>
 
-In the project directory, you can run:
+- PC 제어 명령 전송
+  <p align="center">
+    <img width="1470" alt="screenshot3" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/7a119f7c-2b91-47ff-9785-548467e77c93">
+  </p>
+  
+- PC 스크린샷 조회
+  <p align="center">
+    <img width="1470" alt="screenshot4" src="https://github.com/jbnu-capstone-jjinjjin/project/assets/117272556/efeea463-e578-4cd4-8c56-465a5d264515">
+  </p>
+  
+### 실행 방법
+- 'admin-page' 폴더로 이동 후 아래 아래 명령어를 입력
+```
+npm install
+npm start
+```
 
-### `npm start`
+### 배포 후 수정 파일
+```
+.env 파일
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+REACT_APP_API_BASE_URL = http://34.64.47.84
+```
+- 사용할 기본 URL로 변경 필요

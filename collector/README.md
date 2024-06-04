@@ -20,6 +20,11 @@
 ## 현재 프로젝트 설명
 - 해당 프로젝트는 원격 PC에 설치되어 서비스로 실행되는 Agent 프로그램을 담당함.
 
+## 의존성
+- node.js
+- g++ compiler(option)
+- make(option)
+
 ## 빠른 시작 가이드 라인
 
 ### 개발 가이드 라인
@@ -66,11 +71,6 @@ npm run start
 - 서버 명령 처리
 	- 프로세스 실행
 	- 스크린샷 전송
-
-## 의존성
-- node.js
-- g++ compiler(option)
-- make(option)
 
 ## 개발 방법
 1. `collector/` 에서 다음과 같은 명령어를 입력한다.

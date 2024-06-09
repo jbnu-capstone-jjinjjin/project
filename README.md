@@ -19,10 +19,25 @@
 
 ## 흐름도
 - 위에 서술된 내용을 정리하면 현 프로젝트는 세개의 세부 프로젝트로 분류할 수 있습니다.
-  - `Client(collector)`
+  - `Web Browser(admin-page)`
   - `Server(backend)`
-  - `WebBrowser(Admin-page)`
+  - `Client(collector)`
 - 각 프로젝트의 대한 내용은 하위 폴더의 `README`를 참고해주세요.
 - 해당 프로젝트의 전제 흐름도에 대한 내용은 다음 사진과 같습니다.
 ![Server ActiviteDiagram](https://github.com/jbnu-capstone-jjinjjin/project/assets/129056857/dcfe1e79-135a-4316-85b8-6460183b8144)
 ![Daemon ActiviteDiagram](https://github.com/jbnu-capstone-jjinjjin/project/assets/129056857/2d3cbbe6-8c1f-4c5a-a807-8619b35b5f71)
+
+## 기능 요약
+- Web Browser(admin-page)
+ 1. Client의 HW정보, SDK정보, RESOURCE 정보를 조회합니다.
+ 2. Client의 RESOURCE 정보를 토대로 Client에서 실행중인 프로그램의 PID를 얻습니다. 해당 PID를 이용해 Client에 실행중인 프로그램을 강제로 종료합니다.
+ 3. Client의 현재 화면을 캡처하여 조회합니다.
+- Server(backend)
+ 1. Client의 HW정보, SDK정보, RESOURCE 정보를 저장합니다.
+ 2. Client가 전송한 Screenshot을 저장합니다.
+ 3. admin-page에서 내린 명령을 Client에 전달합니다.
+ 4. admin-page에 Client의 정보를 전달하여 조회할 수 있도록 합니다.
+- Client(collector)
+ 1. 현재 설치된 기기의 HW정보, SDK정보, RESOURCE 정보를 수집하여 서버에 보냅니다. 이중 RESOURCE 정보는 사용자가 정의한 시간(기본 5분)주기로 전송합니다.
+ 2. 서버에서 명령을 받아 PID를 전달받으면 해당 PID를 종료시킵니다. 이후 RESOURCE 정보를 다시한번 갱신하여 서버에 전송합니다.
+ 3. 서버에서 명령을 받아 Screenshot를 캡처하여 서버로 전달합니다.
